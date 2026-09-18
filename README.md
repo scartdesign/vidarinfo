@@ -32,7 +32,7 @@ Informacije o konkretnim lekovima treba proveriti prema zvaničnom uputstvu i AL
 ## Supabase
 Frontend trenutno radi bez Supabase zavisnosti. Novi Supabase projekat nije kreiran jer nalog trenutno dostiže limit aktivnih free projekata. Migracija je spremna za primenu čim se oslobodi slot.
 
-Build: **2026.09.18-prod-6**
+Build: **2026.09.18-prod-7**
 
 
 ## Pretraga
@@ -41,3 +41,7 @@ Pretraga koristi tematsko sidro za jasne upite (npr. „prirodni lek za sinuse�
 
 ## Automatska validacija
 GitHub Actions pokreće `node scripts/validate-data.mjs` na svakom push-u na `main` i na pull requestovima. Proveravaju se broj zapisa, jedinstveni ID-jevi, veze tema–lek–prirodni unosi, JavaScript sintaksa i regresioni upiti za pretragu (uključujući „prirodni lek za sinuse“).
+
+
+## Razgovorna pretraga
+VIDAR pretraga prepoznaje razgovorne srpske upite i česte fillerske reči (npr. „boli me grlo“, „puni su mi sinusi“, „stalno me boli glava“). Duži nejasni simptomatski upiti otvaraju filtriranu listu tema umesto da automatski biraju jednu temu. Fuzzy pretraga podržava i do dve greške za duže reči, uz regresione testove za jasne i osetljive upite.
