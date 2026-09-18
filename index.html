@@ -1955,12 +1955,12 @@ function queryIntent(q){let nq=norm(q);return{natural:/\b(prirodn|biljn|caj|mele
 const EMERGENCY_TOPIC_IDS=new Set(['bol-u-grudima','mozdani-udar-tia','naglo-gubljenje-vida','vanmatericna-trudnoca','bol-u-testisu','dvt','alergija-hrana']);
 const URGENT_SEARCH_RULES=[
   {re:/\b(bol|stezanje|pritisak|pece|pecenje)\b.{0,18}\bgrud(ima|i)?\b|\bgrud(ima|i)?\b.{0,18}\b(bol|stezanje|pritisak)\b/,topicId:'bol-u-grudima',label:'Bol ili pritisak u grudima'},
-  {re:/\b(mozdani udar|slog|tia|mini stroke)\b|\b(slabost|utrnulost)\b.{0,20}\b(lice|ruka|noga)\b|\b(problem|tesko)\b.{0,12}\b(govor|govorim)\b/,topicId:'mozdani-udar-tia',label:'Mogući neurološki hitni znaci'},
+  {re:/\b(mozdani udar|slog|tia|mini stroke)\b|\b(slabost|utrnulost)\b.{0,22}\b(lice|ruka|noga)\b|\b(lice|ruka|noga)\b.{0,22}\b(slabost|utrnulost)\b|\b(problem|tesko|ne mogu)\b.{0,18}\b(govor|govorim|da govorim)\b|\b(slabost|utrnulost)\b.{0,35}\b(govor|govorim)\b/,topicId:'mozdani-udar-tia',label:'Mogući neurološki hitni znaci'},
   {re:/\b(ne vidim|gubitak vida|crna zavesa|naglo zamagljenje|naglo izgubio vid|naglo izgubila vid)\b/,topicId:'naglo-gubljenje-vida',label:'Nagla promena ili gubitak vida'},
   {re:/\b(gusim se|ne mogu da disem|tesko disem|otezano disanje|jedva disem)\b/,topicId:'bol-u-grudima',label:'Ozbiljno otežano disanje'},
   {re:/\b(otok|oticanje)\b.{0,14}\b(usana|jezika|grla)\b|\banafilaks/i,topicId:'alergija-hrana',label:'Moguća teška alergijska reakcija'},
   {re:/\b(iznenadan|nagao|jak|veoma jak)\b.{0,18}\bbol\b.{0,12}\btestis(u|a|ima)?\b|\btestis\b.{0,12}\b(iznenadan|nagao|jak)\b/,topicId:'bol-u-testisu',label:'Jak iznenadan bol u testisu'},
-  {re:/\btrudn\w*\b.{0,30}\b(krvarenje|jak bol|bol sa jedne strane|bol u ramenu)\b|\b(krvarenje|jak bol)\b.{0,24}\btrudn\w*\b/,topicId:'vanmatericna-trudnoca',label:'Bol ili krvarenje u trudnoći'},
+  {re:/\btrudn\w*\b.{0,34}\b(krvarenje|krvarim|krvari|jak bol|bol sa jedne strane|bol u ramenu)\b|\b(krvarenje|krvarim|krvari|jak bol)\b.{0,28}\btrudn\w*\b/,topicId:'vanmatericna-trudnoca',label:'Bol ili krvarenje u trudnoći'},
   {re:/\b(bez svesti|ne reaguje|kolaps|onesvestio se|onesvestila se)\b/,topicId:null,label:'Gubitak svesti ili kolaps'}
 ];
 function urgentQueryInfo(q){let nq=norm(q);if(!nq)return null;return URGENT_SEARCH_RULES.find(x=>x.re.test(nq))||null}
