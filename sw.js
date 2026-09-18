@@ -1,4 +1,4 @@
-const CACHE='vidar-shell-2026-09-18-prod-4';
+const CACHE='vidar-shell-2026-09-18-prod-5';
 const SHELL=['/','/index.html','/manifest.webmanifest','/assets/icon.svg','/privacy.html','/terms.html'];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL)))});
 self.addEventListener('activate',e=>{e.waitUntil(Promise.all([caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))),self.clients.claim()]))});
