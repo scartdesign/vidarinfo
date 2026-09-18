@@ -32,7 +32,7 @@ Informacije o konkretnim lekovima treba proveriti prema zvaničnom uputstvu i AL
 ## Supabase
 Frontend trenutno radi bez Supabase zavisnosti. Novi Supabase projekat nije kreiran jer nalog trenutno dostiže limit aktivnih free projekata. Migracija je spremna za primenu čim se oslobodi slot.
 
-Build: **2026.09.18-prod-7**
+Build: **2026.09.18-prod-8**
 
 
 ## Pretraga
@@ -45,3 +45,7 @@ GitHub Actions pokreće `node scripts/validate-data.mjs` na svakom push-u na `ma
 
 ## Razgovorna pretraga
 VIDAR pretraga prepoznaje razgovorne srpske upite i česte fillerske reči (npr. „boli me grlo“, „puni su mi sinusi“, „stalno me boli glava“). Duži nejasni simptomatski upiti otvaraju filtriranu listu tema umesto da automatski biraju jednu temu. Fuzzy pretraga podržava i do dve greške za duže reči, uz regresione testove za jasne i osetljive upite.
+
+
+## Offline i privatnost pretrage
+Verzija 2026.09.18-prod-8 unapređuje oporavak kada nema rezultata, lokalno čuva do 6 poslednjih pretraga uz mogućnost brisanja u Podešavanjima, jasno odvaja antibiotike od ostalih povezanih preparata i unapred kešira teme, lekove i prirodne unose za stabilniji PWA/offline rad.
