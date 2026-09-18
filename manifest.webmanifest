@@ -1,0 +1,18 @@
+{
+  "name": "VIDAR Info",
+  "short_name": "VIDAR",
+  "description": "Informativni zdravstveni navigator",
+  "start_url": "/#/home",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f7fbf8",
+  "theme_color": "#0f8f83",
+  "icons": [
+    {
+      "src": "/assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
