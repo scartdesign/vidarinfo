@@ -32,4 +32,8 @@ Informacije o konkretnim lekovima treba proveriti prema zvaničnom uputstvu i AL
 ## Supabase
 Frontend trenutno radi bez Supabase zavisnosti. Novi Supabase projekat nije kreiran jer nalog trenutno dostiže limit aktivnih free projekata. Migracija je spremna za primenu čim se oslobodi slot.
 
-Build: **2026.09.18-prod-4**
+Build: **2026.09.18-prod-5**
+
+
+## Pretraga
+Pretraga koristi tematsko sidro za jasne upite (npr. „prirodni lek za sinuse“) kako bi rezultati ostali vezani za odgovarajuću zdravstvenu temu. Prirodni rezultati dodatno uzimaju u obzir nivo dokaza i bezbednosni status, bez skrivanja rizičnih trendova kada su direktno traženi.
