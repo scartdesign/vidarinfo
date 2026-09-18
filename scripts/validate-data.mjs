@@ -102,6 +102,9 @@ ok(index.includes("function urgentSearchBanner"), 'Nedostaje urgent safety banne
 ok(index.includes("tel:194") && index.includes("tel:112"), 'Urgent safety nema 194/112 pozive');
 ok(index.includes("mozdani-udar-tia") && index.includes("naglo-gubljenje-vida") && index.includes("bol-u-grudima"), 'Nedostaju ključne urgent teme u detekciji');
 ok(index.includes("function topicEmergencyBanner"), 'Nedostaje urgent upozorenje na detalju teme');
+ok(index.includes("const routeRaw=") && index.includes("const routeParams=") && index.includes("const queryRoute="), 'Nedostaju URL query helperi');
+ok(index.includes("queryRoute('topics'") && index.includes("queryRoute('lekovi'") && index.includes("queryRoute('prirodno'"), 'Pretrage se ne upisuju u URL');
+ok(index.includes("params.get('q')"), 'Render ne obnavlja pretragu iz URL-a');
 ok(sw.includes('/data/topics.json') && sw.includes('/data/meds.json') && sw.includes('/data/naturals.json'), 'Service worker ne kešira sve tri baze podataka za offline rad');
 ok(index.includes('<link rel="apple-touch-icon" href="./assets/icon.svg">'), 'Apple touch icon pokazuje na nepostojeći fajl');
 
