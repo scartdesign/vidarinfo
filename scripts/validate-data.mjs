@@ -98,6 +98,10 @@ ok(index.includes("$$('[data-show-meds]').forEach"), 'Globalni handler za Lekove
 ok(index.includes("vidarRecentSearches"), 'Nedostaje lokalna istorija pretrage');
 ok(index.includes("clearRecentSearches"), 'Nedostaje kontrola za brisanje poslednjih pretraga');
 ok(index.includes("Antibiotici su odvojeni od ostalih preparata."), 'Antibiotici nisu jasno odvojeni u povezanim preparatima');
+ok(index.includes("function urgentSearchBanner"), 'Nedostaje urgent safety banner u pretrazi');
+ok(index.includes("tel:194") && index.includes("tel:112"), 'Urgent safety nema 194/112 pozive');
+ok(index.includes("mozdani-udar-tia") && index.includes("naglo-gubljenje-vida") && index.includes("bol-u-grudima"), 'Nedostaju ključne urgent teme u detekciji');
+ok(index.includes("function topicEmergencyBanner"), 'Nedostaje urgent upozorenje na detalju teme');
 ok(sw.includes('/data/topics.json') && sw.includes('/data/meds.json') && sw.includes('/data/naturals.json'), 'Service worker ne kešira sve tri baze podataka za offline rad');
 ok(index.includes('<link rel="apple-touch-icon" href="./assets/icon.svg">'), 'Apple touch icon pokazuje na nepostojeći fajl');
 
