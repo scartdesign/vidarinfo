@@ -92,6 +92,12 @@ ok(['refluks','gastritis'].includes(topTopics('pece me zeludac')[0]?.id), 'Peče
 ok(topTopics('stalo me boli glava')[0]?.id==='glavobolja', 'Tipfeler u razgovornom upitu za glavobolju nije tolerisan');
 ok(topTopics('sinuzzi')[0]?.id==='sinusi', 'Dvostruki tipfeler za sinuse nije tolerisan');
 ok(index.includes("if(isConversationalQuery(state.q)&&topics.length&&!intent.natural&&!intent.med)return openTopicResults(state.q)"), 'Nedostaje zaštita za duge/nejasne razgovorne upite');
+ok(index.includes("$$('[data-show-naturals]').forEach"), 'Globalni handler za Prirodno mora koristiti querySelectorAll');
+ok(index.includes("$$('[data-show-all]').forEach"), 'Globalni handler za povezane teme mora koristiti querySelectorAll');
+ok(index.includes("$$('[data-show-meds]').forEach"), 'Globalni handler za Lekove mora koristiti querySelectorAll');
+ok(index.includes("vidarRecentSearches"), 'Nedostaje lokalna istorija pretrage');
+ok(index.includes("clearRecentSearches"), 'Nedostaje kontrola za brisanje poslednjih pretraga');
+ok(index.includes("Antibiotici su odvojeni od ostalih preparata."), 'Antibiotici nisu jasno odvojeni u povezanim preparatima');
 
 console.log('VIDAR validation OK');
 console.log(JSON.stringify({
