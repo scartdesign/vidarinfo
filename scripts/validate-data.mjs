@@ -7,6 +7,7 @@ const ok = (cond, msg) => { if (!cond) fail(msg); };
 const index = read('index.html');
 const sw = read('sw.js');
 const version = JSON.parse(read('version.json'));
+const health = JSON.parse(read('health.json'));
 const topicsRaw = JSON.parse(read('data/topics.json'));
 const topics = topicsRaw.topics || topicsRaw;
 const meds = JSON.parse(read('data/meds.json'));
@@ -48,6 +49,8 @@ for (const [medId, refs] of Object.entries(medLinks)) {
 ok(version.topics === topics.length, 'version.json topics broj nije usklađen');
 ok(version.meds === meds.length, 'version.json meds broj nije usklađen');
 ok(version.naturals === naturals.length, 'version.json naturals broj nije usklađen');
+ok(health.ok === true && health.service === 'vidar-info', 'health.json nije validan');
+ok(health.build === version.version, 'health.json build nije usklađen sa version.json');
 const cacheVersion = String(version.version).replaceAll('.', '-');
 ok(sw.includes(cacheVersion), 'Service worker cache nije usklađen sa version.json (' + cacheVersion + ')');
 
