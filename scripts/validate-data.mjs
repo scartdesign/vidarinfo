@@ -105,6 +105,8 @@ ok(index.includes("function topicEmergencyBanner"), 'Nedostaje urgent upozorenje
 ok(index.includes("const routeRaw=") && index.includes("const routeParams=") && index.includes("const queryRoute="), 'Nedostaju URL query helperi');
 ok(index.includes("queryRoute('topics'") && index.includes("queryRoute('lekovi'") && index.includes("queryRoute('prirodno'"), 'Pretrage se ne upisuju u URL');
 ok(index.includes("params.get('q')"), 'Render ne obnavlja pretragu iz URL-a');
+ok(index.includes("data-copy-search") && index.includes("navigator.clipboard.writeText(url)"), 'Nedostaje kopiranje linka pretrage');
+ok(index.includes("searchShareButton(state.q)") && index.includes("searchShareButton(state.natQ)") && index.includes("searchShareButton(state.medQ)"), 'Link pretrage nije dostupan u sva tri kataloga');
 ok(sw.includes('/data/topics.json') && sw.includes('/data/meds.json') && sw.includes('/data/naturals.json'), 'Service worker ne kešira sve tri baze podataka za offline rad');
 ok(index.includes('<link rel="apple-touch-icon" href="./assets/icon.svg">'), 'Apple touch icon pokazuje na nepostojeći fajl');
 
