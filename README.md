@@ -32,7 +32,7 @@ Informacije o konkretnim lekovima treba proveriti prema zvaničnom uputstvu i AL
 ## Supabase
 Frontend trenutno radi bez Supabase zavisnosti. Novi Supabase projekat nije kreiran jer nalog trenutno dostiže limit aktivnih free projekata. Migracija je spremna za primenu čim se oslobodi slot.
 
-Build: **2026.09.18-prod-8**
+Build: **2026.09.18-prod-9**
 
 
 ## Pretraga
@@ -48,4 +48,8 @@ VIDAR pretraga prepoznaje razgovorne srpske upite i česte fillerske reči (npr.
 
 
 ## Offline i privatnost pretrage
-Verzija 2026.09.18-prod-8 unapređuje oporavak kada nema rezultata, lokalno čuva do 6 poslednjih pretraga uz mogućnost brisanja u Podešavanjima, jasno odvaja antibiotike od ostalih povezanih preparata i unapred kešira teme, lekove i prirodne unose za stabilniji PWA/offline rad.
+Verzija 2026.09.18-prod-9 unapređuje oporavak kada nema rezultata, lokalno čuva do 6 poslednjih pretraga uz mogućnost brisanja u Podešavanjima, jasno odvaja antibiotike od ostalih povezanih preparata i unapred kešira teme, lekove i prirodne unose za stabilniji PWA/offline rad.
+
+
+## Urgent pretraga i deljivi linkovi
+Verzija 2026.09.18-prod-9 dodaje safety upozorenja za jasno prepoznate urgentne fraze uz brojeve 194/112, deljive URL pretrage za Teme/Lekove/Prirodno, dugme za kopiranje linka pretrage, status baze i online/offline stanje u Podešavanjima, kao i strožu automatsku validaciju sadržaja.
