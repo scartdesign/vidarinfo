@@ -98,6 +98,8 @@ ok(index.includes("$$('[data-show-meds]').forEach"), 'Globalni handler za Lekove
 ok(index.includes("vidarRecentSearches"), 'Nedostaje lokalna istorija pretrage');
 ok(index.includes("clearRecentSearches"), 'Nedostaje kontrola za brisanje poslednjih pretraga');
 ok(index.includes("Antibiotici su odvojeni od ostalih preparata."), 'Antibiotici nisu jasno odvojeni u povezanim preparatima');
+ok(sw.includes('/data/topics.json') && sw.includes('/data/meds.json') && sw.includes('/data/naturals.json'), 'Service worker ne kešira sve tri baze podataka za offline rad');
+ok(index.includes('<link rel="apple-touch-icon" href="./assets/icon.svg">'), 'Apple touch icon pokazuje na nepostojeći fajl');
 
 console.log('VIDAR validation OK');
 console.log(JSON.stringify({
