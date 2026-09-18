@@ -33,6 +33,31 @@ const topicIds = uniqueIds(topics, 'Tema');
 const medIds = uniqueIds(meds, 'Lek');
 uniqueIds(naturals, 'Prirodni unos');
 
+function requireFields(items,label,fields){
+  for(const item of items){
+    for(const field of fields){
+      const value=item[field];
+      const empty=value==null||(typeof value==='string'&&!value.trim())||(Array.isArray(value)&&value.length===0);
+      ok(!empty,label+' '+item.id+': prazno polje '+field);
+    }
+  }
+}
+function uniqueText(items,label,field){
+  const seen=new Map();
+  for(const item of items){
+    const value=String(item[field]||'').trim().toLocaleLowerCase('sr');
+    ok(!seen.has(value),label+': duplikat '+field+' "'+value+'" ('+seen.get(value)+' / '+item.id+')');
+    seen.set(value,item.id);
+  }
+}
+requireFields(topics,'Tema',['title','category','intro','aliases','symptoms','selfCare','doctor','urgent','evidence']);
+requireFields(meds,'Lek',['name','active','group','about','important','check']);
+requireFields(naturals,'Prirodni unos',['name','group','claim','evidence','safety','status','platforms']);
+uniqueText(topics,'Tema','title');
+uniqueText(meds,'Lek','name');
+uniqueText(naturals,'Prirodni unos','name');
+for(const n of naturals) ok(['supported','limited','none','avoid'].includes(n.status),'Prirodni unos '+n.id+': nepoznat status '+n.status);
+
 for (const n of naturals) {
   for (const id of n.topics || []) ok(topicIds.has(id), 'Prirodni unos ' + n.id + ' referencira nepostojeću temu ' + id);
 }
@@ -106,6 +131,8 @@ ok(index.includes("const routeRaw=") && index.includes("const routeParams=") && 
 ok(index.includes("queryRoute('topics'") && index.includes("queryRoute('lekovi'") && index.includes("queryRoute('prirodno'"), 'Pretrage se ne upisuju u URL');
 ok(index.includes("params.get('q')"), 'Render ne obnavlja pretragu iz URL-a');
 ok(index.includes("data-copy-search") && index.includes("navigator.clipboard.writeText(url)"), 'Nedostaje kopiranje linka pretrage');
+ok(index.includes("function appStatusCard") && index.includes("connection-pill"), 'Nedostaje status baze i mreže u Podešavanjima');
+ok(index.includes("window.addEventListener('offline'") && index.includes("window.addEventListener('online'"), 'Nedostaje online/offline status');
 ok(index.includes("searchShareButton(state.q)") && index.includes("searchShareButton(state.natQ)") && index.includes("searchShareButton(state.medQ)"), 'Link pretrage nije dostupan u sva tri kataloga');
 ok(sw.includes('/data/topics.json') && sw.includes('/data/meds.json') && sw.includes('/data/naturals.json'), 'Service worker ne kešira sve tri baze podataka za offline rad');
 ok(index.includes('<link rel="apple-touch-icon" href="./assets/icon.svg">'), 'Apple touch icon pokazuje na nepostojeći fajl');
