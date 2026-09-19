@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 286, 'Očekivano 286 tema, pronađeno ' + topics.length);
+ok(topics.length === 294, 'Očekivano 294 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -185,6 +185,14 @@ ok(topTopics('moluske')[0]?.id==='moluske', 'Upit moluske mora voditi na mollusc
 ok(topTopics('klikce vilica')[0]?.id==='tmz-vilica', 'Upit klikce vilica mora voditi na TMD');
 ok(topTopics('los zadah')[0]?.id==='los-zadah', 'Upit los zadah mora voditi na halitozu');
 ok(topTopics('gljivice prepone')[0]?.id==='lisaj-gljivicni', 'Upit gljivice prepone mora voditi na gljivični lišaj');
+ok(topTopics('zapuseno uho posle leta')[0]?.id==='eustahijeva-tuba', 'Upit zapuseno uho posle leta mora voditi na Eustahijevu tubu');
+ok(topTopics('slivanje sekreta niz grlo')[0]?.id==='postnazalno-slivanje', 'Upit slivanje sekreta niz grlo mora voditi na postnazalno slivanje');
+ok(topTopics('geografski jezik')[0]?.id==='geografski-jezik', 'Upit geografski jezik mora voditi na geografsku promenu jezika');
+ok(topTopics('pece me jezik')[0]?.id==='burning-mouth', 'Upit pece me jezik mora voditi na burning mouth');
+ok(topTopics('pelenski osip')[0]?.id==='pelenski-osip', 'Upit pelenski osip mora voditi na pelenski osip');
+ok(topTopics('znojnice')[0]?.id==='znojnice', 'Upit znojnice mora voditi na heat rash');
+ok(topTopics('hiperhidroza')[0]?.id==='hiperhidroza', 'Upit hiperhidroza mora voditi na prekomerno znojenje');
+ok(topTopics('knedla u grlu')[0]?.id==='globus-grlo', 'Upit knedla u grlu mora voditi na globus');
 ok(index.includes("some(id=>canonicalTopicId(id)===t.id)"), 'Povezane teme/prirodni unosi moraju koristiti canonical topic ID');
 for (const hiddenId of Object.keys(topicDuplicateOf)) {
   ok(!topTopics(topics.find(t=>t.id===hiddenId)?.title||hiddenId, 10).some(t=>t.id===hiddenId), 'Skrivena duplicate tema ne sme se vratiti u rezultate: '+hiddenId);
