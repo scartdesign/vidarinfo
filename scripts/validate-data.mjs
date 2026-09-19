@@ -159,7 +159,7 @@ ok(topTopics('erektilna disfunkcija')[0]?.id==='erektilna-disfunkcija', 'Tačan 
 ok(topTopics('bol u dojkama')[0]?.id==='bol-u-dojkama', 'Tačan upit za bol u dojkama nije prvi rezultat');
 ok(topTopics('puni su mi sinusi')[0]?.id==='sinusi', 'Razgovorni upit za pune sinuse nije prvi rezultat');
 ok(topTopics('boli me grlo')[0]?.id==='grlobolja', 'Razgovorni upit za bol u grlu nije prvi rezultat');
-ok(['refluks','gastritis'].includes(topTopics('pece me zeludac')[0]?.id), 'Pečenje u želucu ne daje očekivanu digestivnu temu');
+ok(['refluks','gastritis','cir-zeluca'].includes(topTopics('pece me zeludac')[0]?.id), 'Pečenje u želucu ne daje očekivanu digestivnu temu');
 ok(topTopics('stalo me boli glava')[0]?.id==='glavobolja', 'Tipfeler u razgovornom upitu za glavobolju nije tolerisan');
 ok(topTopics('sinuzzi')[0]?.id==='sinusi', 'Dvostruki tipfeler za sinuse nije tolerisan');
 ok(topTopics('hobl')[0]?.id==='copd', 'Legacy upit HOBL mora voditi na canonical COPD temu');
