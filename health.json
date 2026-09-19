@@ -1,5 +1,6 @@
 {
   "ok": true,
   "service": "vidar-info",
-  "build": "2026.09.18-prod-9"
+  "build": "2026.09.19-prod-10",
+  "updated": "2026-09-19"
 }
