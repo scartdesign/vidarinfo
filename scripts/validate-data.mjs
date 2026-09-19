@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 309, 'Očekivano 309 tema, pronađeno ' + topics.length);
+ok(topics.length === 315, 'Očekivano 315 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -212,6 +212,17 @@ ok(topTopics('kiselina u zelucu')[0]?.id==='refluks', 'Upit kiselina u zelucu mo
 ok(topTopics('peckanje mokrenje')[0]?.id==='urinarna-infekcija', 'Upit peckanje mokrenje mora voditi na urinarnu infekciju');
 ok(topTopics('gljivice stopala')[0]?.id==='atletsko-stopalo', 'Upit gljivice stopala mora voditi na atletsko stopalo');
 ok(topTopics('putna mucnina')[0]?.id==='kinetoza', 'Upit putna mucnina mora voditi na kinetozu');
+ok(topTopics('rubeola')[0]?.id==='rubeola', 'Upit rubeola mora voditi na rubeolu');
+ok(topTopics('sesta bolest')[0]?.id==='roseola', 'Upit sesta bolest mora voditi na rozeolu');
+ok(topTopics('osip posle temperature')[0]?.id==='roseola', 'Upit osip posle temperature mora voditi na rozeolu');
+ok(topTopics('peta bolest')[0]?.id==='peta-bolest', 'Upit peta bolest mora voditi na parvovirus B19');
+ok(topTopics('parvovirus b19')[0]?.id==='peta-bolest', 'Upit parvovirus B19 mora voditi na petu bolest');
+ok(topTopics('nocno znojenje')[0]?.id==='nocno-znojenje', 'Upit nocno znojenje mora voditi na noćno znojenje');
+ok(topTopics('gubitak kilaze')[0]?.id==='nenamerni-gubitak-tezine', 'Upit gubitak kilaze mora voditi na nenamerni gubitak težine');
+ok(topTopics('svrbi me koza svuda')[0]?.id==='generalizovani-svrab', 'Upit svrbi me koza svuda mora voditi na generalizovani svrab');
+ok(topTopics('strep grlo')[0]?.id==='tonzilitis', 'Upit strep grlo mora voditi na canonical tonzilitis');
+ok(topTopics('prehlada dete')[0]?.id==='prehlada', 'Upit prehlada dete mora voditi na prehladu');
+ok(topTopics('grip dete')[0]?.id==='grip', 'Upit grip dete mora voditi na grip');
 ok(topTopics('kraste u nosu')[0]?.id==='suva-nosna-sluzokoza', 'Upit kraste u nosu mora voditi na suvu nosnu sluzokožu');
 ok(topTopics('iver u prstu')[0]?.id==='iver-u-kozi', 'Upit iver u prstu mora voditi na iver u koži');
 ok(index.includes("some(id=>canonicalTopicId(id)===t.id)"), 'Povezane teme/prirodni unosi moraju koristiti canonical topic ID');
