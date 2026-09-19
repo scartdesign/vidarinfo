@@ -158,6 +158,17 @@ ok(index.includes("window.addEventListener('offline'") && index.includes("window
 ok(index.includes("searchShareButton(state.q)") && index.includes("searchShareButton(state.natQ)") && index.includes("searchShareButton(state.medQ)"), 'Link pretrage nije dostupan u sva tri kataloga');
 ok(sw.includes('/data/topics.json') && sw.includes('/data/meds.json') && sw.includes('/data/naturals.json'), 'Service worker ne kešira sve tri baze podataka za offline rad');
 ok(index.includes('<link rel="apple-touch-icon" href="./assets/icon.svg">'), 'Apple touch icon pokazuje na nepostojeći fajl');
+for (const t of topics) {
+  ok(typeof t.intro === 'string' && t.intro.trim().length > 0, 'Tema '+t.id+' nema uvod');
+  ok(typeof t.evidence === 'string' && t.evidence.trim().length > 0, 'Tema '+t.id+' nema medicinski pregled/evidence');
+  ok(Array.isArray(t.sources) && t.sources.length > 0, 'Tema '+t.id+' nema izvor');
+  ok(Array.isArray(t.symptoms) && t.symptoms.length > 0, 'Tema '+t.id+' nema simptome');
+  ok(Array.isArray(t.doctor) && t.doctor.length > 0, 'Tema '+t.id+' nema kada kod zdravstvenog radnika');
+  ok(Array.isArray(t.urgent) && t.urgent.length > 0, 'Tema '+t.id+' nema hitne znake');
+}
+ok(index.includes('function relatedTopicsForTopicBlock'), 'Nedostaje blok povezanih zdravstvenih tema');
+ok(index.includes('RELATED_CATEGORY_FAMILIES'), 'Nedostaje ograničenje povezanih tema po oblastima');
+ok(!index.includes("kamen-u-zuci','Glavobolja"), 'Nevažeći hardkodovani odnos Glavobolja → Kamen u žuči');
 
 console.log('VIDAR validation OK');
 console.log(JSON.stringify({
