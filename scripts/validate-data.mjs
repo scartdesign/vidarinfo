@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 248, 'Očekivano 248 tema, pronađeno ' + topics.length);
+ok(topics.length === 256, 'Očekivano 256 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -95,6 +95,8 @@ ok(version.meds === meds.length, 'version.json meds broj nije usklađen');
 ok(version.naturals === naturals.length, 'version.json naturals broj nije usklađen');
 ok(health.ok === true && health.service === 'vidar-info', 'health.json nije validan');
 ok(health.build === version.version, 'health.json build nije usklađen sa version.json');
+const buildMeta=index.match(/<meta name="vidar-build" content="([^"]+)">/);
+ok(buildMeta && buildMeta[1]===version.version, 'index.html vidar-build nije usklađen sa version.json');
 const cacheVersion = String(version.version).replaceAll('.', '-');
 ok(sw.includes(cacheVersion), 'Service worker cache nije usklađen sa version.json (' + cacheVersion + ')');
 
@@ -138,6 +140,15 @@ ok(topTopics('sinuzzi')[0]?.id==='sinusi', 'Dvostruki tipfeler za sinuse nije to
 ok(topTopics('hobl')[0]?.id==='copd', 'Legacy upit HOBL mora voditi na canonical COPD temu');
 ok(topTopics('hbb')[0]?.id==='hronicna-bubrezna-bolest', 'Legacy upit HBB mora voditi na canonical hroničnu bubrežnu bolest');
 ok(topTopics('masld')[0]?.id==='masna-jetra', 'Legacy upit MASLD mora voditi na canonical temu Masna jetra');
+ok(topTopics('cmicak')[0]?.id==='jecmenac', 'Upit cmicak mora voditi na temu Čmičak (ječmenac)');
+ok(topTopics('čmičak')[0]?.id==='jecmenac', 'Upit čmičak mora voditi na temu Čmičak (ječmenac)');
+ok(topTopics('kurje oko')[0]?.id==='kurje-oko', 'Upit kurje oko mora voditi na temu Kurje oko');
+ok(topTopics('zulj')[0]?.id==='zulj', 'Upit zulj mora voditi na temu Žulj / plik od trenja');
+ok(topTopics('halacion')[0]?.id==='halacion', 'Upit halacion mora voditi na temu Halacion');
+ok(topTopics('vaske')[0]?.id==='vaske', 'Upit vaske mora voditi na temu Vaške u kosi');
+ok(topTopics('lisaj')[0]?.id==='lisaj-gljivicni', 'Upit lisaj mora voditi na gljivični lišaj');
+ok(topTopics('zanoktica')[0]?.id==='paronihija', 'Upit zanoktica mora voditi na paronihiju');
+ok(topTopics('krpelj')[0]?.id==='ujed-krpelja', 'Upit krpelj mora voditi na ujed krpelja');
 for (const hiddenId of Object.keys(topicDuplicateOf)) {
   ok(!topTopics(topics.find(t=>t.id===hiddenId)?.title||hiddenId, 10).some(t=>t.id===hiddenId), 'Skrivena duplicate tema ne sme se vratiti u rezultate: '+hiddenId);
 }
