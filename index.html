@@ -1968,12 +1968,15 @@ const EMERGENCY_TOPIC_IDS=new Set(['bol-u-grudima','mozdani-udar-tia','naglo-gub
 const URGENT_SEARCH_RULES=[
   {re:/\b(bol|stezanje|pritisak|pece|pecenje)\b.{0,18}\bgrud(ima|i)?\b|\bgrud(ima|i)?\b.{0,18}\b(bol|stezanje|pritisak)\b/,topicId:'bol-u-grudima',label:'Bol ili pritisak u grudima'},
   {re:/\b(mozdani udar|slog|tia|mini stroke)\b|\b(slabost|utrnulost)\b.{0,22}\b(lic\w*|ruk\w*|nog\w*|jedn\w* stran\w*)\b|\b(lic\w*|ruk\w*|nog\w*)\b.{0,22}\b(slabost|utrnulost)\b|\b(problem|tesko|ne mogu)\b.{0,18}\b(govor\w*|da govorim)\b|\b(slabost|utrnulost)\b.{0,35}\b(govor\w*)\b/,topicId:'mozdani-udar-tia',label:'Mogući neurološki hitni znaci'},
-  {re:/\b(ne vidim|gubitak vida|crna zavesa|naglo zamagljenje|naglo izgubio vid|naglo izgubila vid)\b/,topicId:'naglo-gubljenje-vida',label:'Nagla promena ili gubitak vida'},
-  {re:/\b(gusim se|ne mogu da disem|tesko disem|otezano disanje|jedva disem)\b/,topicId:'bol-u-grudima',label:'Ozbiljno otežano disanje'},
+  {re:/\b(ne vidim|gubitak vida|crna zavesa|naglo zamagljenje|naglo izgubio vid|naglo izgubila vid)\b|\bizgubi\w*\b.{0,14}\bvid\b/,topicId:'naglo-gubljenje-vida',label:'Nagla promena ili gubitak vida'},
+  {re:/\b(gusim se|tesko disem|otezano disanje|jedva disem)\b|\bne (mogu|moze|mozes|mozemo) da dis\w*\b|\bpresta\w*.{0,12}\bdis\w*\b|\bne dis(?:e|em)\b(?!\s+na\s+nos)/,topicId:'bol-u-grudima',label:'Ozbiljno otežano disanje'},
   {re:/\b(otok|oticanje)\b.{0,14}\b(usana|jezika|grla)\b|\banafilaks/i,topicId:'alergija-hrana',label:'Moguća teška alergijska reakcija'},
   {re:/\b(iznenadan|nagao|jak|veoma jak)\b.{0,18}\bbol\b.{0,12}\btestis(u|a|ima)?\b|\btestis\b.{0,12}\b(iznenadan|nagao|jak)\b/,topicId:'bol-u-testisu',label:'Jak iznenadan bol u testisu'},
   {re:/\btrudn\w*\b.{0,34}\b(krvarenje|krvarim|krvari|jak bol|bol sa jedne strane|bol u ramenu)\b|\b(krvarenje|krvarim|krvari|jak bol)\b.{0,28}\btrudn\w*\b/,topicId:'vanmatericna-trudnoca',label:'Bol ili krvarenje u trudnoći'},
-  {re:/\b(bez svesti|ne reaguje|kolaps|onesvestio se|onesvestila se)\b/,topicId:null,label:'Gubitak svesti ili kolaps'}
+  {re:/\b(bez svesti|ne reaguje|kolaps|onesvestio se|onesvestila se)\b/,topicId:null,label:'Gubitak svesti ili kolaps'},
+  {re:/\b(jako|obilno|nekontrolisano)\b.{0,14}\bkrvar\w*\b|\bkrvar\w*\b.{0,18}\b(ne prestaje|ne staje)\b/,topicId:null,label:'Jako ili nekontrolisano krvarenje'},
+  {re:/\b(predozir\w*|overdose|trovanje|otrova\w*)\b|\b(popio|popila|uzeo|uzela)\b.{0,20}\b(previse|mnogo)\b.{0,14}\b(lekova|tableta)\b/,topicId:null,label:'Moguće trovanje ili predoziranje'},
+  {re:/\b(napad|grcevi|konvulzij\w*)\b.{0,24}\b(5 minuta|pet minuta|duze od 5|ne prestaje|ne staje)\b/,topicId:null,label:'Produžen napad ili grčevi'}
 ];
 function urgentQueryInfo(q){let nq=norm(q);if(!nq)return null;return URGENT_SEARCH_RULES.find(x=>x.re.test(nq))||null}
 function urgentSearchBanner(q,compact=false){let u=urgentQueryInfo(q);if(!u)return'';let topic=u.topicId&&topicById(u.topicId);return `<div class="urgent-search ${compact?'compact':''}"><div class="urgent-search-icon">!</div><div class="urgent-search-copy"><strong>${esc(u.label)}</strong><p>Ako je ovo sada prisutno, novo, jako ili se pogoršava, nemoj čekati odgovor aplikacije. Pozovi Hitnu pomoć <b>194</b> ili <b>112</b>.</p>${topic?`<button data-topic="${topic.id}">Otvori povezanu temu</button>`:''}</div><div class="urgent-search-calls"><a href="tel:194">194</a><a href="tel:112">112</a></div></div>`}
