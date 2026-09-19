@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 370, 'Očekivano 370 tema, pronađeno ' + topics.length);
+ok(topics.length === 392, 'Očekivano 392 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -315,6 +315,27 @@ ok(topTopics('hba1c visok')[0]?.id==='glukoza-hba1c', 'Upit hba1c visok mora vod
 ok(topTopics('bilirubin visok')[0]?.id==='bilirubin-nalaz', 'Upit bilirubin visok mora voditi na bilirubin nalaz');
 ok(topTopics('mrsavljenje bez razloga')[0]?.id==='neobjasnjiv-gubitak-tezine', 'Upit mrsavljenje bez razloga mora voditi na neobjašnjiv gubitak težine');
 ok(topTopics('stolica kao katran')[0]?.id==='crna-stolica', 'Upit stolica kao katran mora voditi na crnu stolicu');
+ok(topTopics('krvarenje u trudnoci')[0]?.id==='krvarenje-trudnoca', 'Upit krvarenje u trudnoci mora voditi na opštu temu');
+ok(topTopics('pukao vodenjak')[0]?.id==='curenje-plodove-vode', 'Upit pukao vodenjak mora voditi na plodovu vodu');
+ok(topTopics('kontrakcije pre 37 nedelje')[0]?.id==='prevremeni-porodjaj', 'Upit kontrakcije pre 37 nedelje mora voditi na prevremeni porođaj');
+ok(topTopics('pph')[0]?.id==='postporodjajno-krvarenje', 'Upit pph mora voditi na postporođajno krvarenje');
+ok(topTopics('zacepljen mlecni kanal')[0]?.id==='zastoj-mleka', 'Upit zacepljen mlecni kanal mora voditi na zastoj mleka');
+ok(topTopics('beba bljucka')[0]?.id==='refluks-beba', 'Upit beba bljucka mora voditi na refluks kod bebe');
+ok(topTopics('trihomonas')[0]?.id==='trihomonijaza', 'Upit trihomonas mora voditi na trihomonijazu');
+ok(topTopics('meningitis')[0]?.id==='meningitis', 'Upit meningitis mora voditi na hitnu temu');
+ok(topTopics('encefalitis')[0]?.id==='encefalitis', 'Upit encefalitis mora voditi na hitnu temu');
+ok(topTopics('potres mozga')[0]?.id==='povreda-glave-potres', 'Upit potres mozga mora voditi na povredu glave');
+ok(topTopics('homa ir visok')[0]?.id==='metabolicki-sindrom', 'Upit homa ir visok mora voditi na metabolički sindrom');
+ok(topTopics('kortizol visok')[0]?.id==='cushing', 'Upit kortizol visok mora voditi na Cushing');
+ok(topTopics('kortizol nizak')[0]?.id==='addison', 'Upit kortizol nizak mora voditi na Addison');
+ok(topTopics('hepatitis a')[0]?.id==='hepatitis-a', 'Upit hepatitis a mora voditi na hepatitis A');
+ok(topTopics('norovirus')[0]?.id==='norovirus', 'Upit norovirus mora voditi na norovirus');
+ok(topTopics('sepsa')[0]?.id==='sepsa', 'Upit sepsa mora voditi na hitnu temu');
+ok(topTopics('rak testisa')[0]?.id==='rak-testisa', 'Upit rak testisa mora voditi na rak testisa');
+ok(topTopics('rak pankreasa')[0]?.id==='rak-pankreasa', 'Upit rak pankreasa mora voditi na onkologiju');
+ok(topTopics('rak zeluca')[0]?.id==='rak-zeluca', 'Upit rak zeluca mora voditi na onkologiju');
+ok(topTopics('rak bubrega')[0]?.id==='rak-bubrega', 'Upit rak bubrega mora voditi na onkologiju');
+ok(topTopics('rak besike')[0]?.id==='rak-besike', 'Upit rak besike mora voditi na onkologiju');
 for (const hiddenId of Object.keys(topicDuplicateOf)) {
   ok(!topTopics(topics.find(t=>t.id===hiddenId)?.title||hiddenId, 10).some(t=>t.id===hiddenId), 'Skrivena duplicate tema ne sme se vratiti u rezultate: '+hiddenId);
 }
@@ -347,7 +368,11 @@ const urgentRules=[
   /\b(ne mogu|ne moze)\b.{0,10}\bda mokr\w*\b.{0,28}\b(jak bol|bol u donjem stomaku|puna besika|napeta besika)\b|\b(puna|napeta) besika\b.{0,28}\b(ne mogu|ne moze)\b.{0,10}\bmokr\w*\b/,
   /\b(mnogo|obilno|puno)\b.{0,18}\bkrv\w*\b.{0,22}\b(iskaslj\w*|kaslj\w*)\b|\b(iskaslj\w*|kaslj\w*)\b.{0,22}\b(mnogo|obilno|puno)\b.{0,18}\bkrv\w*\b|\b(krv\w*|krvi)\b.{0,24}\b(iskaslj\w*|kaslj\w*)\b.{0,30}\b(tesko dis\w*|otezano dis\w*|bol u grud\w*)\b/,
   /\b(torzija testisa|testicular torsion|uvrnut testis|uvrnuo se testis)\b/,
-  /\b(hipotermija|hypothermia|telo 3[0-4](?:[.,]\d+)? stepen\w*|temperatura tela 3[0-4](?:[.,]\d+)?)\b/
+  /\b(hipotermija|hypothermia|telo 3[0-4](?:[.,]\d+)? stepen\w*|temperatura tela 3[0-4](?:[.,]\d+)?)\b/,
+  /\b(sepsa|sepsis|septicki sok|septicki šok)\b/,
+  /\b(meningitis)\b/,
+  /\b(encefalitis|encephalitis)\b/,
+  /\b(postporodjajno krvarenje|postporodajno krvarenje|postpartum haemorrhage|postpartum hemorrhage|pph)\b/
 ];
 const urgentPositiveQueries=[
   'bol u grudima','stezanje u grudima','slabost ruke i problem sa govorom',
