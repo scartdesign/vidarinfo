@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 294, 'Očekivano 294 tema, pronađeno ' + topics.length);
+ok(topics.length === 297, 'Očekivano 297 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -193,6 +193,9 @@ ok(topTopics('pelenski osip')[0]?.id==='pelenski-osip', 'Upit pelenski osip mora
 ok(topTopics('znojnice')[0]?.id==='znojnice', 'Upit znojnice mora voditi na heat rash');
 ok(topTopics('hiperhidroza')[0]?.id==='hiperhidroza', 'Upit hiperhidroza mora voditi na prekomerno znojenje');
 ok(topTopics('knedla u grlu')[0]?.id==='globus-grlo', 'Upit knedla u grlu mora voditi na globus');
+ok(topTopics('karijes')[0]?.id==='karijes', 'Upit karijes mora voditi na karijes');
+ok(topTopics('bol na hladno zub')[0]?.id==='osetljivi-zubi', 'Upit bol na hladno zub mora voditi na osetljive zube');
+ok(topTopics('umnjak')[0]?.id==='umnjak', 'Upit umnjak mora voditi na temu umnjak');
 ok(index.includes("some(id=>canonicalTopicId(id)===t.id)"), 'Povezane teme/prirodni unosi moraju koristiti canonical topic ID');
 for (const hiddenId of Object.keys(topicDuplicateOf)) {
   ok(!topTopics(topics.find(t=>t.id===hiddenId)?.title||hiddenId, 10).some(t=>t.id===hiddenId), 'Skrivena duplicate tema ne sme se vratiti u rezultate: '+hiddenId);
