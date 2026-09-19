@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 320, 'Očekivano 320 tema, pronađeno ' + topics.length);
+ok(topics.length === 325, 'Očekivano 325 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -208,6 +208,15 @@ ok(topTopics('povlacenje desni')[0]?.id==='parodontitis', 'Upit povlacenje desni
 ok(topTopics('proliv kod odraslih')[0]?.id==='stomacni-virus', 'Upit proliv kod odraslih mora voditi na proliv/povraćanje');
 ok(topTopics('ujed komarca')[0]?.id==='ujedi-insekata', 'Upit ujed komarca mora voditi na ujede insekata');
 ok(topTopics('ortostatska hipotenzija')[0]?.id==='nizak-pritisak', 'Upit ortostatska hipotenzija mora voditi na nizak pritisak');
+ok(topTopics('bol u zglobu sake')[0]?.id==='bol-rucni-zglob', 'Upit bol u zglobu sake mora voditi na bol ručnog zgloba');
+ok(topTopics('bol u clanku')[0]?.id==='bol-clanak', 'Upit bol u clanku mora voditi na bol u članku');
+ok(topTopics('dishidroza')[0]?.id==='dishidroza', 'Upit dishidroza mora voditi na pomfoliks');
+ok(topTopics('bol u stomaku dete')[0]?.id==='bol-stomak-dete', 'Upit bol u stomaku dete mora voditi na dečji abdominalni bol');
+ok(topTopics('bol u preponi')[0]?.id==='bol-u-preponi', 'Upit bol u preponi mora voditi na simptomsku temu prepone');
+ok(topTopics('misicna upala')[0]?.id==='uganuca-istegnuca', 'Upit misicna upala mora voditi na istegnuće/uganuće');
+ok(topTopics('bol u laktu spolja')[0]?.id==='teniski-lakat', 'Upit bol u laktu spolja mora voditi na teniski lakat');
+ok(topTopics('bol u laktu unutra')[0]?.id==='golferski-lakat', 'Upit bol u laktu unutra mora voditi na golferski lakat');
+ok(topTopics('ujed pauka')[0]?.id==='ujedi-insekata', 'Upit ujed pauka mora voditi na ujede i ubode');
 ok(topTopics('polipi u nosu')[0]?.id==='nosni-polipi', 'Upit polipi u nosu mora voditi na nosne polipe');
 ok(topTopics('tonsil stones')[0]?.id==='cepici-krajnika', 'Upit tonsil stones mora voditi na čepiće krajnika');
 ok(topTopics('svrab anusa')[0]?.id==='analni-svrab', 'Upit svrab anusa mora voditi na analni svrab');
