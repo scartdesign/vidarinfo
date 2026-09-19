@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 448, 'Očekivano 448 tema, pronađeno ' + topics.length);
+ok(topics.length === 457, 'Očekivano 457 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -401,6 +401,16 @@ ok(topTopics('shizofrenija')[0]?.id==='shizofrenija', 'Upit shizofrenija mora vo
 ok(topTopics('psihoza')[0]?.id==='psihoza', 'Upit psihoza mora voditi na psihozu');
 ok(topTopics('poremecaj ishrane')[0]?.id==='poremecaji-ishrane', 'Upit poremecaj ishrane mora voditi na temu poremećaja ishrane');
 ok(topTopics('hipoparatireoidizam')[0]?.id==='hipoparatireoidizam', 'Upit hipoparatireoidizam mora voditi na odgovarajuću temu');
+ok(topTopics('hepatitis e')[0]?.id==='hepatitis-e', 'Upit hepatitis e mora voditi na hepatitis E');
+ok(topTopics('wilsonova bolest')[0]?.id==='wilsonova-bolest', 'Upit Wilsonova bolest mora voditi na Wilsonovu bolest');
+ok(topTopics('osteomalacija')[0]?.id==='osteomalacija', 'Upit osteomalacija mora voditi na osteomalaciju');
+ok(topTopics('mycoplasma genitalium')[0]?.id==='mycoplasma-genitalium', 'Upit Mycoplasma genitalium mora voditi na Mgen');
+ok(topTopics('pityriasis rosea')[0]?.id==='pityriasis-rosea', 'Upit pityriasis rosea mora voditi na odgovarajući osip');
+ok(topTopics('hipospadija')[0]?.id==='hipospadija', 'Upit hipospadija mora voditi na hipospadiju');
+ok(topTopics('galaktoreja')[0]?.id==='galaktoreja', 'Upit galaktoreja mora voditi na galaktoreju');
+ok(topTopics('torzija jajnika')[0]?.id==='torzija-jajnika', 'Upit torzija jajnika mora voditi na hitnu temu');
+ok(topTopics('stenice')[0]?.id==='stenice', 'Upit stenice mora voditi na ujede stenica');
+ok(topTopics('ujed buve')[0]?.id==='ujedi-insekata', 'Upit ujed buve mora voditi na postojeću temu ujeda insekata');
 for (const hiddenId of Object.keys(topicDuplicateOf)) {
   ok(!topTopics(topics.find(t=>t.id===hiddenId)?.title||hiddenId, 10).some(t=>t.id===hiddenId), 'Skrivena duplicate tema ne sme se vratiti u rezultate: '+hiddenId);
 }
@@ -433,6 +443,7 @@ const urgentRules=[
   /\b(ne mogu|ne moze)\b.{0,10}\bda mokr\w*\b.{0,28}\b(jak bol|bol u donjem stomaku|puna besika|napeta besika)\b|\b(puna|napeta) besika\b.{0,28}\b(ne mogu|ne moze)\b.{0,10}\bmokr\w*\b/,
   /\b(mnogo|obilno|puno)\b.{0,18}\bkrv\w*\b.{0,22}\b(iskaslj\w*|kaslj\w*)\b|\b(iskaslj\w*|kaslj\w*)\b.{0,22}\b(mnogo|obilno|puno)\b.{0,18}\bkrv\w*\b|\b(krv\w*|krvi)\b.{0,24}\b(iskaslj\w*|kaslj\w*)\b.{0,30}\b(tesko dis\w*|otezano dis\w*|bol u grud\w*)\b/,
   /\b(torzija testisa|testicular torsion|uvrnut testis|uvrnuo se testis)\b/,
+  /\b(torzija jajnika|ovarian torsion|adnexal torsion|uvrnut jajnik|uvrnuo se jajnik)\b/,
   /\b(hipotermija|hypothermia|telo 3[0-4](?:[.,]\d+)? stepen\w*|temperatura tela 3[0-4](?:[.,]\d+)?)\b/,
   /\b(sepsa|sepsis|septicki sok|septicki šok)\b/,
   /\b(meningitis)\b/,
@@ -443,7 +454,7 @@ const urgentPositiveQueries=[
   'bol u grudima','stezanje u grudima','slabost ruke i problem sa govorom',
   'utrnula mi je ruka i tesko govorim','slabost jedne strane tela',
   'ne vidim na jedno oko','izgubio sam vid na jedno oko','gusim se','ne moze da dise','prestao je da dise','otok jezika','iznenadan jak bol u testisu',
-  'trudna sam i krvarim','bez svesti','obilno krvarenje ne prestaje','predozirao se','popio previse lekova','napad traje 5 minuta','grcevi ne prestaju','toplotni udar','suncanica i konfuzija','hemijska opekotina','elektricna opekotina','ujed zmije','zmijski ugriz','ne mogu da mokrim puna besika jak bol','iskasljavam mnogo krvi','krv u ispljuvku kasljem tesko disem'
+  'trudna sam i krvarim','torzija jajnika','bez svesti','obilno krvarenje ne prestaje','predozirao se','popio previse lekova','napad traje 5 minuta','grcevi ne prestaju','toplotni udar','suncanica i konfuzija','hemijska opekotina','elektricna opekotina','ujed zmije','zmijski ugriz','ne mogu da mokrim puna besika jak bol','iskasljavam mnogo krvi','krv u ispljuvku kasljem tesko disem'
 ];
 const urgentNegativeQueries=[
   'bol u dojkama','gorusica','sinusi','tesko spavam','boli me grlo',
