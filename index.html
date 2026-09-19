@@ -2067,7 +2067,7 @@ body{background:linear-gradient(180deg,#fbfefd,#f4faf8)!important}
 <meta name="apple-mobile-web-app-title" content="VIDAR Info">
 <link rel="apple-touch-icon" href="./assets/icon.svg">
 
-<meta name="vidar-build" content="2026.09.20-preview-40"></head>
+<meta name="vidar-build" content="2026.09.20-preview-41"></head>
 <body>
 <div id="app"><div style="min-height:65vh;display:grid;place-items:center;color:#557064">Učitavanje VIDAR Info…</div></div>
 <script>
@@ -2157,7 +2157,7 @@ function suggestTopics(q){q=norm(q.trim());if(!q)return[];return catalogTopics()
 function looseTopicSuggestions(q,limit=4){let terms=searchTerms(q).filter(x=>x.length>=3);if(!terms.length)return[];return catalogTopics().map(t=>{let fields=[[norm(t.title),14],...(t.aliases||[]).map(a=>[norm(a),11]),...(t.symptoms||[]).map(a=>[norm(a),5]),[norm(t.intro),2]],score=0,hits=0;for(let term of terms){let best=0;for(let [field,w] of fields){let s=textTokenScore([term],field,w).score;if(s>best)best=s}if(best){hits++;score+=best}}return[t,score,hits]}).filter(x=>x[1]>=20&&x[2]>0).sort((a,b)=>b[1]-a[1]||b[2]-a[2]||a[0].title.localeCompare(b[0].title,'sr')).slice(0,limit).map(x=>x[0])}
 function topicEmptyPanel(q){let near=looseTopicSuggestions(q,4);return `<div class="search-empty"><span class="search-empty-icon">${uiIcon('search')}</span><h3>Nema sigurnog poklapanja za „${esc(q)}“</h3><p>Probaj kraći izraz ili izaberi neku od najbližih tema. Rezultati služe za snalaženje, ne za postavljanje dijagnoze.</p>${near.length?`<div class="search-empty-near"><small>Možda tražiš</small><div>${near.map(t=>`<button data-topic="${t.id}">${esc(t.title)}</button>`).join('')}</div></div>`:''}<div class="search-empty-actions"><button id="clearTopicSearch">Očisti pretragu</button><button data-show-naturals>Pretraži prirodno</button><button data-show-meds>Pretraži lekove</button></div></div>`}
 function queryIntent(q){let nq=norm(q);return{natural:/\b(prirodn|biljn|caj|melem|ulje|tinkt|narodn|domac)\w*/.test(nq),med:/\b(lek|tableta|sirup|sprej|kapsul|antibiotik)\w*/.test(nq)}}
-const EMERGENCY_TOPIC_IDS=new Set(['bol-u-grudima','mozdani-udar-tia','naglo-gubljenje-vida','vanmatericna-trudnoca','bol-u-testisu','dvt','alergija-hrana','toplotna-iscrpljenost-udar','ujed-zmije','torzija-testisa','hipotermija','sepsa','meningitis','encefalitis','postporodjajno-krvarenje','subarahnoidalno-krvarenje']);
+const EMERGENCY_TOPIC_IDS=new Set(['bol-u-grudima','mozdani-udar-tia','naglo-gubljenje-vida','vanmatericna-trudnoca','bol-u-testisu','dvt','alergija-hrana','toplotna-iscrpljenost-udar','ujed-zmije','torzija-testisa','torzija-jajnika','hipotermija','sepsa','meningitis','encefalitis','postporodjajno-krvarenje','subarahnoidalno-krvarenje']);
 const URGENT_SEARCH_RULES=[
   {re:/\b(bol|stezanje|pritisak|pece|pecenje)\b.{0,18}\bgrud(ima|i)?\b|\bgrud(ima|i)?\b.{0,18}\b(bol|stezanje|pritisak)\b/,topicId:'bol-u-grudima',label:'Bol ili pritisak u grudima'},
   {re:/\b(mozdani udar|slog|tia|mini stroke)\b|\b(slabost|utrnulost)\b.{0,22}\b(lic\w*|ruk\w*|nog\w*|jedn\w* stran\w*)\b|\b(lic\w*|ruk\w*|nog\w*)\b.{0,22}\b(slabost|utrnulost)\b|\b(problem|tesko|ne mogu)\b.{0,18}\b(govor\w*|da govorim)\b|\b(slabost|utrnulost)\b.{0,35}\b(govor\w*)\b/,topicId:'mozdani-udar-tia',label:'Mogući neurološki hitni znaci'},
@@ -2176,6 +2176,7 @@ const URGENT_SEARCH_RULES=[
   {re:/\b(ne mogu|ne moze)\b.{0,10}\bda mokr\w*\b.{0,28}\b(jak bol|bol u donjem stomaku|puna besika|napeta besika)\b|\b(puna|napeta) besika\b.{0,28}\b(ne mogu|ne moze)\b.{0,10}\bmokr\w*\b/,topicId:'retencija-urina',label:'Akutna nemogućnost mokrenja'},
   {re:/\b(mnogo|obilno|puno)\b.{0,18}\bkrv\w*\b.{0,22}\b(iskaslj\w*|kaslj\w*)\b|\b(iskaslj\w*|kaslj\w*)\b.{0,22}\b(mnogo|obilno|puno)\b.{0,18}\bkrv\w*\b|\b(krv\w*|krvi)\b.{0,24}\b(iskaslj\w*|kaslj\w*)\b.{0,30}\b(tesko dis\w*|otezano dis\w*|bol u grud\w*)\b/,topicId:'hemoptizija',label:'Veće iskašljavanje krvi ili krv uz ozbiljne simptome'},
   {re:/\b(torzija testisa|testicular torsion|uvrnut testis|uvrnuo se testis)\b/,topicId:'torzija-testisa',label:'Moguća torzija testisa'},
+  {re:/\b(torzija jajnika|ovarian torsion|adnexal torsion|uvrnut jajnik|uvrnuo se jajnik)\b/,topicId:'torzija-jajnika',label:'Moguća torzija jajnika'},
   {re:/\b(hipotermija|hypothermia|telo 3[0-4](?:[.,]\d+)? stepen\w*|temperatura tela 3[0-4](?:[.,]\d+)?)\b/,topicId:'hipotermija',label:'Moguća hipotermija'},
   {re:/\b(sepsa|sepsis|septicki sok|septicki šok)\b/,topicId:'sepsa',label:'Moguća sepsa'},
   {re:/\b(meningitis)\b/,topicId:'meningitis',label:'Sumnja na meningitis'},
