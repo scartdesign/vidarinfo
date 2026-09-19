@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 361, 'Očekivano 361 tema, pronađeno ' + topics.length);
+ok(topics.length === 370, 'Očekivano 370 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -306,6 +306,15 @@ ok(topTopics('tbc')[0]?.id==='tuberkuloza', 'Upit tbc mora voditi na tuberkulozu
 ok(topTopics('hiv')[0]?.id==='hiv', 'Upit hiv mora voditi na HIV');
 ok(topTopics('kruzni osip posle krpelja')[0]?.id==='lajmska-bolest', 'Upit kruzni osip posle krpelja mora voditi na Lajmsku bolest');
 ok(topTopics('telo 34 stepena')[0]?.id==='hipotermija', 'Upit telo 34 stepena mora voditi na hipotermiju');
+ok(topTopics('visok crp')[0]?.id==='crp-upalni-markeri', 'Upit visok crp mora voditi na upalne markere');
+ok(topTopics('leukociti visoki')[0]?.id==='krvna-slika', 'Upit leukociti visoki mora voditi na krvnu sliku');
+ok(topTopics('alt visok')[0]?.id==='jetreni-enzimi', 'Upit alt visok mora voditi na jetrene enzime');
+ok(topTopics('kreatinin visok')[0]?.id==='bubrezni-parametri', 'Upit kreatinin visok mora voditi na bubrežne parametre');
+ok(topTopics('kalijum nizak')[0]?.id==='elektroliti', 'Upit kalijum nizak mora voditi na elektrolite');
+ok(topTopics('hba1c visok')[0]?.id==='glukoza-hba1c', 'Upit hba1c visok mora voditi na glukozu/HbA1c');
+ok(topTopics('bilirubin visok')[0]?.id==='bilirubin-nalaz', 'Upit bilirubin visok mora voditi na bilirubin nalaz');
+ok(topTopics('mrsavljenje bez razloga')[0]?.id==='neobjasnjiv-gubitak-tezine', 'Upit mrsavljenje bez razloga mora voditi na neobjašnjiv gubitak težine');
+ok(topTopics('stolica kao katran')[0]?.id==='crna-stolica', 'Upit stolica kao katran mora voditi na crnu stolicu');
 for (const hiddenId of Object.keys(topicDuplicateOf)) {
   ok(!topTopics(topics.find(t=>t.id===hiddenId)?.title||hiddenId, 10).some(t=>t.id===hiddenId), 'Skrivena duplicate tema ne sme se vratiti u rezultate: '+hiddenId);
 }
