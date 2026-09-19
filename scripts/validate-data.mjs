@@ -288,6 +288,7 @@ ok(index.includes('function topicById') && index.includes('function canonicalTop
 ok(index.includes('topicSearchAliases(t)') && index.includes('TOPIC_LEGACY_ALIASES'), 'Legacy nazivi nisu uključeni u pretragu canonical tema');
 ok(index.includes('canonicalTopicIds(MED_TOPIC_LINKS[m.id]||[])'), 'Lekovi ne canonicalizuju duplicate topic veze');
 ok(index.includes('some(id=>canonicalTopicId(id)===t.id)'), 'Canonical tema ne prepoznaje lekove vezane za legacy duplicate ID');
+ok(index.includes("pool.filter(m=>(MED_TOPIC_LINKS[m.id]||[]).some(id=>canonicalTopicId(id)===anchor.id))"), 'Rankiranje lekova mora canonicalizovati topic veze');
 ok(index.includes("let t=topicById(r.split('/')[1])"), 'Legacy /tema ruta se ne preusmerava logički na canonical temu');
 ok(index.includes('function relatedTopicsForTopicBlock'), 'Nedostaje blok povezanih zdravstvenih tema');
 ok(index.includes("catalogTopics().slice(0,6)"), 'Početna mora koristiti canonical katalog bez skrivenih duplikata');
