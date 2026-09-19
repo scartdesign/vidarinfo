@@ -51,6 +51,7 @@ const legacyAliases = Object.entries(topicDuplicateOf).reduce((acc,[legacyId,tar
 }, {});
 const topicSearchAliases = t => [...new Set([...(t.aliases || []), ...(legacyAliases[t.id] || [])])];
 ok(catalogTopics.length === topics.length - Object.keys(topicDuplicateOf).length, 'Broj jedinstvenih tema nije usklađen sa duplicate mapom');
+ok(topicDuplicateOf.tonsilitis==='tonzilitis', 'Legacy tonsilitis mora biti mapiran na canonical tonzilitis');
 
 function requireFields(items,label,fields){
   for(const item of items){
@@ -169,7 +170,7 @@ ok(topTopics('promrzline')[0]?.id==='promrzline', 'Upit promrzline mora voditi n
 ok(topTopics('alergija na sunce')[0]?.id==='alergija-sunce', 'Upit alergija na sunce mora voditi na PMLE');
 ok(topTopics('viseci fibromi')[0]?.id==='viseci-fibromi', 'Upit viseci fibromi mora voditi na skin tags');
 ok(topTopics('petni trn')[0]?.id==='plantarni-fascitis', 'Upit petni trn mora voditi na plantarni fascitis');
-ok(topTopics('gnojna angina')[0]?.id==='tonsilitis', 'Upit gnojna angina mora voditi na tonzilitis');
+ok(topTopics('gnojna angina')[0]?.id==='tonzilitis', 'Upit gnojna angina mora voditi na canonical tonzilitis');
 ok(topTopics('urastao nokat')[0]?.id==='urasli-nokat', 'Upit urastao nokat mora voditi na urasli nokat');
 ok(topTopics('tortikolis')[0]?.id==='vrat', 'Upit tortikolis mora voditi na bol i ukočenost vrata');
 ok(topTopics('glavobolja od sinusa')[0]?.id==='sinusi', 'Upit glavobolja od sinusa mora voditi na sinuse');
