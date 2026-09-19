@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 248, 'Očekivano 248 tema, pronađeno ' + topics.length);
+ok(topics.length === 325, 'Očekivano 325 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -32,6 +32,26 @@ function uniqueIds(items, label) {
 const topicIds = uniqueIds(topics, 'Tema');
 const medIds = uniqueIds(meds, 'Lek');
 uniqueIds(naturals, 'Prirodni unos');
+
+const duplicateMatch = index.match(/const TOPIC_DUPLICATE_OF=(\{[^;]+\});/);
+ok(duplicateMatch, 'TOPIC_DUPLICATE_OF nije pronađen u index.html');
+const topicDuplicateOf = new Function('return (' + duplicateMatch[1] + ')')();
+for (const [legacyId, targetId] of Object.entries(topicDuplicateOf)) {
+  ok(topicIds.has(legacyId), 'Duplicate mapa referencira nepostojeću legacy temu ' + legacyId);
+  ok(topicIds.has(targetId), 'Duplicate mapa referencira nepostojeću canonical temu ' + targetId);
+  ok(legacyId !== targetId, 'Duplicate mapa ne sme mapirati temu samu na sebe: ' + legacyId);
+  ok(!Object.prototype.hasOwnProperty.call(topicDuplicateOf, targetId), 'Canonical tema ne sme biti i legacy ključ: ' + targetId);
+}
+const canonicalTopicId = id => topicDuplicateOf[id] || id;
+const catalogTopics = topics.filter(t => canonicalTopicId(t.id) === t.id);
+const legacyAliases = Object.entries(topicDuplicateOf).reduce((acc,[legacyId,targetId]) => {
+  const legacy = topics.find(t => t.id === legacyId);
+  if (legacy) acc[targetId] = [...(acc[targetId] || []), legacy.title, ...(legacy.aliases || [])];
+  return acc;
+}, {});
+const topicSearchAliases = t => [...new Set([...(t.aliases || []), ...(legacyAliases[t.id] || [])])];
+ok(catalogTopics.length === topics.length - Object.keys(topicDuplicateOf).length, 'Broj jedinstvenih tema nije usklađen sa duplicate mapom');
+ok(topicDuplicateOf.tonsilitis==='tonzilitis', 'Legacy tonsilitis mora biti mapiran na canonical tonzilitis');
 
 function requireFields(items,label,fields){
   for(const item of items){
@@ -76,6 +96,8 @@ ok(version.meds === meds.length, 'version.json meds broj nije usklađen');
 ok(version.naturals === naturals.length, 'version.json naturals broj nije usklađen');
 ok(health.ok === true && health.service === 'vidar-info', 'health.json nije validan');
 ok(health.build === version.version, 'health.json build nije usklađen sa version.json');
+const buildMeta=index.match(/<meta name="vidar-build" content="([^"]+)">/);
+ok(buildMeta && buildMeta[1]===version.version, 'index.html vidar-build nije usklađen sa version.json');
 const cacheVersion = String(version.version).replaceAll('.', '-');
 ok(sw.includes(cacheVersion), 'Service worker cache nije usklađen sa version.json (' + cacheVersion + ')');
 
@@ -93,11 +115,11 @@ function edit2(a,b){if(a===b)return true;if(Math.abs(a.length-b.length)>2)return
 function searchTerms(q){let raw=norm(q),all=raw.split(/\s+/).filter(x=>x.length>1),core=all.filter(x=>!STOP.has(x));return core.length?core:all}
 function wordMatch(q,w){if(!q||!w)return 0;if(q===w)return 4;if(q.length>=4&&w.length>=4&&(w.startsWith(q)||q.startsWith(w)))return 3;if(q.length>=5&&w.length>=4&&edit1(q,w))return 2;if(q.length>=6&&w.length>=6&&edit2(q,w))return 1;return 0}
 function textTokenScore(terms,text,weight){let ws=norm(text).split(/\s+/).filter(Boolean),hits=0,score=0;for(let q of terms){let best=0;for(let w of ws){let v=wordMatch(q,w);if(v>best)best=v;if(best===4)break}if(best){hits++;score+=best*weight}}return{hits,score}}
-function topicMatchScore(t,q){q=norm(q);if(!q)return 0;let terms=searchTerms(q),title=norm(t.title),aliases=(t.aliases||[]).map(norm),sym=(t.symptoms||[]).map(norm),intro=norm(t.intro),cat=norm(t.category),score=0,hitSet=new Set(),core=terms.join(' ');if(title===q||title===core)score+=160;if(aliases.some(a=>a===q||a===core))score+=145;let fields=[[title,14],...aliases.map(a=>[a,12]),...sym.map(a=>[a,6]),[cat,4],[intro,2]];for(let [field,w] of fields){let r=textTokenScore(terms,field,w);score+=r.score;if(r.hits)for(let term of terms){if(textTokenScore([term],field,1).hits)hitSet.add(term)}}if(!hitSet.size)return 0;let minHits=terms.length>1?Math.ceil(terms.length*.6):1;if(hitSet.size<minHits)return 0;if(hitSet.size===terms.length)score+=45+terms.length*8;else score-=20*(terms.length-hitSet.size);return Math.max(score,0)}
-function anchor(q){let nq=norm(q),terms=searchTerms(nq);if(!terms.length)return null;let core=terms.join(' '),exact=topics.find(t=>norm(t.title)===nq||norm(t.title)===core||(t.aliases||[]).some(a=>norm(a)===nq||norm(a)===core));if(exact)return exact;let ranked=topics.map(t=>[t,topicMatchScore(t,nq)]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]),top=ranked[0],next=ranked[1];if(!top)return null;let gap=top[1]-(next?next[1]:0),dominant=!next||next[1]<=top[1]*.55;if((terms.length===1&&top[1]>=80&&gap>=30&&dominant)||(terms.length>1&&top[1]>=120&&gap>=45&&dominant))return top[0];return null}
+function topicMatchScore(t,q){q=norm(q);if(!q)return 0;let terms=searchTerms(q),title=norm(t.title),aliases=topicSearchAliases(t).map(norm),sym=(t.symptoms||[]).map(norm),intro=norm(t.intro),cat=norm(t.category),score=0,hitSet=new Set(),core=terms.join(' ');if(title===q)return 2200;if(aliases.some(a=>a===q))return 2100;if(title===core)score+=520;if(aliases.some(a=>a===core))score+=480;let fields=[[title,14],...aliases.map(a=>[a,12]),...sym.map(a=>[a,6]),[cat,4],[intro,2]];for(let [field,w] of fields){let r=textTokenScore(terms,field,w);score+=r.score;if(r.hits)for(let term of terms){if(textTokenScore([term],field,1).hits)hitSet.add(term)}}if(!hitSet.size)return 0;let minHits=terms.length>1?Math.ceil(terms.length*.6):1;if(hitSet.size<minHits)return 0;if(hitSet.size===terms.length)score+=45+terms.length*8;else score-=20*(terms.length-hitSet.size);return Math.max(score,0)}
+function anchor(q){let nq=norm(q),terms=searchTerms(nq);if(!terms.length)return null;let core=terms.join(' '),exact=catalogTopics.find(t=>norm(t.title)===nq||norm(t.title)===core||topicSearchAliases(t).some(a=>norm(a)===nq||norm(a)===core));if(exact)return exact;let ranked=catalogTopics.map(t=>[t,topicMatchScore(t,nq)]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]),top=ranked[0],next=ranked[1];if(!top)return null;let gap=top[1]-(next?next[1]:0),dominant=!next||next[1]<=top[1]*.55;if((terms.length===1&&top[1]>=80&&gap>=30&&dominant)||(terms.length>1&&top[1]>=120&&gap>=45&&dominant))return top[0];return null}
 
 function topTopics(q, limit=6) {
-  return topics.map(t=>[t,topicMatchScore(t,q)]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]||a[0].title.localeCompare(b[0].title,'sr')).slice(0,limit).map(x=>x[0]);
+  return catalogTopics.map(t=>[t,topicMatchScore(t,q)]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]||a[0].title.localeCompare(b[0].title,'sr')).slice(0,limit).map(x=>x[0]);
 }
 
 const sinusQueries=['sinus','sinusi','sinuse','prirodni lek za sinuse','koji prirodni lek pomaze za sinuse'];
@@ -116,6 +138,117 @@ ok(topTopics('boli me grlo')[0]?.id==='grlobolja', 'Razgovorni upit za bol u grl
 ok(['refluks','gastritis'].includes(topTopics('pece me zeludac')[0]?.id), 'Pečenje u želucu ne daje očekivanu digestivnu temu');
 ok(topTopics('stalo me boli glava')[0]?.id==='glavobolja', 'Tipfeler u razgovornom upitu za glavobolju nije tolerisan');
 ok(topTopics('sinuzzi')[0]?.id==='sinusi', 'Dvostruki tipfeler za sinuse nije tolerisan');
+ok(topTopics('hobl')[0]?.id==='copd', 'Legacy upit HOBL mora voditi na canonical COPD temu');
+ok(topTopics('hbb')[0]?.id==='hronicna-bubrezna-bolest', 'Legacy upit HBB mora voditi na canonical hroničnu bubrežnu bolest');
+ok(topTopics('masld')[0]?.id==='masna-jetra', 'Legacy upit MASLD mora voditi na canonical temu Masna jetra');
+ok(topTopics('cmicak')[0]?.id==='jecmenac', 'Upit cmicak mora voditi na temu Čmičak (ječmenac)');
+ok(topTopics('čmičak')[0]?.id==='jecmenac', 'Upit čmičak mora voditi na temu Čmičak (ječmenac)');
+ok(topTopics('kurje oko')[0]?.id==='kurje-oko', 'Upit kurje oko mora voditi na temu Kurje oko');
+ok(topTopics('zulj')[0]?.id==='zulj', 'Upit zulj mora voditi na temu Žulj / plik od trenja');
+ok(topTopics('halacion')[0]?.id==='halacion', 'Upit halacion mora voditi na temu Halacion');
+ok(topTopics('vaske')[0]?.id==='vaske', 'Upit vaske mora voditi na temu Vaške u kosi');
+ok(topTopics('lisaj')[0]?.id==='lisaj-gljivicni', 'Upit lisaj mora voditi na gljivični lišaj');
+ok(topTopics('zanoktica')[0]?.id==='paronihija', 'Upit zanoktica mora voditi na paronihiju');
+ok(topTopics('krpelj')[0]?.id==='ujed-krpelja', 'Upit krpelj mora voditi na ujed krpelja');
+ok(topTopics('kandida u ustima')[0]?.id==='oralna-kandidijaza', 'Upit kandida u ustima mora voditi na oralnu kandidijazu');
+ok(topTopics('skrgutanje zubima')[0]?.id==='bruksizam', 'Upit skrgutanje zubima mora voditi na bruksizam');
+ok(topTopics('cista na zglobu')[0]?.id==='ganglion-cista', 'Upit cista na zglobu mora voditi na ganglion cistu');
+ok(topTopics('uganuo zglob')[0]?.id==='uganuca-istegnuca', 'Upit uganuo zglob mora voditi na uganuće/istegnuće');
+ok(topTopics('opekao sam se')[0]?.id==='opekotine', 'Upit opekao sam se mora voditi na opekotine');
+ok(topTopics('posekotina')[0]?.id==='posekotine-ogrebotine', 'Upit posekotina mora voditi na rane');
+ok(topTopics('gnojni cir')[0]?.id==='cir-koze', 'Upit gnojni cir mora voditi na furunkul');
+ok(topTopics('aterom')[0]?.id==='kozna-cista', 'Upit aterom mora voditi na kožnu cistu');
+ok(topTopics('muka u autu')[0]?.id==='kinetoza', 'Upit muka u autu mora voditi na kinetozu');
+ok(topTopics('ujed psa')[0]?.id==='ujedi-zivotinja', 'Upit ujed psa mora voditi na ugriz životinje');
+ok(topTopics('suncanica')[0]?.id==='toplotna-iscrpljenost-udar', 'Upit suncanica mora voditi na toplotnu iscrpljenost/udar');
+ok(topTopics('trnu prsti nocu')[0]?.id==='karpalni-tunel', 'Upit trnu prsti nocu mora voditi na karpalni tunel');
+ok(topTopics('gliste kod dece')[0]?.id==='decje-gliste', 'Upit gliste kod dece mora voditi na oksiure');
+ok(topTopics('zubni apsces')[0]?.id==='zubni-apsces', 'Upit zubni apsces mora voditi na zubni apsces');
+ok(topTopics('urastala dlaka')[0]?.id==='urasla-dlaka', 'Upit urastala dlaka mora voditi na uraslu dlaku');
+ok(topTopics('baker cista')[0]?.id==='baker-cista', 'Upit baker cista mora voditi na Bakerovu cistu');
+ok(topTopics('promrzline')[0]?.id==='promrzline', 'Upit promrzline mora voditi na promrzline');
+ok(topTopics('alergija na sunce')[0]?.id==='alergija-sunce', 'Upit alergija na sunce mora voditi na PMLE');
+ok(topTopics('viseci fibromi')[0]?.id==='viseci-fibromi', 'Upit viseci fibromi mora voditi na skin tags');
+ok(topTopics('petni trn')[0]?.id==='plantarni-fascitis', 'Upit petni trn mora voditi na plantarni fascitis');
+ok(topTopics('gnojna angina')[0]?.id==='tonzilitis', 'Upit gnojna angina mora voditi na canonical tonzilitis');
+ok(topTopics('urastao nokat')[0]?.id==='urasli-nokat', 'Upit urastao nokat mora voditi na urasli nokat');
+ok(topTopics('tortikolis')[0]?.id==='vrat', 'Upit tortikolis mora voditi na bol i ukočenost vrata');
+ok(topTopics('glavobolja od sinusa')[0]?.id==='sinusi', 'Upit glavobolja od sinusa mora voditi na sinuse');
+ok(topTopics('seboreja')[0]?.id==='seboroeicni-dermatitis', 'Upit seboreja mora voditi na seboroični dermatitis');
+ok(topTopics('ispucale usne')[0]?.id==='ispucale-usne', 'Upit ispucale usne mora voditi na suve/ispucale usne');
+ok(topTopics('ranice u uglovima usana')[0]?.id==='angularni-heilitis', 'Upit ranice u uglovima usana mora voditi na angularni heilitis');
+ok(topTopics('cukalj')[0]?.id==='cukalj', 'Upit cukalj mora voditi na čukalj');
+ok(topTopics('ravna stopala')[0]?.id==='ravna-stopala', 'Upit ravna stopala mora voditi na ravna stopala');
+ok(topTopics('ispucale pete')[0]?.id==='ispucale-pete', 'Upit ispucale pete mora voditi na suve/ispucale pete');
+ok(topTopics('folikulitis')[0]?.id==='folikulitis', 'Upit folikulitis mora voditi na folikulitis');
+ok(topTopics('moluske')[0]?.id==='moluske', 'Upit moluske mora voditi na molluscum contagiosum');
+ok(topTopics('klikce vilica')[0]?.id==='tmz-vilica', 'Upit klikce vilica mora voditi na TMD');
+ok(topTopics('los zadah')[0]?.id==='los-zadah', 'Upit los zadah mora voditi na halitozu');
+ok(topTopics('gljivice prepone')[0]?.id==='lisaj-gljivicni', 'Upit gljivice prepone mora voditi na gljivični lišaj');
+ok(topTopics('zapuseno uho posle leta')[0]?.id==='eustahijeva-tuba', 'Upit zapuseno uho posle leta mora voditi na Eustahijevu tubu');
+ok(topTopics('slivanje sekreta niz grlo')[0]?.id==='postnazalno-slivanje', 'Upit slivanje sekreta niz grlo mora voditi na postnazalno slivanje');
+ok(topTopics('geografski jezik')[0]?.id==='geografski-jezik', 'Upit geografski jezik mora voditi na geografsku promenu jezika');
+ok(topTopics('pece me jezik')[0]?.id==='burning-mouth', 'Upit pece me jezik mora voditi na burning mouth');
+ok(topTopics('pelenski osip')[0]?.id==='pelenski-osip', 'Upit pelenski osip mora voditi na pelenski osip');
+ok(topTopics('znojnice')[0]?.id==='znojnice', 'Upit znojnice mora voditi na heat rash');
+ok(topTopics('hiperhidroza')[0]?.id==='hiperhidroza', 'Upit hiperhidroza mora voditi na prekomerno znojenje');
+ok(topTopics('knedla u grlu')[0]?.id==='globus-grlo', 'Upit knedla u grlu mora voditi na globus');
+ok(topTopics('karijes')[0]?.id==='karijes', 'Upit karijes mora voditi na karijes');
+ok(topTopics('bol na hladno zub')[0]?.id==='osetljivi-zubi', 'Upit bol na hladno zub mora voditi na osetljive zube');
+ok(topTopics('umnjak')[0]?.id==='umnjak', 'Upit umnjak mora voditi na temu umnjak');
+ok(topTopics('svrbi me uvo')[0]?.id==='svrab-u-uhu', 'Upit svrbi me uvo mora voditi na svrab u uhu');
+ok(topTopics('bol u rebrima')[0]?.id==='kostohondritis', 'Upit bol u rebrima mora voditi na kostohondritis');
+ok(topTopics('spor puls')[0]?.id==='bradikardija', 'Upit spor puls mora voditi na bradikardiju');
+ok(topTopics('osip ispod grudi')[0]?.id==='intertrigo', 'Upit osip ispod grudi mora voditi na intertrigo');
+ok(topTopics('ujed zmije')[0]?.id==='ujed-zmije', 'Upit ujed zmije mora voditi na hitnu temu ujeda zmije');
+ok(topTopics('zubni kamenac')[0]?.id==='zubni-kamenac', 'Upit zubni kamenac mora voditi na plak/kamenac');
+ok(topTopics('neuralgija trigeminusa')[0]?.id==='trigeminalna-neuralgija', 'Upit neuralgija trigeminusa mora voditi na trigeminalnu neuralgiju');
+ok(topTopics('bol ahilova tetiva')[0]?.id==='ahilova-tendinopatija', 'Upit bol ahilova tetiva mora voditi na Ahilovu tendinopatiju');
+ok(topTopics('povlacenje desni')[0]?.id==='parodontitis', 'Upit povlacenje desni mora voditi na parodontitis');
+ok(topTopics('proliv kod odraslih')[0]?.id==='stomacni-virus', 'Upit proliv kod odraslih mora voditi na proliv/povraćanje');
+ok(topTopics('ujed komarca')[0]?.id==='ujedi-insekata', 'Upit ujed komarca mora voditi na ujede insekata');
+ok(topTopics('ortostatska hipotenzija')[0]?.id==='nizak-pritisak', 'Upit ortostatska hipotenzija mora voditi na nizak pritisak');
+ok(topTopics('bol u zglobu sake')[0]?.id==='bol-rucni-zglob', 'Upit bol u zglobu sake mora voditi na bol ručnog zgloba');
+ok(topTopics('bol u clanku')[0]?.id==='bol-clanak', 'Upit bol u clanku mora voditi na bol u članku');
+ok(topTopics('dishidroza')[0]?.id==='dishidroza', 'Upit dishidroza mora voditi na pomfoliks');
+ok(topTopics('bol u stomaku dete')[0]?.id==='bol-stomak-dete', 'Upit bol u stomaku dete mora voditi na dečji abdominalni bol');
+ok(topTopics('bol u preponi')[0]?.id==='bol-u-preponi', 'Upit bol u preponi mora voditi na simptomsku temu prepone');
+ok(topTopics('misicna upala')[0]?.id==='uganuca-istegnuca', 'Upit misicna upala mora voditi na istegnuće/uganuće');
+ok(topTopics('bol u laktu spolja')[0]?.id==='teniski-lakat', 'Upit bol u laktu spolja mora voditi na teniski lakat');
+ok(topTopics('bol u laktu unutra')[0]?.id==='golferski-lakat', 'Upit bol u laktu unutra mora voditi na golferski lakat');
+ok(topTopics('ujed pauka')[0]?.id==='ujedi-insekata', 'Upit ujed pauka mora voditi na ujede i ubode');
+ok(topTopics('polipi u nosu')[0]?.id==='nosni-polipi', 'Upit polipi u nosu mora voditi na nosne polipe');
+ok(topTopics('tonsil stones')[0]?.id==='cepici-krajnika', 'Upit tonsil stones mora voditi na čepiće krajnika');
+ok(topTopics('svrab anusa')[0]?.id==='analni-svrab', 'Upit svrab anusa mora voditi na analni svrab');
+ok(topTopics('nokturija')[0]?.id==='nokturija', 'Upit nokturija mora voditi na noćno mokrenje');
+ok(topTopics('prerana ejakulacija')[0]?.id==='prerana-ejakulacija', 'Upit prerana ejakulacija mora voditi na odgovarajuću temu');
+ok(topTopics('vaginalna suvoca')[0]?.id==='vaginalna-suvoca', 'Upit vaginalna suvoca mora voditi na vaginalnu suvoću');
+ok(topTopics('meniskus')[0]?.id==='meniskus-povreda', 'Upit meniskus mora voditi na povredu meniskusa');
+ok(topTopics('dehidratacija')[0]?.id==='dehidratacija', 'Upit dehidratacija mora voditi na opštu dehidrataciju');
+ok(topTopics('golferski lakat')[0]?.id==='golferski-lakat', 'Upit golferski lakat mora voditi na medijalni epikondilitis');
+ok(topTopics('gliste kod odraslih')[0]?.id==='decje-gliste', 'Upit gliste kod odraslih mora voditi na proširenu temu o oksiurama');
+ok(topTopics('krvarenje desni')[0]?.id==='gingivitis', 'Upit krvarenje desni mora voditi na gingivitis');
+ok(topTopics('kiselina u zelucu')[0]?.id==='refluks', 'Upit kiselina u zelucu mora voditi na refluks');
+ok(topTopics('peckanje mokrenje')[0]?.id==='urinarna-infekcija', 'Upit peckanje mokrenje mora voditi na urinarnu infekciju');
+ok(topTopics('gljivice stopala')[0]?.id==='atletsko-stopalo', 'Upit gljivice stopala mora voditi na atletsko stopalo');
+ok(topTopics('putna mucnina')[0]?.id==='kinetoza', 'Upit putna mucnina mora voditi na kinetozu');
+ok(topTopics('rubeola')[0]?.id==='rubeola', 'Upit rubeola mora voditi na rubeolu');
+ok(topTopics('sesta bolest')[0]?.id==='roseola', 'Upit sesta bolest mora voditi na rozeolu');
+ok(topTopics('osip posle temperature')[0]?.id==='roseola', 'Upit osip posle temperature mora voditi na rozeolu');
+ok(topTopics('peta bolest')[0]?.id==='peta-bolest', 'Upit peta bolest mora voditi na parvovirus B19');
+ok(topTopics('parvovirus b19')[0]?.id==='peta-bolest', 'Upit parvovirus B19 mora voditi na petu bolest');
+ok(topTopics('nocno znojenje')[0]?.id==='nocno-znojenje', 'Upit nocno znojenje mora voditi na noćno znojenje');
+ok(topTopics('gubitak kilaze')[0]?.id==='nenamerni-gubitak-tezine', 'Upit gubitak kilaze mora voditi na nenamerni gubitak težine');
+ok(topTopics('svrbi me koza svuda')[0]?.id==='generalizovani-svrab', 'Upit svrbi me koza svuda mora voditi na generalizovani svrab');
+ok(topTopics('strep grlo')[0]?.id==='tonzilitis', 'Upit strep grlo mora voditi na canonical tonzilitis');
+ok(topTopics('prehlada dete')[0]?.id==='prehlada', 'Upit prehlada dete mora voditi na prehladu');
+ok(topTopics('grip dete')[0]?.id==='grip', 'Upit grip dete mora voditi na grip');
+ok(topTopics('kraste u nosu')[0]?.id==='suva-nosna-sluzokoza', 'Upit kraste u nosu mora voditi na suvu nosnu sluzokožu');
+ok(topTopics('iver u prstu')[0]?.id==='iver-u-kozi', 'Upit iver u prstu mora voditi na iver u koži');
+ok(index.includes("some(id=>canonicalTopicId(id)===t.id)"), 'Povezane teme/prirodni unosi moraju koristiti canonical topic ID');
+for (const hiddenId of Object.keys(topicDuplicateOf)) {
+  ok(!topTopics(topics.find(t=>t.id===hiddenId)?.title||hiddenId, 10).some(t=>t.id===hiddenId), 'Skrivena duplicate tema ne sme se vratiti u rezultate: '+hiddenId);
+}
 ok(index.includes("if(isConversationalQuery(state.q)&&topics.length&&!intent.natural&&!intent.med)return openTopicResults(state.q)"), 'Nedostaje zaštita za duge/nejasne razgovorne upite');
 ok(index.includes("$$('[data-show-naturals]').forEach"), 'Globalni handler za Prirodno mora koristiti querySelectorAll');
 ok(index.includes("$$('[data-show-all]').forEach"), 'Globalni handler za povezane teme mora koristiti querySelectorAll');
@@ -130,22 +263,28 @@ ok(index.includes("function topicEmergencyBanner"), 'Nedostaje urgent upozorenje
 const urgentRules=[
   /\b(bol|stezanje|pritisak|pece|pecenje)\b.{0,18}\bgrud(ima|i)?\b|\bgrud(ima|i)?\b.{0,18}\b(bol|stezanje|pritisak)\b/,
   /\b(mozdani udar|slog|tia|mini stroke)\b|\b(slabost|utrnulost)\b.{0,22}\b(lic\w*|ruk\w*|nog\w*|jedn\w* stran\w*)\b|\b(lic\w*|ruk\w*|nog\w*)\b.{0,22}\b(slabost|utrnulost)\b|\b(problem|tesko|ne mogu)\b.{0,18}\b(govor\w*|da govorim)\b|\b(slabost|utrnulost)\b.{0,35}\b(govor\w*)\b/,
-  /\b(ne vidim|gubitak vida|crna zavesa|naglo zamagljenje|naglo izgubio vid|naglo izgubila vid)\b/,
-  /\b(gusim se|ne mogu da disem|tesko disem|otezano disanje|jedva disem)\b/,
+  /\b(ne vidim|gubitak vida|crna zavesa|naglo zamagljenje|naglo izgubio vid|naglo izgubila vid)\b|\bizgubi\w*\b.{0,14}\bvid\b/,
+  /\b(gusim se|tesko disem|otezano disanje|jedva disem)\b|\bne (mogu|moze|mozes|mozemo) da dis\w*\b|\bpresta\w*.{0,12}\bdis\w*\b|\bne dis(?:e|em)\b(?!\s+na\s+nos)/,
   /\b(otok|oticanje)\b.{0,14}\b(usana|jezika|grla)\b|\banafilaks/i,
   /\b(iznenadan|nagao|jak|veoma jak)\b.{0,18}\bbol\b.{0,12}\btestis(u|a|ima)?\b|\btestis\b.{0,12}\b(iznenadan|nagao|jak)\b/,
   /\btrudn\w*\b.{0,34}\b(krvarenje|krvarim|krvari|jak bol|bol sa jedne strane|bol u ramenu)\b|\b(krvarenje|krvarim|krvari|jak bol)\b.{0,28}\btrudn\w*\b/,
-  /\b(bez svesti|ne reaguje|kolaps|onesvestio se|onesvestila se)\b/
+  /\b(bez svesti|ne reaguje|kolaps|onesvestio se|onesvestila se)\b/,
+  /\b(jako|obilno|nekontrolisano)\b.{0,14}\bkrvar\w*\b|\bkrvar\w*\b.{0,18}\b(ne prestaje|ne staje)\b/,
+  /\b(predozir\w*|overdose|trovanje|otrova\w*)\b|\b(popio|popila|uzeo|uzela)\b.{0,20}\b(previse|mnogo)\b.{0,14}\b(lekova|tableta)\b/,
+  /\b(napad|grcevi|konvulzij\w*)\b.{0,24}\b(5 minuta|pet minuta|duze od 5|ne prestaj\w*|ne staj\w*)\b/,
+  /\b(toplotni udar|heatstroke)\b|\b(suncanica|pregreja\w*|pregrevanj\w*)\b.{0,28}\b(konfuz\w*|ne reaguje|bez svesti|onesvest\w*|napad|grcevi)\b/,
+  /\b(hemijska|hemijska opekotina|elektricna|elektricna opekotina)\b.{0,18}\bopek\w*\b|\bopek\w*\b.{0,18}\b(hemij\w*|elektric\w*)\b/,
+  /\b(ujed|ugriz)\b.{0,10}\bzmij\w*\b|\bzmij\w*\b.{0,10}\b(ujed|ugriz)\b|\bsnake ?bite\b/
 ];
 const urgentPositiveQueries=[
   'bol u grudima','stezanje u grudima','slabost ruke i problem sa govorom',
   'utrnula mi je ruka i tesko govorim','slabost jedne strane tela',
-  'ne vidim na jedno oko','gusim se','otok jezika','iznenadan jak bol u testisu',
-  'trudna sam i krvarim','bez svesti'
+  'ne vidim na jedno oko','izgubio sam vid na jedno oko','gusim se','ne moze da dise','prestao je da dise','otok jezika','iznenadan jak bol u testisu',
+  'trudna sam i krvarim','bez svesti','obilno krvarenje ne prestaje','predozirao se','popio previse lekova','napad traje 5 minuta','grcevi ne prestaju','toplotni udar','suncanica i konfuzija','hemijska opekotina','elektricna opekotina','ujed zmije','zmijski ugriz'
 ];
 const urgentNegativeQueries=[
   'bol u dojkama','gorusica','sinusi','tesko spavam','boli me grlo',
-  'visok pritisak','migrena','erektilna disfunkcija'
+  'visok pritisak','migrena','erektilna disfunkcija','krvarenje iz nosa','napad panike','ne disem na nos','suncanica','opekotina od sunca','elektricni bol u ruci'
 ];
 for(const q of urgentPositiveQueries) ok(urgentRules.some(re=>re.test(norm(q))), 'Urgent upit nije prepoznat: '+q);
 for(const q of urgentNegativeQueries) ok(!urgentRules.some(re=>re.test(norm(q))), 'Lažni urgent alarm za običan upit: '+q);
@@ -166,7 +305,19 @@ for (const t of topics) {
   ok(Array.isArray(t.doctor) && t.doctor.length > 0, 'Tema '+t.id+' nema kada kod zdravstvenog radnika');
   ok(Array.isArray(t.urgent) && t.urgent.length > 0, 'Tema '+t.id+' nema hitne znake');
 }
+ok(index.includes('function topicById') && index.includes('function canonicalTopicIds'), 'Nedostaje canonical topic helper za legacy rute i lokalno stanje');
+ok(index.includes('topicSearchAliases(t)') && index.includes('TOPIC_LEGACY_ALIASES'), 'Legacy nazivi nisu uključeni u pretragu canonical tema');
+ok(index.includes('canonicalTopicIds(MED_TOPIC_LINKS[m.id]||[])'), 'Lekovi ne canonicalizuju duplicate topic veze');
+ok(index.includes('some(id=>canonicalTopicId(id)===t.id)'), 'Canonical tema ne prepoznaje lekove vezane za legacy duplicate ID');
+ok(index.includes("pool.filter(m=>(MED_TOPIC_LINKS[m.id]||[]).some(id=>canonicalTopicId(id)===anchor.id))"), 'Rankiranje lekova mora canonicalizovati topic veze');
+ok(index.includes("let t=topicById(r.split('/')[1])"), 'Legacy /tema ruta se ne preusmerava logički na canonical temu');
 ok(index.includes('function relatedTopicsForTopicBlock'), 'Nedostaje blok povezanih zdravstvenih tema');
+ok(index.includes("catalogTopics().slice(0,6)"), 'Početna mora koristiti canonical katalog bez skrivenih duplikata');
+ok(index.includes("new Set(catalogTopics().map(x=>x.category))"), 'Filter kategorija mora koristiti canonical katalog');
+ok(index.includes("${catalogTopics().length}</b><span>jedinstvenih tema"), 'Brojač na početnoj mora prikazivati jedinstvene teme');
+ok(index.includes("function trendCard(tr){let t=topicById(tr.topicId)"), 'Radar mora canonicalizovati legacy topic ID');
+ok(index.includes('v6.13 MOBILE HOME') && index.includes('order:1!important') && index.includes('height:205px!important'), 'Nedostaje završni mobilni content-first hero override');
+ok(index.includes('padding-bottom:calc(88px + env(safe-area-inset-bottom))!important'), 'Mobilni sadržaj nema dovoljan razmak iznad donje navigacije');
 ok(index.includes('RELATED_CATEGORY_FAMILIES'), 'Nedostaje ograničenje povezanih tema po oblastima');
 for (const n of naturals) {
   ok((Array.isArray(n.topics) && n.topics.length > 0) || n.standalone === true, 'Prirodni unos '+n.id+' mora imati povezanu temu ili standalone=true');
