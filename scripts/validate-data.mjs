@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 256, 'Očekivano 256 tema, pronađeno ' + topics.length);
+ok(topics.length === 270, 'Očekivano 270 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -149,6 +149,19 @@ ok(topTopics('vaske')[0]?.id==='vaske', 'Upit vaske mora voditi na temu Vaške u
 ok(topTopics('lisaj')[0]?.id==='lisaj-gljivicni', 'Upit lisaj mora voditi na gljivični lišaj');
 ok(topTopics('zanoktica')[0]?.id==='paronihija', 'Upit zanoktica mora voditi na paronihiju');
 ok(topTopics('krpelj')[0]?.id==='ujed-krpelja', 'Upit krpelj mora voditi na ujed krpelja');
+ok(topTopics('kandida u ustima')[0]?.id==='oralna-kandidijaza', 'Upit kandida u ustima mora voditi na oralnu kandidijazu');
+ok(topTopics('skrgutanje zubima')[0]?.id==='bruksizam', 'Upit skrgutanje zubima mora voditi na bruksizam');
+ok(topTopics('cista na zglobu')[0]?.id==='ganglion-cista', 'Upit cista na zglobu mora voditi na ganglion cistu');
+ok(topTopics('uganuo zglob')[0]?.id==='uganuca-istegnuca', 'Upit uganuo zglob mora voditi na uganuće/istegnuće');
+ok(topTopics('opekao sam se')[0]?.id==='opekotine', 'Upit opekao sam se mora voditi na opekotine');
+ok(topTopics('posekotina')[0]?.id==='posekotine-ogrebotine', 'Upit posekotina mora voditi na rane');
+ok(topTopics('gnojni cir')[0]?.id==='cir-koze', 'Upit gnojni cir mora voditi na furunkul');
+ok(topTopics('aterom')[0]?.id==='kozna-cista', 'Upit aterom mora voditi na kožnu cistu');
+ok(topTopics('muka u autu')[0]?.id==='kinetoza', 'Upit muka u autu mora voditi na kinetozu');
+ok(topTopics('ujed psa')[0]?.id==='ujedi-zivotinja', 'Upit ujed psa mora voditi na ugriz životinje');
+ok(topTopics('suncanica')[0]?.id==='toplotna-iscrpljenost-udar', 'Upit suncanica mora voditi na toplotnu iscrpljenost/udar');
+ok(topTopics('trnu prsti nocu')[0]?.id==='karpalni-tunel', 'Upit trnu prsti nocu mora voditi na karpalni tunel');
+ok(index.includes("some(id=>canonicalTopicId(id)===t.id)"), 'Povezane teme/prirodni unosi moraju koristiti canonical topic ID');
 for (const hiddenId of Object.keys(topicDuplicateOf)) {
   ok(!topTopics(topics.find(t=>t.id===hiddenId)?.title||hiddenId, 10).some(t=>t.id===hiddenId), 'Skrivena duplicate tema ne sme se vratiti u rezultate: '+hiddenId);
 }
