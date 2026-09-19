@@ -32,7 +32,7 @@ Informacije o konkretnim lekovima treba proveriti prema zvaničnom uputstvu i AL
 ## Supabase
 Frontend trenutno radi bez Supabase zavisnosti. Novi Supabase projekat nije kreiran jer nalog trenutno dostiže limit aktivnih free projekata. Migracija je spremna za primenu čim se oslobodi slot.
 
-Build: **2026.09.18-prod-9**
+Build: **2026.09.19-prod-10**
 
 
 ## Pretraga
@@ -53,3 +53,7 @@ Verzija 2026.09.18-prod-9 unapređuje oporavak kada nema rezultata, lokalno čuv
 
 ## Urgent pretraga i deljivi linkovi
 Verzija 2026.09.18-prod-9 dodaje safety upozorenja za jasno prepoznate urgentne fraze uz brojeve 194/112, deljive URL pretrage za Teme/Lekove/Prirodno, dugme za kopiranje linka pretrage, status baze i online/offline stanje u Podešavanjima, kao i strožu automatsku validaciju sadržaja.
+
+
+## Domaći izvori
+Build prod-10 počinje sistematsko prebacivanje korisničkih medicinskih izvora na srpske izvore. Trenutno 134 od 248 tema imaju najmanje jedan domaći medicinski ili zvanični izvor; 114 tema je još u editorialnom redu za dopunu. Postojeći kvalitetni strani izvori ostaju kao sekundarna provera.
