@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 409, 'Očekivano 409 tema, pronađeno ' + topics.length);
+ok(topics.length === 431, 'Očekivano 431 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -361,6 +361,28 @@ ok(topTopics('spondiloza vrata')[0]?.id==='cervikalna-spondiloza', 'Upit spondil
 ok(topTopics('krv u stolici')[0]?.id==='krv-u-stolici', 'Upit krv u stolici mora voditi na simptomsku temu, ne na rak');
 ok(!topTopics('krv u stolici',3).some(t=>t.category==='Onkologija'), 'Generičan upit krv u stolici ne sme gurati onkologiju u prva 3 rezultata');
 ok(topTopics('rak debelog creva')[0]?.id==='rak-debelog-creva', 'Eksplicitan upit rak debelog creva mora voditi na onkološku temu');
+ok(topTopics('miokarditis')[0]?.id==='miokarditis', 'Upit miokarditis mora voditi na miokarditis');
+ok(topTopics('endokarditis')[0]?.id==='endokarditis', 'Upit endokarditis mora voditi na endokarditis');
+ok(topTopics('ileus')[0]?.id==='crevna-opstrukcija', 'Upit ileus mora voditi na crevnu opstrukciju');
+ok(topTopics('pilonidalna cista')[0]?.id==='pilonidalni-sinus', 'Upit pilonidalna cista mora voditi na pilonidalni sinus');
+ok(topTopics('mpox')[0]?.id==='mpox', 'Upit mpox mora voditi na mpox');
+ok(topTopics('tetanus')[0]?.id==='tetanus', 'Upit tetanus mora voditi na tetanus');
+ok(topTopics('besnilo')[0]?.id==='besnilo', 'Upit besnilo mora voditi na procenu besnila');
+ok(topTopics('giardija')[0]?.id==='giardijaza', 'Upit giardija mora voditi na giardijazu');
+ok(topTopics('hijatalna kila')[0]?.id==='hijatalna-kila', 'Upit hijatalna kila mora voditi na hijatalnu kilu');
+ok(topTopics('hemohromatoza')[0]?.id==='hemohromatoza', 'Upit hemohromatoza mora voditi na hemohromatozu');
+ok(topTopics('psorijaticni artritis')[0]?.id==='psorijaticni-artritis', 'Upit psorijaticni artritis mora voditi na psorijatični artritis');
+ok(topTopics('polimialgija reumatika')[0]?.id==='polimialgija-reumatika', 'Upit PMR mora voditi na polimialgiju');
+ok(topTopics('temporalni arteritis')[0]?.id==='temporalni-arteritis', 'Upit temporalni arteritis mora voditi na GCA');
+ok(topTopics('sjogren')[0]?.id==='sjogren', 'Upit sjogren mora voditi na Sjögrenov sindrom');
+ok(topTopics('bartolinova cista')[0]?.id==='bartolinova-cista', 'Upit Bartolinova cista mora voditi na odgovarajuću temu');
+ok(topTopics('uretritis')[0]?.id==='uretritis', 'Upit uretritis mora voditi na uretritis');
+ok(topTopics('lenjo oko')[0]?.id==='ambliopija', 'Upit lenjo oko mora voditi na ambliopiju');
+ok(topTopics('dijabeticka retinopatija')[0]?.id==='dijabeticka-retinopatija', 'Upit dijabeticka retinopatija mora voditi na retinopatiju');
+ok(topTopics('razrokost')[0]?.id==='strabizam', 'Upit razrokost mora voditi na strabizam');
+ok(topTopics('holesteatom')[0]?.id==='holesteatom', 'Upit holesteatom mora voditi na holesteatom');
+ok(topTopics('kamen u pljuvacnoj zlezdi')[0]?.id==='kamen-pljuvacna-zlezda', 'Upit kamen u pljuvacnoj zlezdi mora voditi na sialolitijazu');
+ok(topTopics('ginekomastija')[0]?.id==='ginekomastija', 'Upit ginekomastija mora voditi na ginekomastiju');
 for (const hiddenId of Object.keys(topicDuplicateOf)) {
   ok(!topTopics(topics.find(t=>t.id===hiddenId)?.title||hiddenId, 10).some(t=>t.id===hiddenId), 'Skrivena duplicate tema ne sme se vratiti u rezultate: '+hiddenId);
 }
