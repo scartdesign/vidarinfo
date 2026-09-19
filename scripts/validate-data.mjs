@@ -122,6 +122,30 @@ function topTopics(q, limit=6) {
   return catalogTopics.map(t=>[t,topicMatchScore(t,q)]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]||a[0].title.localeCompare(b[0].title,'sr')).slice(0,limit).map(x=>x[0]);
 }
 
+const catalogSearchOwners=new Map();
+for (const t of catalogTopics) {
+  for (const phrase of [t.title, ...topicSearchAliases(t)]) {
+    const key=norm(phrase);
+    if(!key) continue;
+    if(!catalogSearchOwners.has(key)) catalogSearchOwners.set(key,new Set());
+    catalogSearchOwners.get(key).add(t.id);
+  }
+}
+let fullCatalogSearchCoverage=0;
+for (const t of catalogTopics) {
+  const titleTop=topTopics(t.title,1)[0];
+  ok(titleTop?.id===t.id, 'Naslov teme ne vraća sopstvenu temu kao prvi rezultat: '+t.title+' -> '+(titleTop?.id||'nema'));
+  fullCatalogSearchCoverage++;
+  for (const alias of topicSearchAliases(t)) {
+    const key=norm(alias), owners=catalogSearchOwners.get(key);
+    if(!key || !owners || owners.size!==1) continue;
+    const aliasTop=topTopics(alias,1)[0];
+    ok(aliasTop?.id===t.id, 'Jedinstveni alias ne vraća očekivanu temu: "'+alias+'" -> '+(aliasTop?.id||'nema')+' umesto '+t.id);
+    fullCatalogSearchCoverage++;
+  }
+}
+ok(fullCatalogSearchCoverage >= 900, 'Premalo automatskih search coverage provera: '+fullCatalogSearchCoverage);
+
 const sinusQueries=['sinus','sinusi','sinuse','prirodni lek za sinuse','koji prirodni lek pomaze za sinuse'];
 for (const q of sinusQueries) {
   const a=anchor(q);
@@ -346,5 +370,6 @@ console.log(JSON.stringify({
   meds: meds.length,
   naturals: naturals.length,
   medLinks: Object.keys(medLinks).length,
-  searchRegression: 'OK'
+  searchRegression: 'OK',
+  fullCatalogSearchCoverage
 }, null, 2));
