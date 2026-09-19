@@ -163,7 +163,7 @@ const urgentRules=[
   /\b(bez svesti|ne reaguje|kolaps|onesvestio se|onesvestila se)\b/,
   /\b(jako|obilno|nekontrolisano)\b.{0,14}\bkrvar\w*\b|\bkrvar\w*\b.{0,18}\b(ne prestaje|ne staje)\b/,
   /\b(predozir\w*|overdose|trovanje|otrova\w*)\b|\b(popio|popila|uzeo|uzela)\b.{0,20}\b(previse|mnogo)\b.{0,14}\b(lekova|tableta)\b/,
-  /\b(napad|grcevi|konvulzij\w*)\b.{0,24}\b(5 minuta|pet minuta|duze od 5|ne prestaje|ne staje)\b/
+  /\b(napad|grcevi|konvulzij\w*)\b.{0,24}\b(5 minuta|pet minuta|duze od 5|ne prestaj\w*|ne staj\w*)\b/
 ];
 const urgentPositiveQueries=[
   'bol u grudima','stezanje u grudima','slabost ruke i problem sa govorom',
