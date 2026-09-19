@@ -1976,7 +1976,7 @@ const URGENT_SEARCH_RULES=[
   {re:/\b(bez svesti|ne reaguje|kolaps|onesvestio se|onesvestila se)\b/,topicId:null,label:'Gubitak svesti ili kolaps'},
   {re:/\b(jako|obilno|nekontrolisano)\b.{0,14}\bkrvar\w*\b|\bkrvar\w*\b.{0,18}\b(ne prestaje|ne staje)\b/,topicId:null,label:'Jako ili nekontrolisano krvarenje'},
   {re:/\b(predozir\w*|overdose|trovanje|otrova\w*)\b|\b(popio|popila|uzeo|uzela)\b.{0,20}\b(previse|mnogo)\b.{0,14}\b(lekova|tableta)\b/,topicId:null,label:'Moguće trovanje ili predoziranje'},
-  {re:/\b(napad|grcevi|konvulzij\w*)\b.{0,24}\b(5 minuta|pet minuta|duze od 5|ne prestaje|ne staje)\b/,topicId:null,label:'Produžen napad ili grčevi'}
+  {re:/\b(napad|grcevi|konvulzij\w*)\b.{0,24}\b(5 minuta|pet minuta|duze od 5|ne prestaj\w*|ne staj\w*)\b/,topicId:null,label:'Produžen napad ili grčevi'}
 ];
 function urgentQueryInfo(q){let nq=norm(q);if(!nq)return null;return URGENT_SEARCH_RULES.find(x=>x.re.test(nq))||null}
 function urgentSearchBanner(q,compact=false){let u=urgentQueryInfo(q);if(!u)return'';let topic=u.topicId&&topicById(u.topicId);return `<div class="urgent-search ${compact?'compact':''}"><div class="urgent-search-icon">!</div><div class="urgent-search-copy"><strong>${esc(u.label)}</strong><p>Ako je ovo sada prisutno, novo, jako ili se pogoršava, nemoj čekati odgovor aplikacije. Pozovi Hitnu pomoć <b>194</b> ili <b>112</b>.</p>${topic?`<button data-topic="${topic.id}">Otvori povezanu temu</button>`:''}</div><div class="urgent-search-calls"><a href="tel:194">194</a><a href="tel:112">112</a></div></div>`}
