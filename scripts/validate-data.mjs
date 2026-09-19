@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 408, 'Očekivano 408 tema, pronađeno ' + topics.length);
+ok(topics.length === 409, 'Očekivano 409 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -356,6 +356,9 @@ ok(topTopics('diskus hernija')[0]?.id==='diskus-hernija', 'Upit diskus hernija m
 ok(topTopics('skolioza')[0]?.id==='skolioza', 'Upit skolioza mora voditi na skoliozu');
 ok(topTopics('kifoza')[0]?.id==='kifoza', 'Upit kifoza mora voditi na kifozu');
 ok(topTopics('spondiloza vrata')[0]?.id==='cervikalna-spondiloza', 'Upit spondiloza vrata mora voditi na cervikalnu spondilozu');
+ok(topTopics('krv u stolici')[0]?.id==='krv-u-stolici', 'Upit krv u stolici mora voditi na simptomsku temu, ne na rak');
+ok(!topTopics('krv u stolici',3).some(t=>t.category==='Onkologija'), 'Generičan upit krv u stolici ne sme gurati onkologiju u prva 3 rezultata');
+ok(topTopics('rak debelog creva')[0]?.id==='rak-debelog-creva', 'Eksplicitan upit rak debelog creva mora voditi na onkološku temu');
 for (const hiddenId of Object.keys(topicDuplicateOf)) {
   ok(!topTopics(topics.find(t=>t.id===hiddenId)?.title||hiddenId, 10).some(t=>t.id===hiddenId), 'Skrivena duplicate tema ne sme se vratiti u rezultate: '+hiddenId);
 }
