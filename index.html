@@ -2067,7 +2067,7 @@ body{background:linear-gradient(180deg,#fbfefd,#f4faf8)!important}
 <meta name="apple-mobile-web-app-title" content="VIDAR Info">
 <link rel="apple-touch-icon" href="./assets/icon.svg">
 
-<meta name="vidar-build" content="2026.09.19-preview-29"></head>
+<meta name="vidar-build" content="2026.09.20-preview-30"></head>
 <body>
 <div id="app"><div style="min-height:65vh;display:grid;place-items:center;color:#557064">Učitavanje VIDAR Info…</div></div>
 <script>
@@ -2169,7 +2169,9 @@ const URGENT_SEARCH_RULES=[
   {re:/\b(napad|grcevi|konvulzij\w*)\b.{0,24}\b(5 minuta|pet minuta|duze od 5|ne prestaj\w*|ne staj\w*)\b/,topicId:null,label:'Produžen napad ili grčevi'},
   {re:/\b(toplotni udar|heatstroke)\b|\b(suncanica|pregreja\w*|pregrevanj\w*)\b.{0,28}\b(konfuz\w*|ne reaguje|bez svesti|onesvest\w*|napad|grcevi)\b/,topicId:'toplotna-iscrpljenost-udar',label:'Mogući toplotni udar'},
   {re:/\b(hemijska|hemijska opekotina|elektricna|elektricna opekotina)\b.{0,18}\bopek\w*\b|\bopek\w*\b.{0,18}\b(hemij\w*|elektric\w*)\b/,topicId:'opekotine',label:'Hemijska ili električna opekotina'},
-  {re:/\b(ujed|ugriz)\b.{0,10}\bzmij\w*\b|\bzmij\w*\b.{0,10}\b(ujed|ugriz)\b|\bsnake ?bite\b/,topicId:'ujed-zmije',label:'Ujed zmije'}
+  {re:/\b(ujed|ugriz)\b.{0,10}\bzmij\w*\b|\bzmij\w*\b.{0,10}\b(ujed|ugriz)\b|\bsnake ?bite\b/,topicId:'ujed-zmije',label:'Ujed zmije'},
+  {re:/\b(ne mogu|ne moze)\b.{0,10}\bda mokr\w*\b.{0,28}\b(jak bol|bol u donjem stomaku|puna besika|napeta besika)\b|\b(puna|napeta) besika\b.{0,28}\b(ne mogu|ne moze)\b.{0,10}\bmokr\w*\b/,topicId:'retencija-urina',label:'Akutna nemogućnost mokrenja'},
+  {re:/\b(mnogo|obilno|puno)\b.{0,18}\bkrv\w*\b.{0,22}\b(iskaslj\w*|kaslj\w*)\b|\b(iskaslj\w*|kaslj\w*)\b.{0,22}\b(mnogo|obilno|puno)\b.{0,18}\bkrv\w*\b|\b(krv\w*|krvi)\b.{0,24}\b(iskaslj\w*|kaslj\w*)\b.{0,30}\b(tesko dis\w*|otezano dis\w*|bol u grud\w*)\b/,topicId:'hemoptizija',label:'Veće iskašljavanje krvi ili krv uz ozbiljne simptome'}
 ];
 function urgentQueryInfo(q){let nq=norm(q);if(!nq)return null;return URGENT_SEARCH_RULES.find(x=>x.re.test(nq))||null}
 function urgentSearchBanner(q,compact=false){let u=urgentQueryInfo(q);if(!u)return'';let topic=u.topicId&&topicById(u.topicId);return `<div class="urgent-search ${compact?'compact':''}"><div class="urgent-search-icon">!</div><div class="urgent-search-copy"><strong>${esc(u.label)}</strong><p>Ako je ovo sada prisutno, novo, jako ili se pogoršava, nemoj čekati odgovor aplikacije. Pozovi Hitnu pomoć <b>194</b> ili <b>112</b>.</p>${topic?`<button data-topic="${topic.id}">Otvori povezanu temu</button>`:''}</div><div class="urgent-search-calls"><a href="tel:194">194</a><a href="tel:112">112</a></div></div>`}
