@@ -33,6 +33,25 @@ const topicIds = uniqueIds(topics, 'Tema');
 const medIds = uniqueIds(meds, 'Lek');
 uniqueIds(naturals, 'Prirodni unos');
 
+const duplicateMatch = index.match(/const TOPIC_DUPLICATE_OF=(\{[^;]+\});/);
+ok(duplicateMatch, 'TOPIC_DUPLICATE_OF nije pronađen u index.html');
+const topicDuplicateOf = new Function('return (' + duplicateMatch[1] + ')')();
+for (const [legacyId, targetId] of Object.entries(topicDuplicateOf)) {
+  ok(topicIds.has(legacyId), 'Duplicate mapa referencira nepostojeću legacy temu ' + legacyId);
+  ok(topicIds.has(targetId), 'Duplicate mapa referencira nepostojeću canonical temu ' + targetId);
+  ok(legacyId !== targetId, 'Duplicate mapa ne sme mapirati temu samu na sebe: ' + legacyId);
+  ok(!Object.prototype.hasOwnProperty.call(topicDuplicateOf, targetId), 'Canonical tema ne sme biti i legacy ključ: ' + targetId);
+}
+const canonicalTopicId = id => topicDuplicateOf[id] || id;
+const catalogTopics = topics.filter(t => canonicalTopicId(t.id) === t.id);
+const legacyAliases = Object.entries(topicDuplicateOf).reduce((acc,[legacyId,targetId]) => {
+  const legacy = topics.find(t => t.id === legacyId);
+  if (legacy) acc[targetId] = [...(acc[targetId] || []), legacy.title, ...(legacy.aliases || [])];
+  return acc;
+}, {});
+const topicSearchAliases = t => [...new Set([...(t.aliases || []), ...(legacyAliases[t.id] || [])])];
+ok(catalogTopics.length === topics.length - Object.keys(topicDuplicateOf).length, 'Broj jedinstvenih tema nije usklađen sa duplicate mapom');
+
 function requireFields(items,label,fields){
   for(const item of items){
     for(const field of fields){
@@ -93,11 +112,11 @@ function edit2(a,b){if(a===b)return true;if(Math.abs(a.length-b.length)>2)return
 function searchTerms(q){let raw=norm(q),all=raw.split(/\s+/).filter(x=>x.length>1),core=all.filter(x=>!STOP.has(x));return core.length?core:all}
 function wordMatch(q,w){if(!q||!w)return 0;if(q===w)return 4;if(q.length>=4&&w.length>=4&&(w.startsWith(q)||q.startsWith(w)))return 3;if(q.length>=5&&w.length>=4&&edit1(q,w))return 2;if(q.length>=6&&w.length>=6&&edit2(q,w))return 1;return 0}
 function textTokenScore(terms,text,weight){let ws=norm(text).split(/\s+/).filter(Boolean),hits=0,score=0;for(let q of terms){let best=0;for(let w of ws){let v=wordMatch(q,w);if(v>best)best=v;if(best===4)break}if(best){hits++;score+=best*weight}}return{hits,score}}
-function topicMatchScore(t,q){q=norm(q);if(!q)return 0;let terms=searchTerms(q),title=norm(t.title),aliases=(t.aliases||[]).map(norm),sym=(t.symptoms||[]).map(norm),intro=norm(t.intro),cat=norm(t.category),score=0,hitSet=new Set(),core=terms.join(' ');if(title===q||title===core)score+=160;if(aliases.some(a=>a===q||a===core))score+=145;let fields=[[title,14],...aliases.map(a=>[a,12]),...sym.map(a=>[a,6]),[cat,4],[intro,2]];for(let [field,w] of fields){let r=textTokenScore(terms,field,w);score+=r.score;if(r.hits)for(let term of terms){if(textTokenScore([term],field,1).hits)hitSet.add(term)}}if(!hitSet.size)return 0;let minHits=terms.length>1?Math.ceil(terms.length*.6):1;if(hitSet.size<minHits)return 0;if(hitSet.size===terms.length)score+=45+terms.length*8;else score-=20*(terms.length-hitSet.size);return Math.max(score,0)}
-function anchor(q){let nq=norm(q),terms=searchTerms(nq);if(!terms.length)return null;let core=terms.join(' '),exact=topics.find(t=>norm(t.title)===nq||norm(t.title)===core||(t.aliases||[]).some(a=>norm(a)===nq||norm(a)===core));if(exact)return exact;let ranked=topics.map(t=>[t,topicMatchScore(t,nq)]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]),top=ranked[0],next=ranked[1];if(!top)return null;let gap=top[1]-(next?next[1]:0),dominant=!next||next[1]<=top[1]*.55;if((terms.length===1&&top[1]>=80&&gap>=30&&dominant)||(terms.length>1&&top[1]>=120&&gap>=45&&dominant))return top[0];return null}
+function topicMatchScore(t,q){q=norm(q);if(!q)return 0;let terms=searchTerms(q),title=norm(t.title),aliases=topicSearchAliases(t).map(norm),sym=(t.symptoms||[]).map(norm),intro=norm(t.intro),cat=norm(t.category),score=0,hitSet=new Set(),core=terms.join(' ');if(title===q||title===core)score+=160;if(aliases.some(a=>a===q||a===core))score+=145;let fields=[[title,14],...aliases.map(a=>[a,12]),...sym.map(a=>[a,6]),[cat,4],[intro,2]];for(let [field,w] of fields){let r=textTokenScore(terms,field,w);score+=r.score;if(r.hits)for(let term of terms){if(textTokenScore([term],field,1).hits)hitSet.add(term)}}if(!hitSet.size)return 0;let minHits=terms.length>1?Math.ceil(terms.length*.6):1;if(hitSet.size<minHits)return 0;if(hitSet.size===terms.length)score+=45+terms.length*8;else score-=20*(terms.length-hitSet.size);return Math.max(score,0)}
+function anchor(q){let nq=norm(q),terms=searchTerms(nq);if(!terms.length)return null;let core=terms.join(' '),exact=catalogTopics.find(t=>norm(t.title)===nq||norm(t.title)===core||topicSearchAliases(t).some(a=>norm(a)===nq||norm(a)===core));if(exact)return exact;let ranked=catalogTopics.map(t=>[t,topicMatchScore(t,nq)]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]),top=ranked[0],next=ranked[1];if(!top)return null;let gap=top[1]-(next?next[1]:0),dominant=!next||next[1]<=top[1]*.55;if((terms.length===1&&top[1]>=80&&gap>=30&&dominant)||(terms.length>1&&top[1]>=120&&gap>=45&&dominant))return top[0];return null}
 
 function topTopics(q, limit=6) {
-  return topics.map(t=>[t,topicMatchScore(t,q)]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]||a[0].title.localeCompare(b[0].title,'sr')).slice(0,limit).map(x=>x[0]);
+  return catalogTopics.map(t=>[t,topicMatchScore(t,q)]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]||a[0].title.localeCompare(b[0].title,'sr')).slice(0,limit).map(x=>x[0]);
 }
 
 const sinusQueries=['sinus','sinusi','sinuse','prirodni lek za sinuse','koji prirodni lek pomaze za sinuse'];
@@ -116,6 +135,12 @@ ok(topTopics('boli me grlo')[0]?.id==='grlobolja', 'Razgovorni upit za bol u grl
 ok(['refluks','gastritis'].includes(topTopics('pece me zeludac')[0]?.id), 'Pečenje u želucu ne daje očekivanu digestivnu temu');
 ok(topTopics('stalo me boli glava')[0]?.id==='glavobolja', 'Tipfeler u razgovornom upitu za glavobolju nije tolerisan');
 ok(topTopics('sinuzzi')[0]?.id==='sinusi', 'Dvostruki tipfeler za sinuse nije tolerisan');
+ok(topTopics('hobl')[0]?.id==='copd', 'Legacy upit HOBL mora voditi na canonical COPD temu');
+ok(topTopics('hbb')[0]?.id==='hronicna-bubrezna-bolest', 'Legacy upit HBB mora voditi na canonical hroničnu bubrežnu bolest');
+ok(topTopics('masld')[0]?.id==='masna-jetra', 'Legacy upit MASLD mora voditi na canonical temu Masna jetra');
+for (const hiddenId of Object.keys(topicDuplicateOf)) {
+  ok(!topTopics(topics.find(t=>t.id===hiddenId)?.title||hiddenId, 10).some(t=>t.id===hiddenId), 'Skrivena duplicate tema ne sme se vratiti u rezultate: '+hiddenId);
+}
 ok(index.includes("if(isConversationalQuery(state.q)&&topics.length&&!intent.natural&&!intent.med)return openTopicResults(state.q)"), 'Nedostaje zaštita za duge/nejasne razgovorne upite');
 ok(index.includes("$$('[data-show-naturals]').forEach"), 'Globalni handler za Prirodno mora koristiti querySelectorAll');
 ok(index.includes("$$('[data-show-all]').forEach"), 'Globalni handler za povezane teme mora koristiti querySelectorAll');
@@ -166,6 +191,11 @@ for (const t of topics) {
   ok(Array.isArray(t.doctor) && t.doctor.length > 0, 'Tema '+t.id+' nema kada kod zdravstvenog radnika');
   ok(Array.isArray(t.urgent) && t.urgent.length > 0, 'Tema '+t.id+' nema hitne znake');
 }
+ok(index.includes('function topicById') && index.includes('function canonicalTopicIds'), 'Nedostaje canonical topic helper za legacy rute i lokalno stanje');
+ok(index.includes('topicSearchAliases(t)') && index.includes('TOPIC_LEGACY_ALIASES'), 'Legacy nazivi nisu uključeni u pretragu canonical tema');
+ok(index.includes('canonicalTopicIds(MED_TOPIC_LINKS[m.id]||[])'), 'Lekovi ne canonicalizuju duplicate topic veze');
+ok(index.includes('some(id=>canonicalTopicId(id)===t.id)'), 'Canonical tema ne prepoznaje lekove vezane za legacy duplicate ID');
+ok(index.includes("let t=topicById(r.split('/')[1])"), 'Legacy /tema ruta se ne preusmerava logički na canonical temu');
 ok(index.includes('function relatedTopicsForTopicBlock'), 'Nedostaje blok povezanih zdravstvenih tema');
 ok(index.includes('RELATED_CATEGORY_FAMILIES'), 'Nedostaje ograničenje povezanih tema po oblastima');
 for (const n of naturals) {
