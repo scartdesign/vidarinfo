@@ -283,6 +283,29 @@ ok(topTopics('grip dete')[0]?.id==='grip', 'Upit grip dete mora voditi na grip')
 ok(topTopics('kraste u nosu')[0]?.id==='suva-nosna-sluzokoza', 'Upit kraste u nosu mora voditi na suvu nosnu sluzokožu');
 ok(topTopics('iver u prstu')[0]?.id==='iver-u-kozi', 'Upit iver u prstu mora voditi na iver u koži');
 ok(index.includes("some(id=>canonicalTopicId(id)===t.id)"), 'Povezane teme/prirodni unosi moraju koristiti canonical topic ID');
+ok(topTopics('ne osecam mirise')[0]?.id==='gubitak-mirisa', 'Upit ne osecam mirise mora voditi na gubitak mirisa');
+ok(topTopics('pukla bubna opna')[0]?.id==='perforacija-bubne-opne', 'Upit pukla bubna opna mora voditi na perforaciju');
+ok(topTopics('otok iza uha')[0]?.id==='mastoiditis', 'Upit otok iza uha mora voditi na mastoiditis');
+ok(topTopics('ne vidim daleko')[0]?.id==='kratkovidost', 'Upit ne vidim daleko mora voditi na kratkovidost');
+ok(topTopics('mutno na blizinu')[0]?.id==='dalekovidost', 'Upit mutno na blizinu mora voditi na dalekovidost');
+ok(topTopics('astigmatizam')[0]?.id==='astigmatizam', 'Upit astigmatizam mora voditi na astigmatizam');
+ok(topTopics('daltonizam')[0]?.id==='daltonizam', 'Upit daltonizam mora voditi na poremećaj boja');
+ok(topTopics('bcc')[0]?.id==='nemelanomski-rak-koze', 'Upit bcc mora voditi na nemelanomski rak kože');
+ok(topTopics('gruba fleka od sunca')[0]?.id==='aktinicna-keratoza', 'Upit gruba fleka od sunca mora voditi na aktiničnu keratozu');
+ok(topTopics('bele fleke na kozi')[0]?.id==='vitiligo', 'Upit bele fleke na kozi mora voditi na vitiligo');
+ok(topTopics('pileca koza')[0]?.id==='keratoza-pilaris', 'Upit pileca koza mora voditi na keratozu pilaris');
+ok(topTopics('cir na zelucu')[0]?.id==='cir-zeluca', 'Upit cir na zelucu mora voditi na peptički ulkus');
+ok(topTopics('zute beonjace')[0]?.id==='zutica', 'Upit zute beonjace mora voditi na žuticu');
+ok(topTopics('hijatalna hernija')[0]?.id==='hijatalna-hernija', 'Upit hijatalna hernija mora voditi na hijatalnu herniju');
+ok(topTopics('preaktivna besika')[0]?.id==='preaktivna-besika', 'Upit preaktivna besika mora voditi na OAB');
+ok(topTopics('akutno ostecenje bubrega')[0]?.id==='akutna-bubrezna-povreda', 'Upit akutno ostecenje bubrega mora voditi na AKI');
+ok(topTopics('torzija testisa')[0]?.id==='torzija-testisa', 'Upit torzija testisa mora voditi na hitnu temu');
+ok(topTopics('los spermogram')[0]?.id==='muska-plodnost', 'Upit los spermogram mora voditi na mušku plodnost');
+ok(topTopics('spontani pobacaj')[0]?.id==='pobacaj', 'Upit spontani pobacaj mora voditi na pobačaj');
+ok(topTopics('tbc')[0]?.id==='tuberkuloza', 'Upit tbc mora voditi na tuberkulozu');
+ok(topTopics('hiv')[0]?.id==='hiv', 'Upit hiv mora voditi na HIV');
+ok(topTopics('kruzni osip posle krpelja')[0]?.id==='lajmska-bolest', 'Upit kruzni osip posle krpelja mora voditi na Lajmsku bolest');
+ok(topTopics('telo 34 stepena')[0]?.id==='hipotermija', 'Upit telo 34 stepena mora voditi na hipotermiju');
 for (const hiddenId of Object.keys(topicDuplicateOf)) {
   ok(!topTopics(topics.find(t=>t.id===hiddenId)?.title||hiddenId, 10).some(t=>t.id===hiddenId), 'Skrivena duplicate tema ne sme se vratiti u rezultate: '+hiddenId);
 }
