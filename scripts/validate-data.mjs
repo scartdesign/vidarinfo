@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 439, 'Očekivano 439 tema, pronađeno ' + topics.length);
+ok(topics.length === 443, 'Očekivano 443 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -391,6 +391,11 @@ ok(topTopics('okluzija vene mreznjace')[0]?.id==='okluzija-vene-mreznjace', 'Upi
 ok(topTopics('otoskleroza')[0]?.id==='otoskleroza', 'Upit otoskleroza mora voditi na otosklerozu');
 ok(topTopics('invaginacija creva')[0]?.id==='invaginacija-creva', 'Upit invaginacija creva mora voditi na pedijatrijsku temu');
 ok(topTopics('nespusten testis')[0]?.id==='nespusten-testis', 'Upit nespusten testis mora voditi na kriptorhizam');
+ok(topTopics('adhd')[0]?.id==='adhd', 'Upit ADHD mora voditi na ADHD');
+ok(topTopics('autizam')[0]?.id==='autizam', 'Upit autizam mora voditi na autizam');
+ok(topTopics('hiperparatireoidizam')[0]?.id==='hiperparatireoidizam', 'Upit hiperparatireoidizam mora voditi na paratireoidnu temu');
+ok(topTopics('paget kosti')[0]?.id==='paget-kosti', 'Upit paget kosti mora voditi na Pagetovu bolest kostiju');
+ok(topTopics('postnatalna depresija')[0]?.id==='postporodjajna-depresija', 'Upit postnatalna depresija mora voditi na postojeću postporođajnu depresiju');
 for (const hiddenId of Object.keys(topicDuplicateOf)) {
   ok(!topTopics(topics.find(t=>t.id===hiddenId)?.title||hiddenId, 10).some(t=>t.id===hiddenId), 'Skrivena duplicate tema ne sme se vratiti u rezultate: '+hiddenId);
 }
