@@ -187,17 +187,19 @@ const urgentRules=[
   /\b(bez svesti|ne reaguje|kolaps|onesvestio se|onesvestila se)\b/,
   /\b(jako|obilno|nekontrolisano)\b.{0,14}\bkrvar\w*\b|\bkrvar\w*\b.{0,18}\b(ne prestaje|ne staje)\b/,
   /\b(predozir\w*|overdose|trovanje|otrova\w*)\b|\b(popio|popila|uzeo|uzela)\b.{0,20}\b(previse|mnogo)\b.{0,14}\b(lekova|tableta)\b/,
-  /\b(napad|grcevi|konvulzij\w*)\b.{0,24}\b(5 minuta|pet minuta|duze od 5|ne prestaj\w*|ne staj\w*)\b/
+  /\b(napad|grcevi|konvulzij\w*)\b.{0,24}\b(5 minuta|pet minuta|duze od 5|ne prestaj\w*|ne staj\w*)\b/,
+  /\b(toplotni udar|heatstroke)\b|\b(suncanica|pregreja\w*|pregrevanj\w*)\b.{0,28}\b(konfuz\w*|ne reaguje|bez svesti|onesvest\w*|napad|grcevi)\b/,
+  /\b(hemijska|hemijska opekotina|elektricna|elektricna opekotina)\b.{0,18}\bopek\w*\b|\bopek\w*\b.{0,18}\b(hemij\w*|elektric\w*)\b/
 ];
 const urgentPositiveQueries=[
   'bol u grudima','stezanje u grudima','slabost ruke i problem sa govorom',
   'utrnula mi je ruka i tesko govorim','slabost jedne strane tela',
   'ne vidim na jedno oko','izgubio sam vid na jedno oko','gusim se','ne moze da dise','prestao je da dise','otok jezika','iznenadan jak bol u testisu',
-  'trudna sam i krvarim','bez svesti','obilno krvarenje ne prestaje','predozirao se','popio previse lekova','napad traje 5 minuta','grcevi ne prestaju'
+  'trudna sam i krvarim','bez svesti','obilno krvarenje ne prestaje','predozirao se','popio previse lekova','napad traje 5 minuta','grcevi ne prestaju','toplotni udar','suncanica i konfuzija','hemijska opekotina','elektricna opekotina'
 ];
 const urgentNegativeQueries=[
   'bol u dojkama','gorusica','sinusi','tesko spavam','boli me grlo',
-  'visok pritisak','migrena','erektilna disfunkcija','krvarenje iz nosa','napad panike','ne disem na nos'
+  'visok pritisak','migrena','erektilna disfunkcija','krvarenje iz nosa','napad panike','ne disem na nos','suncanica','opekotina od sunca','elektricni bol u ruci'
 ];
 for(const q of urgentPositiveQueries) ok(urgentRules.some(re=>re.test(norm(q))), 'Urgent upit nije prepoznat: '+q);
 for(const q of urgentNegativeQueries) ok(!urgentRules.some(re=>re.test(norm(q))), 'Lažni urgent alarm za običan upit: '+q);
