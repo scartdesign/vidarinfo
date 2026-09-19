@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 315, 'Očekivano 315 tema, pronađeno ' + topics.length);
+ok(topics.length === 320, 'Očekivano 320 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -197,6 +197,17 @@ ok(topTopics('karijes')[0]?.id==='karijes', 'Upit karijes mora voditi na karijes
 ok(topTopics('bol na hladno zub')[0]?.id==='osetljivi-zubi', 'Upit bol na hladno zub mora voditi na osetljive zube');
 ok(topTopics('umnjak')[0]?.id==='umnjak', 'Upit umnjak mora voditi na temu umnjak');
 ok(topTopics('svrbi me uvo')[0]?.id==='svrab-u-uhu', 'Upit svrbi me uvo mora voditi na svrab u uhu');
+ok(topTopics('bol u rebrima')[0]?.id==='kostohondritis', 'Upit bol u rebrima mora voditi na kostohondritis');
+ok(topTopics('spor puls')[0]?.id==='bradikardija', 'Upit spor puls mora voditi na bradikardiju');
+ok(topTopics('osip ispod grudi')[0]?.id==='intertrigo', 'Upit osip ispod grudi mora voditi na intertrigo');
+ok(topTopics('ujed zmije')[0]?.id==='ujed-zmije', 'Upit ujed zmije mora voditi na hitnu temu ujeda zmije');
+ok(topTopics('zubni kamenac')[0]?.id==='zubni-kamenac', 'Upit zubni kamenac mora voditi na plak/kamenac');
+ok(topTopics('neuralgija trigeminusa')[0]?.id==='trigeminalna-neuralgija', 'Upit neuralgija trigeminusa mora voditi na trigeminalnu neuralgiju');
+ok(topTopics('bol ahilova tetiva')[0]?.id==='ahilova-tendinopatija', 'Upit bol ahilova tetiva mora voditi na Ahilovu tendinopatiju');
+ok(topTopics('povlacenje desni')[0]?.id==='parodontitis', 'Upit povlacenje desni mora voditi na parodontitis');
+ok(topTopics('proliv kod odraslih')[0]?.id==='stomacni-virus', 'Upit proliv kod odraslih mora voditi na proliv/povraćanje');
+ok(topTopics('ujed komarca')[0]?.id==='ujedi-insekata', 'Upit ujed komarca mora voditi na ujede insekata');
+ok(topTopics('ortostatska hipotenzija')[0]?.id==='nizak-pritisak', 'Upit ortostatska hipotenzija mora voditi na nizak pritisak');
 ok(topTopics('polipi u nosu')[0]?.id==='nosni-polipi', 'Upit polipi u nosu mora voditi na nosne polipe');
 ok(topTopics('tonsil stones')[0]?.id==='cepici-krajnika', 'Upit tonsil stones mora voditi na čepiće krajnika');
 ok(topTopics('svrab anusa')[0]?.id==='analni-svrab', 'Upit svrab anusa mora voditi na analni svrab');
@@ -253,13 +264,14 @@ const urgentRules=[
   /\b(predozir\w*|overdose|trovanje|otrova\w*)\b|\b(popio|popila|uzeo|uzela)\b.{0,20}\b(previse|mnogo)\b.{0,14}\b(lekova|tableta)\b/,
   /\b(napad|grcevi|konvulzij\w*)\b.{0,24}\b(5 minuta|pet minuta|duze od 5|ne prestaj\w*|ne staj\w*)\b/,
   /\b(toplotni udar|heatstroke)\b|\b(suncanica|pregreja\w*|pregrevanj\w*)\b.{0,28}\b(konfuz\w*|ne reaguje|bez svesti|onesvest\w*|napad|grcevi)\b/,
-  /\b(hemijska|hemijska opekotina|elektricna|elektricna opekotina)\b.{0,18}\bopek\w*\b|\bopek\w*\b.{0,18}\b(hemij\w*|elektric\w*)\b/
+  /\b(hemijska|hemijska opekotina|elektricna|elektricna opekotina)\b.{0,18}\bopek\w*\b|\bopek\w*\b.{0,18}\b(hemij\w*|elektric\w*)\b/,
+  /\b(ujed|ugriz)\b.{0,10}\bzmij\w*\b|\bzmij\w*\b.{0,10}\b(ujed|ugriz)\b|\bsnake ?bite\b/
 ];
 const urgentPositiveQueries=[
   'bol u grudima','stezanje u grudima','slabost ruke i problem sa govorom',
   'utrnula mi je ruka i tesko govorim','slabost jedne strane tela',
   'ne vidim na jedno oko','izgubio sam vid na jedno oko','gusim se','ne moze da dise','prestao je da dise','otok jezika','iznenadan jak bol u testisu',
-  'trudna sam i krvarim','bez svesti','obilno krvarenje ne prestaje','predozirao se','popio previse lekova','napad traje 5 minuta','grcevi ne prestaju','toplotni udar','suncanica i konfuzija','hemijska opekotina','elektricna opekotina'
+  'trudna sam i krvarim','bez svesti','obilno krvarenje ne prestaje','predozirao se','popio previse lekova','napad traje 5 minuta','grcevi ne prestaju','toplotni udar','suncanica i konfuzija','hemijska opekotina','elektricna opekotina','ujed zmije','zmijski ugriz'
 ];
 const urgentNegativeQueries=[
   'bol u dojkama','gorusica','sinusi','tesko spavam','boli me grlo',
