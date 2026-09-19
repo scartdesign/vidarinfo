@@ -249,6 +249,10 @@ ok(index.includes('canonicalTopicIds(MED_TOPIC_LINKS[m.id]||[])'), 'Lekovi ne ca
 ok(index.includes('some(id=>canonicalTopicId(id)===t.id)'), 'Canonical tema ne prepoznaje lekove vezane za legacy duplicate ID');
 ok(index.includes("let t=topicById(r.split('/')[1])"), 'Legacy /tema ruta se ne preusmerava logički na canonical temu');
 ok(index.includes('function relatedTopicsForTopicBlock'), 'Nedostaje blok povezanih zdravstvenih tema');
+ok(index.includes("catalogTopics().slice(0,6)"), 'Početna mora koristiti canonical katalog bez skrivenih duplikata');
+ok(index.includes("new Set(catalogTopics().map(x=>x.category))"), 'Filter kategorija mora koristiti canonical katalog');
+ok(index.includes("${catalogTopics().length}</b><span>jedinstvenih tema"), 'Brojač na početnoj mora prikazivati jedinstvene teme');
+ok(index.includes("function trendCard(tr){let t=topicById(tr.topicId)"), 'Radar mora canonicalizovati legacy topic ID');
 ok(index.includes('v6.13 MOBILE HOME') && index.includes('order:1!important') && index.includes('height:205px!important'), 'Nedostaje završni mobilni content-first hero override');
 ok(index.includes('padding-bottom:calc(88px + env(safe-area-inset-bottom))!important'), 'Mobilni sadržaj nema dovoljan razmak iznad donje navigacije');
 ok(index.includes('RELATED_CATEGORY_FAMILIES'), 'Nedostaje ograničenje povezanih tema po oblastima');
