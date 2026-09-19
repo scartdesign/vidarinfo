@@ -168,6 +168,9 @@ for (const t of topics) {
 }
 ok(index.includes('function relatedTopicsForTopicBlock'), 'Nedostaje blok povezanih zdravstvenih tema');
 ok(index.includes('RELATED_CATEGORY_FAMILIES'), 'Nedostaje ograničenje povezanih tema po oblastima');
+for (const n of naturals) {
+  ok((Array.isArray(n.topics) && n.topics.length > 0) || n.standalone === true, 'Prirodni unos '+n.id+' mora imati povezanu temu ili standalone=true');
+}
 ok(!index.includes("kamen-u-zuci','Glavobolja"), 'Nevažeći hardkodovani odnos Glavobolja → Kamen u žuči');
 
 console.log('VIDAR validation OK');
