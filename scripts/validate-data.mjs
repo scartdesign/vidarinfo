@@ -534,6 +534,16 @@ ok(topTopics('mondor dojke')[0]?.id==='mondor-dojke', 'Mondor dojke mora biti pr
 ok(topTopics('salmoneloza')[0]?.id==='trovanje-hranom', 'Salmoneloza mora voditi na trovanje hranom');
 ok(topTopics('ankilozirajuci spondilitis')[0]?.id==='ankilozantni-spondilitis', 'Ankilozirajući spondilitis mora voditi na postojeću temu');
 ok(topTopics('sklerodermija')[0]?.id==='sistemska-skleroza', 'Sklerodermija mora voditi na sistemsku sklerozu');
+ok(topTopics('dupli vid')[0]?.id==='diplopija', 'Dupli vid mora voditi na diplopiju');
+ok(topTopics('oko suzi stalno')[0]?.id==='epifora', 'Stalno suzenje oka mora voditi na epiforu');
+ok(topTopics('bela kuglica krajnik')[0]?.id==='cepici-krajnika', 'Bela kuglica krajnik mora voditi na čepiće krajnika');
+ok(topTopics('klike vilica')[0]?.id==='tmz-vilica', 'Klik vilice mora voditi na TMD');
+ok(topTopics('pena u mokraci')[0]?.id==='urin-protein', 'Pena u mokraći mora voditi na protein u urinu');
+ok(topTopics('krv u spermi')[0]?.id==='hematospermija', 'Krv u spermi mora voditi na hematospermiju');
+ok(topTopics('krvarim izmedju ciklusa')[0]?.id==='intermenstrualno-krvarenje', 'Krvarenje između ciklusa mora voditi na intermenstrualno krvarenje');
+ok(topTopics('hrcem i gusim se')[0]?.id==='sleep-apnea', 'Hrkanje i gušenje mora voditi na sleep apnea');
+ok(topTopics('budim se paralizovan')[0]?.id==='paraliza-sna', 'Buđenje paralizovan mora voditi na paralizu sna');
+ok(topTopics('pricam u snu')[0]?.id==='parasomnije', 'Pričam u snu mora voditi na parasomnije');
 for (const hiddenId of Object.keys(topicDuplicateOf)) {
   ok(!topTopics(topics.find(t=>t.id===hiddenId)?.title||hiddenId, 10).some(t=>t.id===hiddenId), 'Skrivena duplicate tema ne sme se vratiti u rezultate: '+hiddenId);
 }
@@ -550,7 +560,7 @@ ok(index.includes("mozdani-udar-tia") && index.includes("naglo-gubljenje-vida") 
 ok(index.includes("function topicEmergencyBanner"), 'Nedostaje urgent upozorenje na detalju teme');
 const urgentRules=[
   /\b(bol|stezanje|pritisak|pece|pecenje)\b.{0,18}\bgrud(ima|i)?\b|\bgrud(ima|i)?\b.{0,18}\b(bol|stezanje|pritisak)\b/,
-  /\b(mozdani udar|slog|tia|mini stroke)\b|\b(slabost|utrnulost)\b.{0,22}\b(lic\w*|ruk\w*|nog\w*|jedn\w* stran\w*)\b|\b(lic\w*|ruk\w*|nog\w*)\b.{0,22}\b(slabost|utrnulost)\b|\b(problem|tesko|ne mogu)\b.{0,18}\b(govor\w*|da govorim)\b|\b(slabost|utrnulost)\b.{0,35}\b(govor\w*)\b/,
+  /\b(mozdani udar|slog|tia|mini stroke)\b|\b(slabost|utrnulost)\b.{0,22}\b(lic\w*|ruk\w*|nog\w*|jedn\w* stran\w*)\b|\b(lic\w*|ruk\w*|nog\w*)\b.{0,22}\b(slabost|utrnulost)\b|\b(problem|tesko|ne mogu)\b.{0,18}\b(govor\w*|da govorim)\b|\b(slabost|utrnulost)\b.{0,35}\b(govor\w*)\b|\b(iskrivilo lice|iskrivljeno lice|pao ugao usne|asimetrija lica)\b/,
   /\b(ne vidim|gubitak vida|crna zavesa|naglo zamagljenje|naglo izgubio vid|naglo izgubila vid)\b|\bizgubi\w*\b.{0,14}\bvid\b/,
   /\b(gusim se|tesko disem|otezano disanje|jedva disem)\b|\bne (mogu|moze|mozes|mozemo) da dis\w*\b|\bpresta\w*.{0,12}\bdis\w*\b|\bne dis(?:e|em)\b(?!\s+na\s+nos)/,
   /\b(otok|oticanje)\b.{0,14}\b(usana|jezika|grla)\b|\banafilaks/i,
@@ -575,7 +585,7 @@ const urgentRules=[
 ];
 const urgentPositiveQueries=[
   'bol u grudima','stezanje u grudima','slabost ruke i problem sa govorom',
-  'utrnula mi je ruka i tesko govorim','slabost jedne strane tela',
+  'utrnula mi je ruka i tesko govorim','slabost jedne strane tela','lice mi se iskrivilo','pao ugao usne',
   'ne vidim na jedno oko','izgubio sam vid na jedno oko','gusim se','ne moze da dise','prestao je da dise','otok jezika','iznenadan jak bol u testisu',
   'trudna sam i krvarim','torzija jajnika','bez svesti','obilno krvarenje ne prestaje','predozirao se','popio previse lekova','napad traje 5 minuta','grcevi ne prestaju','toplotni udar','suncanica i konfuzija','hemijska opekotina','elektricna opekotina','ujed zmije','zmijski ugriz','ne mogu da mokrim puna besika jak bol','iskasljavam mnogo krvi','krv u ispljuvku kasljem tesko disem'
 ];
