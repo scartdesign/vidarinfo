@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 695, 'Očekivano 695 tema, pronađeno ' + topics.length);
+ok(topics.length === 701, 'Očekivano 701 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -187,6 +187,15 @@ ok(topTopics('oralni karcinom')[0]?.id==='rak-usne-duplje', 'Upit oralni karcino
 ok(topTopics('torsija testisa')[0]?.id==='torzija-testisa', 'Upit torsija testisa mora voditi na torziju testisa');
 ok(topTopics('povreda oka')[0]?.id==='povreda-oka', 'Upit povreda oka mora voditi na povredu oka');
 ok(topTopics('keloid')[0]?.id==='keloid', 'Upit keloid mora voditi na keloidni ožiljak');
+ok(topTopics('triger prst')[0]?.id==='okidac-prst', 'Upit triger prst mora voditi na Okidač-prst');
+ok(topTopics('ahilov tendonitis')[0]?.id==='ahilova-tendinopatija', 'Upit ahilov tendonitis mora voditi na Ahilovu tendinopatiju');
+ok(topTopics('pupcana kila odrasli')[0]?.id==='pupcana-kila', 'Upit pupcana kila odrasli mora voditi na Pupčanu kilu');
+ok(topTopics('mallet finger')[0]?.id==='mallet-prst', 'Upit mallet finger mora voditi na mallet prst');
+ok(topTopics('preponska kila')[0]?.id==='preponska-kila', 'Upit preponska kila mora voditi na ingvinalnu herniju');
+ok(topTopics('bol u trtici')[0]?.id==='bol-u-trtici', 'Upit bol u trtici mora voditi na kokcigodiniju');
+ok(topTopics('shin splints')[0]?.id==='shin-splints', 'Upit shin splints mora voditi na bol duž cevanice');
+ok(topTopics('dupuytren')[0]?.id==='dupuytren', 'Upit dupuytren mora voditi na Dupuytrenovu kontrakturu');
+ok(topTopics('prelom rebra')[0]?.id==='prelom-rebra', 'Upit prelom rebra mora voditi na prelom/nagnječenje rebra');
 ok(topTopics('kandida u ustima')[0]?.id==='oralna-kandidijaza', 'Upit kandida u ustima mora voditi na oralnu kandidijazu');
 ok(topTopics('skrgutanje zubima')[0]?.id==='bruksizam', 'Upit skrgutanje zubima mora voditi na bruksizam');
 ok(topTopics('cista na zglobu')[0]?.id==='ganglion-cista', 'Upit cista na zglobu mora voditi na ganglion cistu');
