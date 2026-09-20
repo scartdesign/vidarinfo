@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 682, 'Očekivano 682 tema, pronađeno ' + topics.length);
+ok(topics.length === 693, 'Očekivano 693 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -572,6 +572,17 @@ ok(topTopics('spermatokela')[0]?.id==='spermatokela', 'Spermatokela mora biti di
 ok(topTopics('azoospermija')[0]?.id==='azoospermija', 'Azoospermija mora biti direktan rezultat');
 ok(topTopics('polipi debelog creva')[0]?.id==='polipi-debelog-creva', 'Polipi debelog creva moraju biti direktan rezultat');
 ok(topTopics('presbiopija')[0]?.id==='presbiopija', 'Presbiopija mora biti direktan rezultat');
+ok(topTopics('feritin visok')[0]?.id==='povisen-feritin-gvozdje', 'Feritin visok mora voditi na feritin/gvožđe');
+ok(topTopics('magnezijum nizak')[0]?.id==='minerali-magnezijum-kalcijum-fosfat', 'Magnezijum nizak mora voditi na minerale');
+ok(topTopics('lipaza visoka')[0]?.id==='jetreni-pankreasni-markeri', 'Lipaza visoka mora voditi na pankreasne markere');
+ok(topTopics('ck visok')[0]?.id==='misicni-enzimi-ck-ldh', 'CK visok mora voditi na mišićne enzime');
+ok(topTopics('troponin visok')[0]?.id==='troponin-nalaz', 'Troponin visok mora voditi na troponin');
+ok(topTopics('d dimer visok')[0]?.id==='d-dimer-nalaz', 'D-dimer visok mora voditi na D-dimer');
+ok(topTopics('inr visok')[0]?.id==='koagulacija-inr-pt-aptt', 'INR visok mora voditi na koagulaciju');
+ok(topTopics('anti tpo visok')[0]?.id==='stitna-ft4-antitela', 'Anti-TPO visok mora voditi na štitnu');
+ok(topTopics('amh nizak')[0]?.id==='reproduktivni-hormoni', 'AMH nizak mora voditi na reproduktivne hormone');
+ok(topTopics('psa visok')[0]?.id==='psa-nalaz', 'PSA visok mora voditi na PSA nalaz');
+ok(topTopics('ketoni u mokraci')[0]?.id==='urin-test-traka', 'Ketoni u mokraći moraju voditi na urin test traku');
 for (const hiddenId of Object.keys(topicDuplicateOf)) {
   ok(!topTopics(topics.find(t=>t.id===hiddenId)?.title||hiddenId, 10).some(t=>t.id===hiddenId), 'Skrivena duplicate tema ne sme se vratiti u rezultate: '+hiddenId);
 }
