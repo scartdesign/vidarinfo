@@ -2073,8 +2073,34 @@ body{background:linear-gradient(180deg,#fbfefd,#f4faf8)!important}
 <script>
 let DB={topics:[]},MEDS=[],NATURALS=[];
 
+async function __vidarJson(path){
+  const candidates=[new URL(path,location.href).href];
+  const gh=location.pathname.match(/^\/([^/]+)\/([^/]+)\/([^/]+)\//);
+  if(gh && /githack\.com$/i.test(location.hostname)){
+    const [,owner,repo,ref]=gh;
+    candidates.push(
+      `https://raw.githubusercontent.com/${owner}/${repo}/${ref}/${path}`,
+      `https://cdn.jsdelivr.net/gh/${owner}/${repo}@${ref}/${path}`
+    );
+  }
+  let lastError=null;
+  for(const url of [...new Set(candidates)]){
+    try{
+      const r=await fetch(url,{cache:'no-store',mode:'cors'});
+      if(!r.ok)throw new Error(`HTTP ${r.status}`);
+      const data=await r.json();
+      if(data==null)throw new Error('empty JSON');
+      return data;
+    }catch(err){lastError=err;}
+  }
+  throw lastError||new Error('VIDAR data load failed');
+}
 async function __vidarBoot(){
-const [__db,__meds,__naturals]=await Promise.all([fetch('data/topics.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('topics');return r.json()}),fetch('data/meds.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('meds');return r.json()}),fetch('data/naturals.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('naturals');return r.json()})]);
+const [__db,__meds,__naturals]=await Promise.all([
+  __vidarJson('data/topics.json'),
+  __vidarJson('data/meds.json'),
+  __vidarJson('data/naturals.json')
+]);
 DB=__db;MEDS=__meds;NATURALS=__naturals;
 
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
