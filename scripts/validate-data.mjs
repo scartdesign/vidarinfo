@@ -320,7 +320,8 @@ ok(topTopics('mesecarenje')[0]?.id==='mesecarenje', 'Upit mesecarenje mora vodit
 ok(topTopics('zubi rastu beba')[0]?.id==='nicanje-zuba-beba', 'Upit zubi rastu beba mora voditi na nicanje zuba');
 ok(topTopics('grcevi beba')[0]?.id==='kolike-beba', 'Upit grcevi beba mora voditi na kolike');
 ok(topTopics('gojaznost')[0]?.id==='gojaznost', 'Upit gojaznost mora voditi na prekomernu težinu/gojaznost');
-ok(topTopics('hladne ruke')[0]?.id==='raynaud', 'Upit hladne ruke mora voditi na Raynaudov fenomen');
+ok(topTopics('hladne ruke')[0]?.id==='hladne-sake-stopala', 'Opšti upit hladne ruke mora prvo voditi na temu hladnih šaka i stopala');
+ok(topTopics('prsti menjaju boju na hladnoci')[0]?.id==='raynaud', 'Specifičan upit za promenu boje prstiju na hladnoći mora voditi na Raynaudov fenomen');
 ok(topTopics('bol u kuku')[0]?.id==='bol-u-kuku', 'Upit bol u kuku mora voditi na temu bola u kuku');
 ok(topTopics('spor puls')[0]?.id==='bradikardija', 'Upit spor puls mora voditi na bradikardiju');
 ok(topTopics('osip ispod grudi')[0]?.id==='intertrigo', 'Upit osip ispod grudi mora voditi na intertrigo');
