@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 669, 'Očekivano 669 tema, pronađeno ' + topics.length);
+ok(topics.length === 682, 'Očekivano 682 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -564,6 +564,14 @@ ok(topTopics('bol ispod levog rebra')[0]?.id==='bol-levo-ispod-rebra', 'Upit bol
 ok(topTopics('bol u anusu')[0]?.id==='analni-bol', 'Upit bol u anusu mora voditi na analni bol');
 ok(topTopics('pojacan apetit')[0]?.id==='pojacan-apetit', 'Upit pojačan apetit mora voditi na odgovarajuću temu');
 ok(topTopics('hipohondrija')[0]?.id==='zdravstvena-anksioznost', 'Upit hipohondrija mora voditi na zdravstvenu anksioznost');
+ok(topTopics('social anxiety')[0]?.id==='socijalna-anksioznost', 'Social anxiety mora voditi na socijalnu anksioznost');
+ok(topTopics('body dysmorphia')[0]?.id==='telesna-dismorfija', 'Body dysmorphia mora voditi na BDD');
+ok(topTopics('pmdd')[0]?.id==='pmdd', 'PMDD mora voditi na PMDD temu');
+ok(topTopics('turet')[0]?.id==='tourette', 'Turet mora voditi na Tourette');
+ok(topTopics('spermatokela')[0]?.id==='spermatokela', 'Spermatokela mora biti direktan rezultat');
+ok(topTopics('azoospermija')[0]?.id==='azoospermija', 'Azoospermija mora biti direktan rezultat');
+ok(topTopics('polipi debelog creva')[0]?.id==='polipi-debelog-creva', 'Polipi debelog creva moraju biti direktan rezultat');
+ok(topTopics('presbiopija')[0]?.id==='presbiopija', 'Presbiopija mora biti direktan rezultat');
 for (const hiddenId of Object.keys(topicDuplicateOf)) {
   ok(!topTopics(topics.find(t=>t.id===hiddenId)?.title||hiddenId, 10).some(t=>t.id===hiddenId), 'Skrivena duplicate tema ne sme se vratiti u rezultate: '+hiddenId);
 }
@@ -592,6 +600,8 @@ const urgentRules=[
   /\b(napad|grcevi|konvulzij\w*)\b.{0,24}\b(5 minuta|pet minuta|duze od 5|ne prestaj\w*|ne staj\w*)\b/,
   /\b(toplotni udar|heatstroke)\b|\b(suncanica|pregreja\w*|pregrevanj\w*)\b.{0,28}\b(konfuz\w*|ne reaguje|bez svesti|onesvest\w*|napad|grcevi)\b/,
   /\b(hemijska|hemijska opekotina|elektricna|elektricna opekotina)\b.{0,18}\bopek\w*\b|\bopek\w*\b.{0,18}\b(hemij\w*|elektric\w*)\b/,
+  /\b(suicidalne misli|misli o samoubistvu|hocu da umrem|ne zelim da zivim|zelim da se ubijem|suicide thoughts)\b/,
+  /\b(samopovredjujem se|samopovredjivanje|self harm|self-harm)\b/,
   /\b(ujed|ugriz)\b.{0,10}\bzmij\w*\b|\bzmij\w*\b.{0,10}\b(ujed|ugriz)\b|\bsnake ?bite\b/,
   /\b(ne mogu|ne moze)\b.{0,10}\bda mokr\w*\b.{0,28}\b(jak bol|bol u donjem stomaku|puna besika|napeta besika)\b|\b(puna|napeta) besika\b.{0,28}\b(ne mogu|ne moze)\b.{0,10}\bmokr\w*\b/,
   /\b(mnogo|obilno|puno)\b.{0,18}\bkrv\w*\b.{0,22}\b(iskaslj\w*|kaslj\w*)\b|\b(iskaslj\w*|kaslj\w*)\b.{0,22}\b(mnogo|obilno|puno)\b.{0,18}\bkrv\w*\b|\b(krv\w*|krvi)\b.{0,24}\b(iskaslj\w*|kaslj\w*)\b.{0,30}\b(tesko dis\w*|otezano dis\w*|bol u grud\w*)\b/,
@@ -607,7 +617,7 @@ const urgentPositiveQueries=[
   'bol u grudima','stezanje u grudima','slabost ruke i problem sa govorom',
   'utrnula mi je ruka i tesko govorim','slabost jedne strane tela','lice mi se iskrivilo','pao ugao usne',
   'ne vidim na jedno oko','izgubio sam vid na jedno oko','gusim se','ne moze da dise','prestao je da dise','otok jezika','iznenadan jak bol u testisu',
-  'trudna sam i krvarim','torzija jajnika','bez svesti','obilno krvarenje ne prestaje','predozirao se','popio previse lekova','napad traje 5 minuta','grcevi ne prestaju','toplotni udar','suncanica i konfuzija','hemijska opekotina','elektricna opekotina','ujed zmije','zmijski ugriz','ne mogu da mokrim puna besika jak bol','iskasljavam mnogo krvi','krv u ispljuvku kasljem tesko disem'
+  'trudna sam i krvarim','torzija jajnika','bez svesti','obilno krvarenje ne prestaje','predozirao se','popio previse lekova','napad traje 5 minuta','grcevi ne prestaju','toplotni udar','suncanica i konfuzija','hemijska opekotina','elektricna opekotina','suicidalne misli','misli o samoubistvu','samopovredjivanje','ujed zmije','zmijski ugriz','ne mogu da mokrim puna besika jak bol','iskasljavam mnogo krvi','krv u ispljuvku kasljem tesko disem'
 ];
 const urgentNegativeQueries=[
   'bol u dojkama','gorusica','sinusi','tesko spavam','boli me grlo',
