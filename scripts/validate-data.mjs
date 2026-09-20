@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 457, 'Očekivano 457 tema, pronađeno ' + topics.length);
+ok(topics.length === 466, 'Očekivano 466 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -411,6 +411,15 @@ ok(topTopics('galaktoreja')[0]?.id==='galaktoreja', 'Upit galaktoreja mora vodit
 ok(topTopics('torzija jajnika')[0]?.id==='torzija-jajnika', 'Upit torzija jajnika mora voditi na hitnu temu');
 ok(topTopics('stenice')[0]?.id==='stenice', 'Upit stenice mora voditi na ujede stenica');
 ok(topTopics('ujed buve')[0]?.id==='ujedi-insekata', 'Upit ujed buve mora voditi na postojeću temu ujeda insekata');
+ok(topTopics('glomerulonefritis')[0]?.id==='glomerulonefritis', 'Upit glomerulonefritis mora voditi na glomerulonefritis');
+ok(topTopics('hemofilija')[0]?.id==='hemofilija', 'Upit hemofilija mora voditi na hemofiliju');
+ok(topTopics('von willebrand')[0]?.id==='von-willebrand', 'Upit von Willebrand mora voditi na odgovarajući poremećaj');
+ok(topTopics('talasemija')[0]?.id==='talasemija', 'Upit talasemija mora voditi na talasemiju');
+ok(topTopics('srpasta anemija')[0]?.id==='srpasta-anemija', 'Upit srpasta anemija mora voditi na srpastu bolest');
+ok(topTopics('gastropareza')[0]?.id==='gastropareza', 'Upit gastropareza mora voditi na gastroparezu');
+ok(topTopics('ahalazija')[0]?.id==='ahalazija', 'Upit ahalazija mora voditi na ahalaziju');
+ok(topTopics('keratitis')[0]?.id==='mikrobni-keratitis', 'Upit keratitis mora voditi na mikrobni keratitis');
+ok(topTopics('barrettov jednjak')[0]?.id==='barrett-jednjak', 'Upit Barrettov jednjak mora voditi na Barrettovu temu');
 for (const hiddenId of Object.keys(topicDuplicateOf)) {
   ok(!topTopics(topics.find(t=>t.id===hiddenId)?.title||hiddenId, 10).some(t=>t.id===hiddenId), 'Skrivena duplicate tema ne sme se vratiti u rezultate: '+hiddenId);
 }
