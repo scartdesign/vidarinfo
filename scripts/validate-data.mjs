@@ -229,7 +229,7 @@ ok(topTopics('viseci fibromi')[0]?.id==='viseci-fibromi', 'Upit viseci fibromi m
 ok(topTopics('petni trn')[0]?.id==='plantarni-fascitis', 'Upit petni trn mora voditi na plantarni fascitis');
 ok(topTopics('esencijalni tremor')[0]?.id==='esencijalni-tremor', 'Upit esencijalni tremor mora voditi na esencijalni tremor');
 ok(topTopics('svt')[0]?.id==='svt', 'Upit SVT mora voditi na supraventrikularnu tahikardiju');
-ok(topTopics('addisonova bolest')[0]?.id==='addisonova-bolest', 'Upit Addisonova bolest mora voditi na adrenalnu insuficijenciju');
+ok(topTopics('addisonova bolest')[0]?.id==='addison', 'Upit Addisonova bolest mora voditi na adrenalnu insuficijenciju');
 ok(topTopics('adenomioza')[0]?.id==='adenomioza', 'Upit adenomioza mora voditi na adenomiozu');
 ok(topTopics('naglo ne cujem')[0]?.id==='iznenadni-gubitak-sluha', 'Upit naglo ne cujem mora voditi na iznenadni gubitak sluha');
 ok(topTopics('niski trombociti')[0]?.id==='trombocitopenija', 'Upit niski trombociti mora voditi na trombocitopeniju');
@@ -450,7 +450,7 @@ ok(topTopics('mpox')[0]?.id==='mpox', 'Upit mpox mora voditi na mpox');
 ok(topTopics('tetanus')[0]?.id==='tetanus', 'Upit tetanus mora voditi na tetanus');
 ok(topTopics('besnilo')[0]?.id==='besnilo', 'Upit besnilo mora voditi na procenu besnila');
 ok(topTopics('giardija')[0]?.id==='giardijaza', 'Upit giardija mora voditi na giardijazu');
-ok(topTopics('hijatalna kila')[0]?.id==='hijatalna-kila', 'Upit hijatalna kila mora voditi na hijatalnu kilu');
+ok(topTopics('hijatalna kila')[0]?.id==='hijatalna-hernija', 'Upit hijatalna kila mora voditi na hijatalnu kilu');
 ok(topTopics('hemohromatoza')[0]?.id==='hemohromatoza', 'Upit hemohromatoza mora voditi na hemohromatozu');
 ok(topTopics('psorijaticni artritis')[0]?.id==='psorijaticni-artritis', 'Upit psorijaticni artritis mora voditi na psorijatični artritis');
 ok(topTopics('polimialgija reumatika')[0]?.id==='polimialgija-reumatika', 'Upit PMR mora voditi na polimialgiju');
