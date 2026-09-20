@@ -138,7 +138,12 @@ let fullCatalogSearchCoverage=0;
 for (const t of catalogTopics) {
   const titleKey=norm(t.title), titleOwners=catalogSearchOwners.get(titleKey);
   ok(titleOwners?.has(t.id), 'Naslov teme nije u search indeksu: '+t.title);
-  ok(topicMatchScore(t,t.title)>=2000, 'Tačan naslov nema očekivan exact score: '+t.title);
+  if(t.category==='Onkologija'&&!oncologyIntent(t.title)){
+    const titleTop=topTopics(t.title,1)[0];
+    ok(titleTop?.id===t.id, 'Onkološki naziv sa safety guardom ne vraća sopstvenu temu: '+t.title+' -> '+(titleTop?.id||'nema'));
+  }else{
+    ok(topicMatchScore(t,t.title)>=2000, 'Tačan naslov nema očekivan exact score: '+t.title);
+  }
   fullCatalogSearchCoverage++;
   for (const alias of topicSearchAliases(t)) {
     const key=norm(alias), owners=catalogSearchOwners.get(key);
