@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 612, 'Očekivano 612 tema, pronađeno ' + topics.length);
+ok(topics.length === 624, 'Očekivano 624 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -496,6 +496,20 @@ ok(topTopics('fibrocisticne dojke')[0]?.id==='fibrocisticne-dojke', 'Upit fibroc
 ok(topTopics('vaginitis')[0]?.id==='vaginitis', 'Upit vaginitis mora voditi na vaginitis');
 ok(topTopics('artroza kuka')[0]?.id==='osteoartritis', 'Upit artroza kuka mora voditi na osteoartritis');
 ok(topTopics('autizam odrasli')[0]?.id==='autizam', 'Upit autizam odrasli mora voditi na autizam');
+ok(topTopics('patelarna tendinopatija')[0]?.id==='patelarna-tendinopatija', 'Patelarna tendinopatija mora biti prvi rezultat');
+ok(topTopics('it band')[0]?.id==='it-band-sindrom', 'IT band mora voditi na iliotibijalni sindrom');
+ok(topTopics('trohantericni bursitis')[0]?.id==='gtps', 'Trohanterični bursitis mora voditi na GTPS');
+ok(topTopics('mortonov neurom')[0]?.id==='mortonov-neurom', 'Mortonov neurom mora biti prvi rezultat');
+ok(topTopics('metatarzalgija')[0]?.id==='metatarzalgija', 'Metatarzalgija mora biti prvi rezultat');
+ok(topTopics('hallux rigidus')[0]?.id==='hallux-rigidus', 'Hallux rigidus mora biti prvi rezultat');
+ok(topTopics('krv u oku')[0]?.id==='subkonjunktivalno-krvarenje', 'Krv u oku mora voditi na subkonjunktivalno krvarenje');
+ok(topTopics('pterigijum')[0]?.id==='pterigijum', 'Pterigijum mora biti prvi rezultat');
+ok(topTopics('glositis')[0]?.id==='glositis', 'Glositis mora biti prvi rezultat');
+ok(topTopics('mukokela')[0]?.id==='mukokela', 'Mukokela mora biti prvi rezultat');
+ok(topTopics('orhitis')[0]?.id==='orhitis', 'Orhitis mora biti prvi rezultat');
+ok(topTopics('priapizam')[0]?.id==='priapizam', 'Prijapizam mora biti prvi rezultat');
+ok(topTopics('plantarna bradavica')[0]?.id==='bradavice', 'Plantarna bradavica mora voditi na bradavice');
+ok(topTopics('hiperaktivna besika')[0]?.id==='preaktivna-besika', 'Hiperaktivna bešika mora voditi na preaktivnu bešiku');
 for (const hiddenId of Object.keys(topicDuplicateOf)) {
   ok(!topTopics(topics.find(t=>t.id===hiddenId)?.title||hiddenId, 10).some(t=>t.id===hiddenId), 'Skrivena duplicate tema ne sme se vratiti u rezultate: '+hiddenId);
 }
