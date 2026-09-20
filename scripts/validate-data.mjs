@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 701, 'Očekivano 701 tema, pronađeno ' + topics.length);
+ok(topics.length === 702, 'Očekivano 702 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -196,6 +196,8 @@ ok(topTopics('bol u trtici')[0]?.id==='bol-u-trtici', 'Upit bol u trtici mora vo
 ok(topTopics('shin splints')[0]?.id==='shin-splints', 'Upit shin splints mora voditi na bol duž cevanice');
 ok(topTopics('dupuytren')[0]?.id==='dupuytren', 'Upit dupuytren mora voditi na Dupuytrenovu kontrakturu');
 ok(topTopics('prelom rebra')[0]?.id==='prelom-rebra', 'Upit prelom rebra mora voditi na prelom/nagnječenje rebra');
+ok(topTopics('krvarenje posle menopauze')[0]?.id==='postmenopauzalno-krvarenje', 'Simptom krvarenja posle menopauze mora voditi na neutralnu simptom-temu');
+ok(!topTopics('krvarenje posle menopauze',3).some(t=>t.id==='rak-endometrijuma' && t.category==='Onkologija'), 'Generičan postmenopauzalni simptom ne sme automatski gurati onkologiju u vrh rezultata');
 ok(topTopics('kandida u ustima')[0]?.id==='oralna-kandidijaza', 'Upit kandida u ustima mora voditi na oralnu kandidijazu');
 ok(topTopics('skrgutanje zubima')[0]?.id==='bruksizam', 'Upit skrgutanje zubima mora voditi na bruksizam');
 ok(topTopics('cista na zglobu')[0]?.id==='ganglion-cista', 'Upit cista na zglobu mora voditi na ganglion cistu');
