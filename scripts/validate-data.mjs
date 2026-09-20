@@ -255,7 +255,7 @@ ok(topTopics('retinitis pigmentosa')[0]?.id==='retinitis-pigmentosa', 'Retinitis
 ok(topTopics('marfan')[0]?.id==='marfan-sindrom', 'Marfan mora biti pronađen');
 ok(topTopics('ehlers danlos')[0]?.id==='ehlers-danlos', 'EDS mora biti pronađen');
 ok(topTopics('angioedem')[0]?.id==='angioedem', 'Angioedem mora biti pronađen');
-ok(topTopics('urinarna retencija')[0]?.id==='urinarna-retencija', 'Urinarna retencija mora biti pronađena');
+ok(topTopics('urinarna retencija')[0]?.id==='retencija-urina', 'Urinarna retencija mora voditi na canonical temu');
 ok(topTopics('kawasaki')[0]?.id==='kawasaki', 'Kawasaki mora biti pronađen');
 ok(topTopics('cisticna fibroza')[0]?.id==='cisticna-fibroza', 'Cistična fibroza mora biti pronađena');
 ok(topTopics('holangiokarcinom')[0]?.id==='holangiokarcinom', 'Holangiokarcinom mora biti pronađen');
@@ -400,7 +400,7 @@ ok(topTopics('kreatinin visok')[0]?.id==='bubrezni-parametri', 'Upit kreatinin v
 ok(topTopics('kalijum nizak')[0]?.id==='elektroliti', 'Upit kalijum nizak mora voditi na elektrolite');
 ok(topTopics('hba1c visok')[0]?.id==='glukoza-hba1c', 'Upit hba1c visok mora voditi na glukozu/HbA1c');
 ok(topTopics('bilirubin visok')[0]?.id==='bilirubin-nalaz', 'Upit bilirubin visok mora voditi na bilirubin nalaz');
-ok(topTopics('mrsavljenje bez razloga')[0]?.id==='neobjasnjiv-gubitak-tezine', 'Upit mrsavljenje bez razloga mora voditi na neobjašnjiv gubitak težine');
+ok(topTopics('mrsavljenje bez razloga')[0]?.id==='nenamerni-gubitak-tezine', 'Upit mrsavljenje bez razloga mora voditi na canonical temu nenamernog gubitka težine');
 ok(topTopics('stolica kao katran')[0]?.id==='crna-stolica', 'Upit stolica kao katran mora voditi na crnu stolicu');
 ok(topTopics('krvarenje u trudnoci')[0]?.id==='krvarenje-trudnoca', 'Upit krvarenje u trudnoci mora voditi na opštu temu');
 ok(topTopics('pukao vodenjak')[0]?.id==='curenje-plodove-vode', 'Upit pukao vodenjak mora voditi na plodovu vodu');
