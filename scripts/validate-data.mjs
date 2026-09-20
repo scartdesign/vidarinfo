@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 466, 'Očekivano 466 tema, pronađeno ' + topics.length);
+ok(topics.length === 473, 'Očekivano 473 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -420,6 +420,14 @@ ok(topTopics('gastropareza')[0]?.id==='gastropareza', 'Upit gastropareza mora vo
 ok(topTopics('ahalazija')[0]?.id==='ahalazija', 'Upit ahalazija mora voditi na ahalaziju');
 ok(topTopics('keratitis')[0]?.id==='mikrobni-keratitis', 'Upit keratitis mora voditi na mikrobni keratitis');
 ok(topTopics('barrettov jednjak')[0]?.id==='barrett-jednjak', 'Upit Barrettov jednjak mora voditi na Barrettovu temu');
+ok(topTopics('fekalna inkontinencija')[0]?.id==='fekalna-inkontinencija', 'Upit fekalna inkontinencija mora voditi na odgovarajuću temu');
+ok(topTopics('analna fistula')[0]?.id==='analna-fistula', 'Upit analna fistula mora voditi na analnu fistulu');
+ok(topTopics('perianalni apsces')[0]?.id==='perianalni-apsces', 'Upit perianalni apsces mora voditi na perianalni apsces');
+ok(topTopics('rektalni prolaps')[0]?.id==='rektalni-prolaps', 'Upit rektalni prolaps mora voditi na rektalni prolaps');
+ok(topTopics('mikroskopski kolitis')[0]?.id==='mikroskopski-kolitis', 'Upit mikroskopski kolitis mora voditi na mikroskopski kolitis');
+ok(topTopics('gilbertov sindrom')[0]?.id==='gilbertov-sindrom', 'Upit Gilbertov sindrom mora voditi na Gilbert');
+ok(topTopics('policisticni bubrezi')[0]?.id==='policisticna-bolest-bubrega', 'Upit policisticni bubrezi mora voditi na ADPKD');
+ok(['divertikulitis'].includes(topTopics('divertikuloza')[0]?.id), 'Upit divertikuloza mora voditi na postojeću divertikularnu bolest');
 for (const hiddenId of Object.keys(topicDuplicateOf)) {
   ok(!topTopics(topics.find(t=>t.id===hiddenId)?.title||hiddenId, 10).some(t=>t.id===hiddenId), 'Skrivena duplicate tema ne sme se vratiti u rezultate: '+hiddenId);
 }
