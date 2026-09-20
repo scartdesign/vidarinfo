@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 693, 'Očekivano 693 tema, pronađeno ' + topics.length);
+ok(topics.length === 695, 'Očekivano 695 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -180,6 +180,13 @@ ok(topTopics('vaske')[0]?.id==='vaske', 'Upit vaske mora voditi na temu Vaške u
 ok(topTopics('lisaj')[0]?.id==='lisaj-gljivicni', 'Upit lisaj mora voditi na gljivični lišaj');
 ok(topTopics('zanoktica')[0]?.id==='paronihija', 'Upit zanoktica mora voditi na paronihiju');
 ok(topTopics('krpelj')[0]?.id==='ujed-krpelja', 'Upit krpelj mora voditi na ujed krpelja');
+ok(topTopics('rs virus')[0]?.id==='rsv', 'Upit RS virus mora voditi na RSV');
+ok(topTopics('appendicitis')[0]?.id==='apendicitis', 'Upit appendicitis mora voditi na apendicitis');
+ok(topTopics('gastroenteritis')[0]?.id==='stomacni-virus', 'Upit gastroenteritis mora voditi na proliv/povraćanje');
+ok(topTopics('oralni karcinom')[0]?.id==='rak-usne-duplje', 'Upit oralni karcinom mora voditi na rak usne duplje');
+ok(topTopics('torsija testisa')[0]?.id==='torzija-testisa', 'Upit torsija testisa mora voditi na torziju testisa');
+ok(topTopics('povreda oka')[0]?.id==='povreda-oka', 'Upit povreda oka mora voditi na povredu oka');
+ok(topTopics('keloid')[0]?.id==='keloid', 'Upit keloid mora voditi na keloidni ožiljak');
 ok(topTopics('kandida u ustima')[0]?.id==='oralna-kandidijaza', 'Upit kandida u ustima mora voditi na oralnu kandidijazu');
 ok(topTopics('skrgutanje zubima')[0]?.id==='bruksizam', 'Upit skrgutanje zubima mora voditi na bruksizam');
 ok(topTopics('cista na zglobu')[0]?.id==='ganglion-cista', 'Upit cista na zglobu mora voditi na ganglion cistu');
@@ -616,6 +623,7 @@ const urgentRules=[
   /\b(ujed|ugriz)\b.{0,10}\bzmij\w*\b|\bzmij\w*\b.{0,10}\b(ujed|ugriz)\b|\bsnake ?bite\b/,
   /\b(ne mogu|ne moze)\b.{0,10}\bda mokr\w*\b.{0,28}\b(jak bol|bol u donjem stomaku|puna besika|napeta besika)\b|\b(puna|napeta) besika\b.{0,28}\b(ne mogu|ne moze)\b.{0,10}\bmokr\w*\b/,
   /\b(mnogo|obilno|puno)\b.{0,18}\bkrv\w*\b.{0,22}\b(iskaslj\w*|kaslj\w*)\b|\b(iskaslj\w*|kaslj\w*)\b.{0,22}\b(mnogo|obilno|puno)\b.{0,18}\bkrv\w*\b|\b(krv\w*|krvi)\b.{0,24}\b(iskaslj\w*|kaslj\w*)\b.{0,30}\b(tesko dis\w*|otezano dis\w*|bol u grud\w*)\b/,
+  /\b(hemikalij\w*|varikina|izbeljivac|kiselina)\b.{0,18}\b(oko|oku)\b|\b(oko|oku)\b.{0,18}\b(hemikalij\w*|varikina|izbeljivac|kiselina)\b|\b(probodeno oko|probio oko|probola oko)\b/,
   /\b(torzija testisa|testicular torsion|uvrnut testis|uvrnuo se testis)\b/,
   /\b(torzija jajnika|ovarian torsion|adnexal torsion|uvrnut jajnik|uvrnuo se jajnik)\b/,
   /\b(hipotermija|hypothermia|telo 3[0-4](?:[.,]\d+)? stepen\w*|temperatura tela 3[0-4](?:[.,]\d+)?)\b/,
@@ -627,12 +635,12 @@ const urgentRules=[
 const urgentPositiveQueries=[
   'bol u grudima','stezanje u grudima','slabost ruke i problem sa govorom',
   'utrnula mi je ruka i tesko govorim','slabost jedne strane tela','lice mi se iskrivilo','pao ugao usne',
-  'ne vidim na jedno oko','izgubio sam vid na jedno oko','gusim se','ne moze da dise','prestao je da dise','otok jezika','iznenadan jak bol u testisu',
+  'ne vidim na jedno oko','izgubio sam vid na jedno oko','hemikalija u oku','probodeno oko','gusim se','ne moze da dise','prestao je da dise','otok jezika','iznenadan jak bol u testisu',
   'trudna sam i krvarim','torzija jajnika','bez svesti','obilno krvarenje ne prestaje','predozirao se','popio previse lekova','napad traje 5 minuta','grcevi ne prestaju','toplotni udar','suncanica i konfuzija','hemijska opekotina','elektricna opekotina','suicidalne misli','misli o samoubistvu','samopovredjivanje','ujed zmije','zmijski ugriz','ne mogu da mokrim puna besika jak bol','iskasljavam mnogo krvi','krv u ispljuvku kasljem tesko disem'
 ];
 const urgentNegativeQueries=[
   'bol u dojkama','gorusica','sinusi','tesko spavam','boli me grlo',
-  'visok pritisak','migrena','erektilna disfunkcija','krvarenje iz nosa','napad panike','ne disem na nos','suncanica','opekotina od sunca','elektricni bol u ruci','krv u ispljuvku','tesko mokrim','nocno mokrenje'
+  'visok pritisak','migrena','erektilna disfunkcija','krvarenje iz nosa','napad panike','ne disem na nos','suncanica','opekotina od sunca','elektricni bol u ruci','krv u ispljuvku','tesko mokrim','nocno mokrenje','sampon u oku'
 ];
 for(const q of urgentPositiveQueries) ok(urgentRules.some(re=>re.test(norm(q))), 'Urgent upit nije prepoznat: '+q);
 for(const q of urgentNegativeQueries) ok(!urgentRules.some(re=>re.test(norm(q))), 'Lažni urgent alarm za običan upit: '+q);
