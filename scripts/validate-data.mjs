@@ -656,6 +656,38 @@ const urgentRules=[
   /\b(encefalitis|encephalitis)\b/,
   /\b(postporodjajno krvarenje|postporodajno krvarenje|postpartum haemorrhage|postpartum hemorrhage|pph)\b/
 ];
+
+function validatorTopicById(id){return topics.find(t=>t.id===canonicalTopicId(id))}
+function validatorNaturalMatchScore(n,q){
+  let terms=searchTerms(q);if(!terms.length)return 0;
+  let name=norm(n.name),aliases=(n.aliases||[]).map(norm),
+      topicText=(n.topics||[]).map(id=>{let t=validatorTopicById(id);return t?[t.title,...topicSearchAliases(t),...(t.symptoms||[])].join(' '):''}).join(' '),
+      body=norm([n.group,n.claim,n.evidence,n.safety].join(' ')),score=0,hitSet=new Set(),core=terms.join(' ');
+  if(name===norm(q)||name===core)score+=160;
+  if(aliases.some(a=>a===norm(q)||a===core))score+=135;
+  let fields=[[name,14],...aliases.map(a=>[a,12]),[topicText,10],[body,3]];
+  for(let [field,w] of fields){
+    let r=textTokenScore(terms,field,w);score+=r.score;
+    if(r.hits)for(let term of terms)if(textTokenScore([term],field,1).hits)hitSet.add(term);
+  }
+  if(!hitSet.size)return 0;
+  let minHits=terms.length>1?Math.ceil(terms.length*.6):1;
+  if(hitSet.size<minHits)return 0;
+  if(hitSet.size===terms.length)score+=45+terms.length*8;else score-=20*(terms.length-hitSet.size);
+  return Math.max(score,0);
+}
+function validatorRankNaturals(q,limit=20){
+  q=norm(q);if(!q)return[];
+  let a=anchor(q),items=a?naturals.filter(n=>(n.topics||[]).some(id=>canonicalTopicId(id)===a.id)):naturals;
+  return items.map(n=>[n,validatorNaturalMatchScore(n,q)]).filter(x=>x[1]>0)
+    .sort((x,y)=>y[1]-x[1]||x[0].name.localeCompare(y[0].name,'sr')).slice(0,limit).map(x=>x[0]);
+}
+for(const q of ['sinusi','prostata','šećer','pritisak','kandida','hemoroidi','nesanica']){
+  ok(validatorRankNaturals(q).length>0,'Prirodna pretraga ne sme biti prazna za: '+q);
+}
+ok(validatorRankNaturals('sinusi').some(n=>(n.topics||[]).includes('sinusi')),'Prirodna pretraga sinusi mora vratiti unos povezan sa sinusima');
+ok(validatorRankNaturals('prostata').some(n=>(n.topics||[]).includes('uvecana-prostata')),'Prirodna pretraga prostata mora vratiti unos povezan sa prostatom');
+
 const urgentPositiveQueries=[
   'bol u grudima','stezanje u grudima','slabost ruke i problem sa govorom',
   'utrnula mi je ruka i tesko govorim','slabost jedne strane tela','lice mi se iskrivilo','pao ugao usne',
@@ -670,6 +702,12 @@ for(const q of urgentPositiveQueries) ok(urgentRules.some(re=>re.test(norm(q))),
 for(const q of urgentNegativeQueries) ok(!urgentRules.some(re=>re.test(norm(q))), 'Lažni urgent alarm za običan upit: '+q);
 ok(index.includes("const routeRaw=") && index.includes("const routeParams=") && index.includes("const queryRoute="), 'Nedostaju URL query helperi');
 ok(index.includes("queryRoute('topics'") && index.includes("queryRoute('lekovi'") && index.includes("queryRoute('prirodno'"), 'Pretrage se ne upisuju u URL');
+ok(index.includes("function commitNaturalSearch(q)"), 'Prirodna pretraga nema helper koji sinhronizuje URL i state');
+ok(index.includes("$('#memoryGo')?.addEventListener('click',()=>commitNaturalSearch(state.natQ))"), 'Dugme Pronađi mora upisati prirodnu pretragu u URL');
+ok(index.includes("$('#memorySearch')?.addEventListener('keydown',e=>{if(e.key==='Enter')commitNaturalSearch(state.natQ)});"), 'Enter u Nađi po sećanju mora izvršiti prirodnu pretragu');
+ok(!index.includes("...[aliases.map(a=>[a,12])]"), 'Alias scoring ne sme imati ugnježden spread za težinu 12');
+ok(!index.includes("...[aliases.map(a=>[a,11])]"), 'Alias scoring ne sme imati ugnježden spread za težinu 11');
+ok(!index.includes("...[sym.map(a=>[a,6])]"), 'Simptom scoring ne sme imati ugnježden spread');
 ok(index.includes("params.get('q')"), 'Render ne obnavlja pretragu iz URL-a');
 ok(index.includes("data-copy-search") && index.includes("navigator.clipboard.writeText(url)"), 'Nedostaje kopiranje linka pretrage');
 ok(index.includes("function appStatusCard") && index.includes("connection-pill"), 'Nedostaje status baze i mreže u Podešavanjima');
