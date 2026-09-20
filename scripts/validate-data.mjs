@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 646, 'Očekivano 646 tema, pronađeno ' + topics.length);
+ok(topics.length === 660, 'Očekivano 660 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -544,6 +544,18 @@ ok(topTopics('krvarim izmedju ciklusa')[0]?.id==='intermenstrualno-krvarenje', '
 ok(topTopics('hrcem i gusim se')[0]?.id==='sleep-apnea', 'Hrkanje i gušenje mora voditi na sleep apnea');
 ok(topTopics('budim se paralizovan')[0]?.id==='paraliza-sna', 'Buđenje paralizovan mora voditi na paralizu sna');
 ok(topTopics('pricam u snu')[0]?.id==='parasomnije', 'Pričam u snu mora voditi na parasomnije');
+ok(topTopics('crni jezik')[0]?.id==='crni-dlakavi-jezik', 'Upit crni jezik mora voditi na crni/dlakavi jezik');
+ok(topTopics('lomljivi nokti')[0]?.id==='lomljivi-nokti', 'Upit lomljivi nokti mora voditi na lomljive nokte');
+ok(topTopics('gubitak ravnoteze')[0]?.id==='problemi-ravnoteza', 'Upit gubitak ravnoteze mora voditi na probleme ravnoteže');
+ok(topTopics('krv u slajmu')[0]?.id==='iskasljavanje-krvi', 'Upit krv u slajmu mora voditi na iskašljavanje krvi');
+ok(topTopics('sluz u stolici')[0]?.id==='sluz-u-stolici', 'Upit sluz u stolici mora voditi na sluz u stolici');
+ok(topTopics('svetla stolica')[0]?.id==='svetla-bleda-stolica', 'Upit svetla stolica mora voditi na bledu stolicu');
+ok(topTopics('smrdljiv urin')[0]?.id==='mutna-smrdljiva-mokraca', 'Upit smrdljiv urin mora voditi na promenu mokraće');
+ok(topTopics('bolna ejakulacija')[0]?.id==='bolna-ejakulacija', 'Upit bolna ejakulacija mora voditi na odgovarajuću temu');
+ok(topTopics('gubitak apetita')[0]?.id==='gubitak-apetita', 'Upit gubitak apetita mora voditi na odgovarajuću temu');
+ok(topTopics('tikovi')[0]?.id==='tikovi', 'Upit tikovi mora voditi na tikove');
+ok(topTopics('mucanje')[0]?.id==='mucanje', 'Upit mucanje mora voditi na mucanje');
+ok(topTopics('nocne more')[0]?.id==='nocne-more', 'Upit nocne more mora voditi na noćne more');
 for (const hiddenId of Object.keys(topicDuplicateOf)) {
   ok(!topTopics(topics.find(t=>t.id===hiddenId)?.title||hiddenId, 10).some(t=>t.id===hiddenId), 'Skrivena duplicate tema ne sme se vratiti u rezultate: '+hiddenId);
 }
