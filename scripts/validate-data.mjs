@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 511, 'Očekivano 511 tema, pronađeno ' + topics.length);
+ok(topics.length === 523, 'Očekivano 523 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -211,6 +211,11 @@ ok(topTopics('aortna stenoza')[0]?.id==='aortna-stenoza', 'Aortna stenoza mora b
 ok(topTopics('sibo')[0]?.id==='sibo', 'SIBO mora biti pronađen');
 ok(topTopics('skleritis')[0]?.id==='skleritis', 'Skleritis mora biti pronađen');
 ok(topTopics('niski neutrofili')[0]?.id==='neutropenija', 'Niski neutrofili moraju voditi na neutropeniju');
+ok(topTopics('agorafobija')[0]?.id==='agorafobija', 'Agorafobija mora biti pronađena');
+ok(topTopics('toksoplazmoza')[0]?.id==='toksoplazmoza', 'Toksoplazmoza mora biti pronađena');
+ok(topTopics('hiperemeza gravidarum')[0]?.id==='hiperemeza-gravidarum', 'Hiperemeza mora biti pronađena');
+ok(topTopics('rak stitne')[0]?.id==='rak-stitne', 'Rak štitne mora biti pronađen');
+ok(topTopics('multipli mijelom')[0]?.id==='multipli-mijelom', 'Multipli mijelom mora biti pronađen');
 ok(topTopics('addisonova bolest')[0]?.id==='addison', 'Legacy Addison tema mora voditi na canonical Addison');
 ok(topTopics('cushingov sindrom')[0]?.id==='cushing', 'Legacy Cushing tema mora voditi na canonical Cushing');
 ok(topTopics('hijatalna kila')[0]?.id==='hijatalna-hernija', 'Hijatalna kila mora voditi na canonical hijatalnu herniju');
