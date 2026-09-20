@@ -311,7 +311,7 @@ ok(topTopics('svrbi me uvo')[0]?.id==='svrab-u-uhu', 'Upit svrbi me uvo mora vod
 ok(topTopics('bol u rebrima')[0]?.id==='kostohondritis', 'Upit bol u rebrima mora voditi na kostohondritis');
 ok(topTopics('duple slike')[0]?.id==='diplopija', 'Upit duple slike mora voditi na diplopiju');
 ok(topTopics('ne mogu da mokrim')[0]?.id==='retencija-urina', 'Upit ne mogu da mokrim mora voditi na retenciju urina');
-ok(topTopics('krv u ispljuvku')[0]?.id==='hemoptizija', 'Upit krv u ispljuvku mora voditi na hemoptiziju');
+ok(topTopics('krv u ispljuvku')[0]?.id==='iskasljavanje-krvi', 'Upit krv u ispljuvku mora voditi na kanonsku temu iskašljavanja krvi');
 ok(topTopics('nizak libido')[0]?.id==='nizak-libido', 'Upit nizak libido mora voditi na slabiju seksualnu želju');
 ok(topTopics('bol pri odnosu')[0]?.id==='bol-pri-odnosu', 'Upit bol pri odnosu mora voditi na dispareuniju/simptom bola');
 ok(topTopics('krvarenje posle odnosa')[0]?.id==='krvarenje-posle-odnosa', 'Upit krvarenje posle odnosa mora voditi na odgovarajuću temu');
@@ -325,7 +325,10 @@ ok(topTopics('prsti menjaju boju na hladnoci')[0]?.id==='raynaud', 'Specifičan 
 ok(topTopics('bol u kuku')[0]?.id==='bol-u-kuku', 'Upit bol u kuku mora voditi na temu bola u kuku');
 ok(topTopics('spor puls')[0]?.id==='bradikardija', 'Upit spor puls mora voditi na bradikardiju');
 ok(topTopics('osip ispod grudi')[0]?.id==='intertrigo', 'Upit osip ispod grudi mora voditi na intertrigo');
-ok(topTopics('ujed zmije','torzija testisa','hipotermija','telo 34 stepena')[0]?.id==='ujed-zmije', 'Upit ujed zmije mora voditi na hitnu temu ujeda zmije');
+ok(topTopics('ujed zmije')[0]?.id==='ujed-zmije', 'Upit ujed zmije mora voditi na hitnu temu ujeda zmije');
+ok(topTopics('torzija testisa')[0]?.id==='torzija-testisa', 'Upit torzija testisa mora voditi na torziju testisa');
+ok(topTopics('hipotermija')[0]?.id==='hipotermija', 'Upit hipotermija mora voditi na hipotermiju');
+ok(topTopics('telo 34 stepena')[0]?.id==='hipotermija', 'Upit telo 34 stepena mora voditi na hipotermiju');
 ok(topTopics('zubni kamenac')[0]?.id==='zubni-kamenac', 'Upit zubni kamenac mora voditi na plak/kamenac');
 ok(topTopics('neuralgija trigeminusa')[0]?.id==='trigeminalna-neuralgija', 'Upit neuralgija trigeminusa mora voditi na trigeminalnu neuralgiju');
 ok(topTopics('bol ahilova tetiva')[0]?.id==='ahilova-tendinopatija', 'Upit bol ahilova tetiva mora voditi na Ahilovu tendinopatiju');
@@ -627,7 +630,7 @@ ok(index.includes("mozdani-udar-tia") && index.includes("naglo-gubljenje-vida") 
 ok(index.includes("function topicEmergencyBanner"), 'Nedostaje urgent upozorenje na detalju teme');
 const urgentRules=[
   /\b(bol|stezanje|pritisak|pece|pecenje)\b.{0,18}\bgrud(ima|i)?\b|\bgrud(ima|i)?\b.{0,18}\b(bol|stezanje|pritisak)\b/,
-  /\b(mozdani udar|slog|tia|mini stroke)\b|\b(slabost|utrnulost)\b.{0,22}\b(lic\w*|ruk\w*|nog\w*|jedn\w* stran\w*)\b|\b(lic\w*|ruk\w*|nog\w*)\b.{0,22}\b(slabost|utrnulost)\b|\b(problem|tesko|ne mogu)\b.{0,18}\b(govor\w*|da govorim)\b|\b(slabost|utrnulost)\b.{0,35}\b(govor\w*)\b|\b(iskrivilo lice|iskrivljeno lice|pao ugao usne|asimetrija lica)\b/,
+  /\b(mozdani udar|slog|tia|mini stroke)\b|\b(slabost|utrnulost)\b.{0,22}\b(lic\w*|ruk\w*|nog\w*|jedn\w* stran\w*)\b|\b(lic\w*|ruk\w*|nog\w*)\b.{0,22}\b(slabost|utrnulost)\b|\b(problem|tesko|ne mogu)\b.{0,18}\b(govor\w*|da govorim)\b|\b(slabost|utrnulost)\b.{0,35}\b(govor\w*)\b|\b(iskrivilo lice|iskrivljeno lice|pao ugao usne|asimetrija lica)\b|\blic\w*\b.{0,16}\biskrivi\w*\b/,
   /\b(ne vidim|gubitak vida|crna zavesa|naglo zamagljenje|naglo izgubio vid|naglo izgubila vid)\b|\bizgubi\w*\b.{0,14}\bvid\b/,
   /\b(gusim se|tesko disem|otezano disanje|jedva disem)\b|\bne (mogu|moze|mozes|mozemo) da dis\w*\b|\bpresta\w*.{0,12}\bdis\w*\b|\bne dis(?:e|em)\b(?!\s+na\s+nos)/,
   /\b(otok|oticanje)\b.{0,14}\b(usana|jezika|grla)\b|\banafilaks/i,
