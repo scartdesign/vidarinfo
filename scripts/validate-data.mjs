@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 523, 'Očekivano 523 tema, pronađeno ' + topics.length);
+ok(topics.length === 535, 'Očekivano 535 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -216,6 +216,12 @@ ok(topTopics('toksoplazmoza')[0]?.id==='toksoplazmoza', 'Toksoplazmoza mora biti
 ok(topTopics('hiperemeza gravidarum')[0]?.id==='hiperemeza-gravidarum', 'Hiperemeza mora biti pronađena');
 ok(topTopics('rak stitne')[0]?.id==='rak-stitne', 'Rak štitne mora biti pronađen');
 ok(topTopics('multipli mijelom')[0]?.id==='multipli-mijelom', 'Multipli mijelom mora biti pronađen');
+ok(topTopics('als')[0]?.id==='als', 'ALS mora biti pronađen');
+ok(topTopics('diabetes insipidus')[0]?.id==='diabetes-insipidus', 'Diabetes insipidus mora biti pronađen');
+ok(topTopics('pbc')[0]?.id==='pbc', 'PBC mora biti pronađen');
+ok(topTopics('psc')[0]?.id==='psc', 'PSC mora biti pronađen');
+ok(topTopics('familijarna hiperholesterolemija')[0]?.id==='familijarna-hiperholesterolemija', 'Familijarna hiperholesterolemija mora biti pronađena');
+ok(topTopics('septicni artritis')[0]?.id==='septicni-artritis', 'Septični artritis mora biti pronađen');
 ok(topTopics('addisonova bolest')[0]?.id==='addison', 'Legacy Addison tema mora voditi na canonical Addison');
 ok(topTopics('cushingov sindrom')[0]?.id==='cushing', 'Legacy Cushing tema mora voditi na canonical Cushing');
 ok(topTopics('hijatalna kila')[0]?.id==='hijatalna-hernija', 'Hijatalna kila mora voditi na canonical hijatalnu herniju');
