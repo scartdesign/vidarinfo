@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 547, 'Očekivano 547 tema, pronađeno ' + topics.length);
+ok(topics.length === 570, 'Očekivano 570 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -227,6 +227,12 @@ ok(topTopics('distonija')[0]?.id==='distonija', 'Distonija mora biti pronađena'
 ok(topTopics('retinitis pigmentosa')[0]?.id==='retinitis-pigmentosa', 'Retinitis pigmentosa mora biti pronađena');
 ok(topTopics('marfan')[0]?.id==='marfan-sindrom', 'Marfan mora biti pronađen');
 ok(topTopics('ehlers danlos')[0]?.id==='ehlers-danlos', 'EDS mora biti pronađen');
+ok(topTopics('angioedem')[0]?.id==='angioedem', 'Angioedem mora biti pronađen');
+ok(topTopics('urinarna retencija')[0]?.id==='urinarna-retencija', 'Urinarna retencija mora biti pronađena');
+ok(topTopics('kawasaki')[0]?.id==='kawasaki', 'Kawasaki mora biti pronađen');
+ok(topTopics('cisticna fibroza')[0]?.id==='cisticna-fibroza', 'Cistična fibroza mora biti pronađena');
+ok(topTopics('holangiokarcinom')[0]?.id==='holangiokarcinom', 'Holangiokarcinom mora biti pronađen');
+ok(topTopics('gist')[0]?.id==='gist', 'GIST mora biti pronađen');
 ok(topTopics('reaktivni artritis')[0]?.id==='reaktivni-artritis', 'Reaktivni artritis mora biti pronađen');
 ok(topTopics('addisonova bolest')[0]?.id==='addison', 'Legacy Addison tema mora voditi na canonical Addison');
 ok(topTopics('cushingov sindrom')[0]?.id==='cushing', 'Legacy Cushing tema mora voditi na canonical Cushing');
