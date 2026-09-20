@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 570, 'Očekivano 570 tema, pronađeno ' + topics.length);
+ok(topics.length === 566, 'Očekivano 566 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -234,10 +234,10 @@ ok(topTopics('cisticna fibroza')[0]?.id==='cisticna-fibroza', 'Cistična fibroza
 ok(topTopics('holangiokarcinom')[0]?.id==='holangiokarcinom', 'Holangiokarcinom mora biti pronađen');
 ok(topTopics('gist')[0]?.id==='gist', 'GIST mora biti pronađen');
 ok(topTopics('reaktivni artritis')[0]?.id==='reaktivni-artritis', 'Reaktivni artritis mora biti pronađen');
-ok(topTopics('addisonova bolest')[0]?.id==='addison', 'Legacy Addison tema mora voditi na canonical Addison');
-ok(topTopics('cushingov sindrom')[0]?.id==='cushing', 'Legacy Cushing tema mora voditi na canonical Cushing');
-ok(topTopics('hijatalna kila')[0]?.id==='hijatalna-hernija', 'Hijatalna kila mora voditi na canonical hijatalnu herniju');
-ok(topTopics('bartolinijeva cista')[0]?.id==='bartolinova-cista', 'Bartolinijeva cista mora voditi na canonical Bartolinovu cistu');
+ok(topTopics('addisonova bolest')[0]?.id==='addison', 'Addisonova bolest mora voditi na canonical Addison');
+ok(topTopics('cushingov sindrom')[0]?.id==='cushing', 'Cushingov sindrom mora voditi na canonical Cushing');
+ok(topTopics('hijatalna kila')[0]?.id==='hijatalna-hernija', 'Hijatalna kila mora voditi na hijatalnu herniju');
+ok(topTopics('bartolinijeva cista')[0]?.id==='bartolinova-cista', 'Bartolinijeva cista mora voditi na Bartolinovu cistu');
 ok(topTopics('gnojna angina')[0]?.id==='tonzilitis', 'Upit gnojna angina mora voditi na canonical tonzilitis');
 ok(topTopics('urastao nokat')[0]?.id==='urasli-nokat', 'Upit urastao nokat mora voditi na urasli nokat');
 ok(topTopics('tortikolis')[0]?.id==='vrat', 'Upit tortikolis mora voditi na bol i ukočenost vrata');
