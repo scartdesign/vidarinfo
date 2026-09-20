@@ -711,9 +711,18 @@ ok(!index.includes("...[sym.map(a=>[a,6])]"), 'Simptom scoring ne sme imati ugnj
 ok(index.includes("params.get('q')"), 'Render ne obnavlja pretragu iz URL-a');
 ok(index.includes("data-copy-search") && index.includes("navigator.clipboard.writeText(url)"), 'Nedostaje kopiranje linka pretrage');
 ok(index.includes("function appStatusCard") && index.includes("connection-pill"), 'Nedostaje status baze i mreže u Podešavanjima');
-ok(index.includes("async function __vidarJson"), 'Nedostaje resilient JSON loader');
-ok(index.includes("raw.githubusercontent.com") && index.includes("cdn.jsdelivr.net"), 'Preview loader nema GitHub Raw/jsDelivr fallback');
-ok(index.includes("__vidarJson('data/topics.json')") && index.includes("__vidarJson('data/meds.json')") && index.includes("__vidarJson('data/naturals.json')"), 'Sve tri baze moraju koristiti resilient loader');
+const standaloneRuntime = index.includes('let DB={"topics":[') && index.includes('let MEDS=[') && index.includes('let NATURALS=[') && !index.includes('fetch(');
+const resilientRuntime = index.includes("async function __vidarJson") &&
+  index.includes("raw.githubusercontent.com") &&
+  index.includes("cdn.jsdelivr.net") &&
+  index.includes("__vidarJson('data/topics.json')") &&
+  index.includes("__vidarJson('data/meds.json')") &&
+  index.includes("__vidarJson('data/naturals.json')");
+ok(standaloneRuntime || resilientRuntime, 'Index mora imati standalone ugrađene baze ili resilient JSON loader');
+if(!standaloneRuntime){
+  ok(index.includes("raw.githubusercontent.com") && index.includes("cdn.jsdelivr.net"), 'Preview loader nema GitHub Raw/jsDelivr fallback');
+  ok(index.includes("__vidarJson('data/topics.json')") && index.includes("__vidarJson('data/meds.json')") && index.includes("__vidarJson('data/naturals.json')"), 'Sve tri baze moraju koristiti resilient loader');
+}
 ok(index.includes("window.addEventListener('offline'") && index.includes("window.addEventListener('online'"), 'Nedostaje online/offline status');
 ok(index.includes("searchShareButton(state.q)") && index.includes("searchShareButton(state.natQ)") && index.includes("searchShareButton(state.medQ)"), 'Link pretrage nije dostupan u sva tri kataloga');
 ok(sw.includes('/data/topics.json') && sw.includes('/data/meds.json') && sw.includes('/data/naturals.json'), 'Service worker ne kešira sve tri baze podataka za offline rad');
