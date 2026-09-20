@@ -211,6 +211,10 @@ ok(topTopics('aortna stenoza')[0]?.id==='aortna-stenoza', 'Aortna stenoza mora b
 ok(topTopics('sibo')[0]?.id==='sibo', 'SIBO mora biti pronađen');
 ok(topTopics('skleritis')[0]?.id==='skleritis', 'Skleritis mora biti pronađen');
 ok(topTopics('niski neutrofili')[0]?.id==='neutropenija', 'Niski neutrofili moraju voditi na neutropeniju');
+ok(topTopics('addisonova bolest')[0]?.id==='addison', 'Legacy Addison tema mora voditi na canonical Addison');
+ok(topTopics('cushingov sindrom')[0]?.id==='cushing', 'Legacy Cushing tema mora voditi na canonical Cushing');
+ok(topTopics('hijatalna kila')[0]?.id==='hijatalna-hernija', 'Hijatalna kila mora voditi na canonical hijatalnu herniju');
+ok(topTopics('bartolinijeva cista')[0]?.id==='bartolinova-cista', 'Bartolinijeva cista mora voditi na canonical Bartolinovu cistu');
 ok(topTopics('gnojna angina')[0]?.id==='tonzilitis', 'Upit gnojna angina mora voditi na canonical tonzilitis');
 ok(topTopics('urastao nokat')[0]?.id==='urasli-nokat', 'Upit urastao nokat mora voditi na urasli nokat');
 ok(topTopics('tortikolis')[0]?.id==='vrat', 'Upit tortikolis mora voditi na bol i ukočenost vrata');
