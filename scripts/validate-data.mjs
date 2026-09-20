@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 600, 'Očekivano 600 tema, pronađeno ' + topics.length);
+ok(topics.length === 612, 'Očekivano 612 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -482,6 +482,20 @@ ok(topTopics('mikroskopski kolitis')[0]?.id==='mikroskopski-kolitis', 'Upit mikr
 ok(topTopics('gilbertov sindrom')[0]?.id==='gilbertov-sindrom', 'Upit Gilbertov sindrom mora voditi na Gilbert');
 ok(topTopics('policisticni bubrezi')[0]?.id==='policisticna-bolest-bubrega', 'Upit policisticni bubrezi mora voditi na ADPKD');
 ok(['divertikulitis'].includes(topTopics('divertikuloza')[0]?.id), 'Upit divertikuloza mora voditi na postojeću divertikularnu bolest');
+ok(topTopics('lordoza')[0]?.id==='lordoza', 'Upit lordoza mora voditi na temu Lordoza');
+ok(topTopics('rotatorna manzetna')[0]?.id==='rotatorna-manzetna', 'Upit rotatorna manzetna mora voditi na povredu rotatorne manžetne');
+ok(topTopics('osteopenija')[0]?.id==='osteopenija', 'Upit osteopenija mora voditi na osteopeniju');
+ok(topTopics('prelom kosti')[0]?.id==='prelom-kosti', 'Upit prelom kosti mora voditi na sumnju na prelom');
+ok(topTopics('iscasenje')[0]?.id==='iscasenje-zgloba', 'Upit iscasenje mora voditi na iščašenje');
+ok(topTopics('radikulopatija')[0]?.id==='radikulopatija', 'Upit radikulopatija mora voditi na radikulopatiju');
+ok(topTopics('abrazija roznjace')[0]?.id==='abrazija-roznjace', 'Upit abrazija roznjace mora voditi na kornealnu abraziju');
+ok(topTopics('otitis media')[0]?.id==='akutni-otitis-media', 'Upit otitis media mora voditi na upalu srednjeg uha');
+ok(topTopics('peritonzilarni apsces')[0]?.id==='peritonzilarni-apsces', 'Upit peritonzilarni apsces mora voditi na quinsy');
+ok(topTopics('proktitis')[0]?.id==='proktitis', 'Upit proktitis mora voditi na proktitis');
+ok(topTopics('fibrocisticne dojke')[0]?.id==='fibrocisticne-dojke', 'Upit fibrocisticne dojke mora voditi na benignu temu dojki');
+ok(topTopics('vaginitis')[0]?.id==='vaginitis', 'Upit vaginitis mora voditi na vaginitis');
+ok(topTopics('artroza kuka')[0]?.id==='osteoartritis', 'Upit artroza kuka mora voditi na osteoartritis');
+ok(topTopics('autizam odrasli')[0]?.id==='autizam', 'Upit autizam odrasli mora voditi na autizam');
 for (const hiddenId of Object.keys(topicDuplicateOf)) {
   ok(!topTopics(topics.find(t=>t.id===hiddenId)?.title||hiddenId, 10).some(t=>t.id===hiddenId), 'Skrivena duplicate tema ne sme se vratiti u rezultate: '+hiddenId);
 }
