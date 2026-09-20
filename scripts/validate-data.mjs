@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 493, 'Očekivano 493 tema, pronađeno ' + topics.length);
+ok(topics.length === 511, 'Očekivano 511 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -206,6 +206,11 @@ ok(topTopics('addisonova bolest')[0]?.id==='addisonova-bolest', 'Upit Addisonova
 ok(topTopics('adenomioza')[0]?.id==='adenomioza', 'Upit adenomioza mora voditi na adenomiozu');
 ok(topTopics('naglo ne cujem')[0]?.id==='iznenadni-gubitak-sluha', 'Upit naglo ne cujem mora voditi na iznenadni gubitak sluha');
 ok(topTopics('niski trombociti')[0]?.id==='trombocitopenija', 'Upit niski trombociti mora voditi na trombocitopeniju');
+ok(topTopics('svt')[0]?.id==='svt', 'SVT mora ostati prepoznat');
+ok(topTopics('aortna stenoza')[0]?.id==='aortna-stenoza', 'Aortna stenoza mora biti pronađena');
+ok(topTopics('sibo')[0]?.id==='sibo', 'SIBO mora biti pronađen');
+ok(topTopics('skleritis')[0]?.id==='skleritis', 'Skleritis mora biti pronađen');
+ok(topTopics('niski neutrofili')[0]?.id==='neutropenija', 'Niski neutrofili moraju voditi na neutropeniju');
 ok(topTopics('gnojna angina')[0]?.id==='tonzilitis', 'Upit gnojna angina mora voditi na canonical tonzilitis');
 ok(topTopics('urastao nokat')[0]?.id==='urasli-nokat', 'Upit urastao nokat mora voditi na urasli nokat');
 ok(topTopics('tortikolis')[0]?.id==='vrat', 'Upit tortikolis mora voditi na bol i ukočenost vrata');
