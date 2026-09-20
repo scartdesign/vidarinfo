@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 473, 'Očekivano 473 tema, pronađeno ' + topics.length);
+ok(topics.length === 493, 'Očekivano 493 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -200,6 +200,12 @@ ok(topTopics('promrzline')[0]?.id==='promrzline', 'Upit promrzline mora voditi n
 ok(topTopics('alergija na sunce')[0]?.id==='alergija-sunce', 'Upit alergija na sunce mora voditi na PMLE');
 ok(topTopics('viseci fibromi')[0]?.id==='viseci-fibromi', 'Upit viseci fibromi mora voditi na skin tags');
 ok(topTopics('petni trn')[0]?.id==='plantarni-fascitis', 'Upit petni trn mora voditi na plantarni fascitis');
+ok(topTopics('esencijalni tremor')[0]?.id==='esencijalni-tremor', 'Upit esencijalni tremor mora voditi na esencijalni tremor');
+ok(topTopics('svt')[0]?.id==='svt', 'Upit SVT mora voditi na supraventrikularnu tahikardiju');
+ok(topTopics('addisonova bolest')[0]?.id==='addisonova-bolest', 'Upit Addisonova bolest mora voditi na adrenalnu insuficijenciju');
+ok(topTopics('adenomioza')[0]?.id==='adenomioza', 'Upit adenomioza mora voditi na adenomiozu');
+ok(topTopics('naglo ne cujem')[0]?.id==='iznenadni-gubitak-sluha', 'Upit naglo ne cujem mora voditi na iznenadni gubitak sluha');
+ok(topTopics('niski trombociti')[0]?.id==='trombocitopenija', 'Upit niski trombociti mora voditi na trombocitopeniju');
 ok(topTopics('gnojna angina')[0]?.id==='tonzilitis', 'Upit gnojna angina mora voditi na canonical tonzilitis');
 ok(topTopics('urastao nokat')[0]?.id==='urasli-nokat', 'Upit urastao nokat mora voditi na urasli nokat');
 ok(topTopics('tortikolis')[0]?.id==='vrat', 'Upit tortikolis mora voditi na bol i ukočenost vrata');
