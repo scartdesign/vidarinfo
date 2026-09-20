@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 592, 'Očekivano 592 tema, pronađeno ' + topics.length);
+ok(topics.length === 600, 'Očekivano 600 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -244,6 +244,11 @@ ok(topTopics('rak larinksa')[0]?.id==='rak-larinksa', 'Rak larinksa mora biti pr
 ok(topTopics('orbitalni celulitis')[0]?.id==='orbitalni-celulitis', 'Orbitalni celulitis mora biti pronađen');
 ok(topTopics('hipopituitarizam')[0]?.id==='hipopituitarizam', 'Hipopituitarizam mora biti pronađen');
 ok(topTopics('melazma')[0]?.id==='melazma', 'Melazma mora biti pronađena');
+ok(topTopics('nefritski sindrom')[0]?.id==='nefritski-sindrom', 'Nefritski sindrom mora biti pronađen');
+ok(topTopics('alpha 1 antitrypsin deficiency')[0]?.id==='alfa1-antitripsin', 'Alfa-1 antitripsin deficit mora biti pronađen');
+ok(topTopics('hepatitis d')[0]?.id==='hepatitis-d', 'Hepatitis D mora biti pronađen');
+ok(topTopics('cauda equina')[0]?.id==='cauda-equina', 'Cauda equina mora biti pronađena');
+ok(topTopics('kompresija kicmene mozdine')[0]?.id==='kompresija-kicmene-mozdine', 'Kompresija kičmene moždine mora biti pronađena');
 ok(topTopics('reaktivni artritis')[0]?.id==='reaktivni-artritis', 'Reaktivni artritis mora biti pronađen');
 ok(topTopics('addisonova bolest')[0]?.id==='addison', 'Addisonova bolest mora voditi na canonical Addison');
 ok(topTopics('cushingov sindrom')[0]?.id==='cushing', 'Cushingov sindrom mora voditi na canonical Cushing');
