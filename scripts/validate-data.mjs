@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 639, 'Očekivano 639 tema, pronađeno ' + topics.length);
+ok(topics.length === 643, 'Očekivano 643 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -526,6 +526,14 @@ ok(topTopics('pyoderma gangrenosum')[0]?.id==='pyoderma-gangrenosum', 'Pyoderma 
 ok(topTopics('okularna rozacea')[0]?.id==='okularna-rozacea', 'Okularna rozacea mora biti prvi rezultat');
 ok(topTopics('leptospiroza')[0]?.id==='leptospiroza', 'Leptospiroza mora biti prvi rezultat');
 ok(topTopics('night terrors')[0]?.id==='parasomnije', 'Night terrors mora voditi na parasomnije');
+ok(topTopics('shigeloza')[0]?.id==='shigeloza', 'Shigeloza mora biti prvi rezultat');
+ok(topTopics('anejakulacija')[0]?.id==='anejakulacija', 'Anejakulacija mora biti prvi rezultat');
+ok(topTopics('polimiozitis')[0]?.id==='inflamatorne-miopatije', 'Polimiozitis mora voditi na inflamatorne miopatije');
+ok(topTopics('dermatomiozitis')[0]?.id==='inflamatorne-miopatije', 'Dermatomiozitis mora voditi na inflamatorne miopatije');
+ok(topTopics('mondor dojke')[0]?.id==='mondor-dojke', 'Mondor dojke mora biti prvi rezultat');
+ok(topTopics('salmoneloza')[0]?.id==='trovanje-hranom', 'Salmoneloza mora voditi na trovanje hranom');
+ok(topTopics('ankilozirajuci spondilitis')[0]?.id==='ankilozantni-spondilitis', 'Ankilozirajući spondilitis mora voditi na postojeću temu');
+ok(topTopics('sklerodermija')[0]?.id==='sistemska-skleroza', 'Sklerodermija mora voditi na sistemsku sklerozu');
 for (const hiddenId of Object.keys(topicDuplicateOf)) {
   ok(!topTopics(topics.find(t=>t.id===hiddenId)?.title||hiddenId, 10).some(t=>t.id===hiddenId), 'Skrivena duplicate tema ne sme se vratiti u rezultate: '+hiddenId);
 }
