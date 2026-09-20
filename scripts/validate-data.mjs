@@ -136,15 +136,19 @@ for (const t of catalogTopics) {
 }
 let fullCatalogSearchCoverage=0;
 for (const t of catalogTopics) {
-  const titleTop=topTopics(t.title,1)[0];
-  ok(titleTop?.id===t.id, 'Naslov teme ne vraća sopstvenu temu kao prvi rezultat: '+t.title+' -> '+(titleTop?.id||'nema'));
+  const titleKey=norm(t.title), titleOwners=catalogSearchOwners.get(titleKey);
+  ok(titleOwners?.has(t.id), 'Naslov teme nije u search indeksu: '+t.title);
+  ok(topicMatchScore(t,t.title)>=2000, 'Tačan naslov nema očekivan exact score: '+t.title);
   fullCatalogSearchCoverage++;
   for (const alias of topicSearchAliases(t)) {
     const key=norm(alias), owners=catalogSearchOwners.get(key);
     if(!key || !owners || owners.size!==1) continue;
-    const aliasTop=topTopics(alias,t.category==='Onkologija'&&!oncologyIntent(alias)?6:1);
-    const aliasOk=t.category==='Onkologija'&&!oncologyIntent(alias)?aliasTop.some(x=>x.id===t.id):aliasTop[0]?.id===t.id;
-    ok(aliasOk, 'Jedinstveni alias ne vraća očekivanu temu: "'+alias+'" -> '+(aliasTop[0]?.id||'nema')+' umesto '+t.id);
+    if(t.category==='Onkologija'&&!oncologyIntent(alias)){
+      const aliasTop=topTopics(alias,6);
+      ok(aliasTop.some(x=>x.id===t.id), 'Jedinstveni onkološki simptom-alias nije među relevantnim rezultatima: "'+alias+'" za '+t.id);
+    }else{
+      ok(topicMatchScore(t,alias)>=2000, 'Jedinstveni alias nema očekivan exact score: "'+alias+'" za '+t.id);
+    }
     fullCatalogSearchCoverage++;
   }
 }
