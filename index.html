@@ -2116,7 +2116,7 @@ if('serviceWorker' in navigator && location.protocol!=='file:'){
 window.addEventListener('online',()=>{showToast('Veza je ponovo dostupna.');if(state?.view==='settings')render()});
 window.addEventListener('offline',()=>{showToast('Offline režim — koristi se sačuvani sadržaj.');if(state?.view==='settings')render()});
 
-const TOPIC_DUPLICATE_OF={'hobl':'copd','hronicna-bolest-bubrega':'hronicna-bubrezna-bolest','masna-jetra-masld':'masna-jetra','tonsilitis':'tonzilitis'};
+const TOPIC_DUPLICATE_OF={'hobl':'copd','hronicna-bolest-bubrega':'hronicna-bubrezna-bolest','masna-jetra-masld':'masna-jetra','tonsilitis':'tonzilitis','addisonova-bolest':'addison','cushing-sindrom':'cushing','hijatalna-kila':'hijatalna-hernija','bartolinijeva-cista':'bartolinova-cista'};
 function canonicalTopicId(id){return TOPIC_DUPLICATE_OF[id]||id}
 function topicById(id){let cid=canonicalTopicId(id);return DB.topics.find(t=>t.id===cid)}
 function canonicalTopicIds(ids){return [...new Set((ids||[]).map(canonicalTopicId).filter(id=>DB.topics.some(t=>t.id===id)))]}
