@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 702, 'Očekivano 702 tema, pronađeno ' + topics.length);
+ok(topics.length === 721, 'Očekivano 721 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -227,6 +227,25 @@ ok(topTopics('promrzline')[0]?.id==='promrzline', 'Upit promrzline mora voditi n
 ok(topTopics('alergija na sunce')[0]?.id==='alergija-sunce', 'Upit alergija na sunce mora voditi na PMLE');
 ok(topTopics('viseci fibromi')[0]?.id==='viseci-fibromi', 'Upit viseci fibromi mora voditi na skin tags');
 ok(topTopics('petni trn')[0]?.id==='plantarni-fascitis', 'Upit petni trn mora voditi na plantarni fascitis');
+ok(topTopics('upala pljuvacne zlezde')[0]?.id==='sialadenitis', 'Upit upala pljuvacne zlezde mora voditi na sialadenitis');
+ok(topTopics('analni apsces')[0]?.id==='analni-apsces', 'Upit analni apsces mora voditi na analni apsces');
+ok(topTopics('ascites')[0]?.id==='ascites', 'Upit ascites mora voditi na ascites');
+ok(topTopics('trnjenje spoljne strane butine')[0]?.id==='meralgia-parestetika', 'Upit za spoljnu stranu butine mora voditi na meralgiu');
+ok(topTopics('thoracic outlet syndrome')[0]?.id==='torakalni-outlet', 'TOS upit mora voditi na sindrom torakalnog izlaza');
+ok(topTopics('spinalna stenoza')[0]?.id==='spinalna-stenoza', 'Upit spinalna stenoza mora voditi na spinalnu stenozu');
+ok(topTopics('spondilolisteza')[0]?.id==='spondilolisteza', 'Upit spondilolisteza mora voditi na spondilolistezu');
+ok(topTopics('pitirijaza rosea')[0]?.id==='pitirijaza-rosea', 'Upit pitirijaza rosea mora voditi na pityriasis rosea');
+ok(topTopics('telogen effluvium')[0]?.id==='telogen-effluvium', 'Upit telogen effluvium mora voditi na telogeni efluvijum');
+ok(topTopics('osip posle leka')[0]?.id==='osip-od-leka', 'Upit osip posle leka mora voditi na reakciju na lek');
+ok(topTopics('glue ear')[0]?.id==='otitis-sa-izlivom', 'Upit glue ear mora voditi na otitis sa izlivom');
+ok(topTopics('vocal cord dysfunction')[0]?.id==='vokalna-disfunkcija', 'VCD upit mora voditi na disfunkciju glasnih žica');
+ok(topTopics('adenom hipofize')[0]?.id==='adenom-hipofize', 'Upit adenom hipofize mora voditi na adenom hipofize');
+ok(topTopics('molarna trudnoca')[0]?.id==='molarna-trudnoca', 'Upit molarna trudnoca mora voditi na molarnu trudnoću');
+ok(topTopics('inkontinencija stolice')[0]?.id==='inkontinencija-stolice', 'Upit inkontinencija stolice mora voditi na fekalnu inkontinenciju');
+ok(topTopics('visok kalijum')[0]?.id==='hiperkalemija', 'Upit visok kalijum mora voditi na hiperkalemiju');
+ok(topTopics('nizak kalijum')[0]?.id==='hipokalemija', 'Upit nizak kalijum mora voditi na hipokalemiju');
+ok(topTopics('visok kalcijum')[0]?.id==='hiperkalcemija', 'Upit visok kalcijum mora voditi na hiperkalcemiju');
+ok(topTopics('nizak kalcijum')[0]?.id==='hipokalcemija', 'Upit nizak kalcijum mora voditi na hipokalcemiju');
 ok(topTopics('esencijalni tremor')[0]?.id==='esencijalni-tremor', 'Upit esencijalni tremor mora voditi na esencijalni tremor');
 ok(topTopics('svt')[0]?.id==='svt', 'Upit SVT mora voditi na supraventrikularnu tahikardiju');
 ok(topTopics('addisonova bolest')[0]?.id==='addison', 'Upit Addisonova bolest mora voditi na adrenalnu insuficijenciju');
@@ -617,6 +636,32 @@ ok(topTopics('ketoni u mokraci')[0]?.id==='urin-test-traka', 'Ketoni u mokraći 
 for (const hiddenId of Object.keys(topicDuplicateOf)) {
   ok(!topTopics(topics.find(t=>t.id===hiddenId)?.title||hiddenId, 10).some(t=>t.id===hiddenId), 'Skrivena duplicate tema ne sme se vratiti u rezultate: '+hiddenId);
 }
+
+// Automatski coverage audit: svaka canonical tema mora biti pretraživa po svom tačnom naslovu.
+// Jedinstveni aliasi (koji ne pripadaju više tema) takođe moraju vratiti odgovarajuću temu.
+for (const t of catalogTopics) {
+  const titleResults = topTopics(t.title, 5);
+  ok(titleResults.some(x=>x.id===t.id), 'Tema nije pretraživa po naslovu: '+t.id+' / '+t.title);
+}
+const aliasOwners = new Map();
+for (const t of catalogTopics) {
+  for (const alias of topicSearchAliases(t)) {
+    const key = norm(alias);
+    if (!key || key.length < 4) continue;
+    if (!aliasOwners.has(key)) aliasOwners.set(key, []);
+    aliasOwners.get(key).push(t.id);
+  }
+}
+let uniqueAliasChecks = 0;
+for (const [alias, owners] of aliasOwners.entries()) {
+  const uniq = [...new Set(owners)];
+  if (uniq.length !== 1) continue;
+  const id = uniq[0];
+  const results = topTopics(alias, 5);
+  ok(results.some(x=>x.id===id), 'Jedinstveni alias ne pronalazi svoju temu: '+alias+' -> '+id);
+  uniqueAliasChecks++;
+}
+ok(uniqueAliasChecks >= 400, 'Premalo jedinstvenih alias coverage provera: '+uniqueAliasChecks);
 ok(index.includes("if(isConversationalQuery(state.q)&&topics.length&&!intent.natural&&!intent.med)return openTopicResults(state.q)"), 'Nedostaje zaštita za duge/nejasne razgovorne upite');
 ok(index.includes("$$('[data-show-naturals]').forEach"), 'Globalni handler za Prirodno mora koristiti querySelectorAll');
 ok(index.includes("$$('[data-show-all]').forEach"), 'Globalni handler za povezane teme mora koristiti querySelectorAll');
@@ -711,18 +756,9 @@ ok(!index.includes("...[sym.map(a=>[a,6])]"), 'Simptom scoring ne sme imati ugnj
 ok(index.includes("params.get('q')"), 'Render ne obnavlja pretragu iz URL-a');
 ok(index.includes("data-copy-search") && index.includes("navigator.clipboard.writeText(url)"), 'Nedostaje kopiranje linka pretrage');
 ok(index.includes("function appStatusCard") && index.includes("connection-pill"), 'Nedostaje status baze i mreže u Podešavanjima');
-const standaloneRuntime = index.includes('let DB={"topics":[') && index.includes('let MEDS=[') && index.includes('let NATURALS=[') && !index.includes('fetch(');
-const resilientRuntime = index.includes("async function __vidarJson") &&
-  index.includes("raw.githubusercontent.com") &&
-  index.includes("cdn.jsdelivr.net") &&
-  index.includes("__vidarJson('data/topics.json')") &&
-  index.includes("__vidarJson('data/meds.json')") &&
-  index.includes("__vidarJson('data/naturals.json')");
-ok(standaloneRuntime || resilientRuntime, 'Index mora imati standalone ugrađene baze ili resilient JSON loader');
-if(!standaloneRuntime){
-  ok(index.includes("raw.githubusercontent.com") && index.includes("cdn.jsdelivr.net"), 'Preview loader nema GitHub Raw/jsDelivr fallback');
-  ok(index.includes("__vidarJson('data/topics.json')") && index.includes("__vidarJson('data/meds.json')") && index.includes("__vidarJson('data/naturals.json')"), 'Sve tri baze moraju koristiti resilient loader');
-}
+ok(index.includes("async function __vidarJson"), 'Nedostaje resilient JSON loader');
+ok(index.includes("raw.githubusercontent.com") && index.includes("cdn.jsdelivr.net"), 'Preview loader nema GitHub Raw/jsDelivr fallback');
+ok(index.includes("__vidarJson('data/topics.json')") && index.includes("__vidarJson('data/meds.json')") && index.includes("__vidarJson('data/naturals.json')"), 'Sve tri baze moraju koristiti resilient loader');
 ok(index.includes("window.addEventListener('offline'") && index.includes("window.addEventListener('online'"), 'Nedostaje online/offline status');
 ok(index.includes("searchShareButton(state.q)") && index.includes("searchShareButton(state.natQ)") && index.includes("searchShareButton(state.medQ)"), 'Link pretrage nije dostupan u sva tri kataloga');
 ok(sw.includes('/data/topics.json') && sw.includes('/data/meds.json') && sw.includes('/data/naturals.json'), 'Service worker ne kešira sve tri baze podataka za offline rad');
@@ -762,5 +798,7 @@ console.log(JSON.stringify({
   naturals: naturals.length,
   medLinks: Object.keys(medLinks).length,
   searchRegression: 'OK',
+  canonicalTitleCoverage: catalogTopics.length,
+  uniqueAliasCoverage: uniqueAliasChecks,
   fullCatalogSearchCoverage
 }, null, 2));
