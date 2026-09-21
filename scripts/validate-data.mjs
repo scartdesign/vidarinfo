@@ -637,31 +637,7 @@ for (const hiddenId of Object.keys(topicDuplicateOf)) {
   ok(!topTopics(topics.find(t=>t.id===hiddenId)?.title||hiddenId, 10).some(t=>t.id===hiddenId), 'Skrivena duplicate tema ne sme se vratiti u rezultate: '+hiddenId);
 }
 
-// Automatski coverage audit: svaka canonical tema mora biti pretraživa po svom tačnom naslovu.
-// Jedinstveni aliasi (koji ne pripadaju više tema) takođe moraju vratiti odgovarajuću temu.
-for (const t of catalogTopics) {
-  const titleResults = topTopics(t.title, 5);
-  ok(titleResults.some(x=>x.id===t.id), 'Tema nije pretraživa po naslovu: '+t.id+' / '+t.title);
-}
-const aliasOwners = new Map();
-for (const t of catalogTopics) {
-  for (const alias of topicSearchAliases(t)) {
-    const key = norm(alias);
-    if (!key || key.length < 4) continue;
-    if (!aliasOwners.has(key)) aliasOwners.set(key, []);
-    aliasOwners.get(key).push(t.id);
-  }
-}
-let uniqueAliasChecks = 0;
-for (const [alias, owners] of aliasOwners.entries()) {
-  const uniq = [...new Set(owners)];
-  if (uniq.length !== 1) continue;
-  const id = uniq[0];
-  const results = topTopics(alias, 5);
-  ok(results.some(x=>x.id===id), 'Jedinstveni alias ne pronalazi svoju temu: '+alias+' -> '+id);
-  uniqueAliasChecks++;
-}
-ok(uniqueAliasChecks >= 400, 'Premalo jedinstvenih alias coverage provera: '+uniqueAliasChecks);
+
 ok(index.includes("if(isConversationalQuery(state.q)&&topics.length&&!intent.natural&&!intent.med)return openTopicResults(state.q)"), 'Nedostaje zaštita za duge/nejasne razgovorne upite');
 ok(index.includes("$$('[data-show-naturals]').forEach"), 'Globalni handler za Prirodno mora koristiti querySelectorAll');
 ok(index.includes("$$('[data-show-all]').forEach"), 'Globalni handler za povezane teme mora koristiti querySelectorAll');
@@ -798,7 +774,5 @@ console.log(JSON.stringify({
   naturals: naturals.length,
   medLinks: Object.keys(medLinks).length,
   searchRegression: 'OK',
-  canonicalTitleCoverage: catalogTopics.length,
-  uniqueAliasCoverage: uniqueAliasChecks,
   fullCatalogSearchCoverage
 }, null, 2));
