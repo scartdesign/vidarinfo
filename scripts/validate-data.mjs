@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 708, 'Očekivano 708 tema, pronađeno ' + topics.length);
+ok(topics.length === 707, 'Očekivano 707 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -617,7 +617,7 @@ ok(topTopics('ketoni u mokraci')[0]?.id==='urin-test-traka', 'Ketoni u mokraći 
 ok(topTopics('tinea versicolor')[0]?.id==='pityriasis-versicolor', 'Tinea versicolor mora voditi na pityriasis versicolor');
 ok(topTopics('okidacki prst')[0]?.id==='trigger-finger', 'Okidački prst mora voditi na trigger finger');
 ok(topTopics('bartolinova cista')[0]?.id==='bartolinijeva-cista', 'Bartolinova cista mora voditi na Bartolinijevu cistu');
-ok(topTopics('gilbert sindrom')[0]?.id==='gilbert-sindrom', 'Gilbert sindrom mora voditi na Gilbertov sindrom');
+ok(topTopics('gilbert sindrom')[0]?.id==='gilbertov-sindrom', 'Gilbert sindrom mora voditi na Gilbertov sindrom');
 ok(topTopics('puls skoci kad ustanem')[0]?.id==='pots', 'Puls skoči kad ustanem mora voditi na PoTS');
 ok(topTopics('overactive bladder')[0]?.id==='prekomerno-aktivna-besika', 'Overactive bladder mora voditi na prekomerno aktivnu bešiku');
 ok(topTopics('bell paraliza')[0]?.id==='bellova-paraliza', 'Bell paraliza mora voditi na Bellovu paralizu');
