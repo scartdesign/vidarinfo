@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 702, 'Očekivano 702 tema, pronađeno ' + topics.length);
+ok(topics.length === 769, 'Očekivano 769 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -205,6 +205,33 @@ ok(topTopics('bol u trtici')[0]?.id==='bol-u-trtici', 'Upit bol u trtici mora vo
 ok(topTopics('shin splints')[0]?.id==='shin-splints', 'Upit shin splints mora voditi na bol duž cevanice');
 ok(topTopics('dupuytren')[0]?.id==='dupuytren', 'Upit dupuytren mora voditi na Dupuytrenovu kontrakturu');
 ok(topTopics('prelom rebra')[0]?.id==='prelom-rebra', 'Upit prelom rebra mora voditi na prelom/nagnječenje rebra');
+ok(topTopics('tinea versicolor')[0]?.id==='pitirijaza-versicolor', 'Upit tinea versicolor mora voditi na pitirijazu versicolor');
+ok(topTopics('alergija na hladnocu')[0]?.id==='hladna-urtikarija', 'Upit alergija na hladnocu mora voditi na hladnu urtikariju');
+ok(topTopics('dermografizam')[0]?.id==='dermografizam', 'Upit dermografizam mora voditi na dermografizam');
+ok(topTopics('alergija na lateks')[0]?.id==='alergija-lateks', 'Upit alergija na lateks mora voditi na alergiju na lateks');
+ok(topTopics('epiglotitis')[0]?.id==='epiglotitis', 'Upit epiglotitis mora voditi na epiglotitis');
+ok(topTopics('barotrauma sinusa')[0]?.id==='barotrauma-sinusa', 'Upit barotrauma sinusa mora voditi na barotraumu sinusa');
+ok(topTopics('ocna migrena')[0]?.id==='retinalna-migrena', 'Upit ocna migrena mora voditi na retinalnu migrenu');
+ok(topTopics('dry socket')[0]?.id==='suva-alveola', 'Upit dry socket mora voditi na suvu alveolu');
+ok(topTopics('hellp')[0]?.id==='hellp-sindrom', 'Upit HELLP mora voditi na HELLP sindrom');
+ok(topTopics('galaktokela')[0]?.id==='galaktokela', 'Upit galaktokela mora voditi na galaktokelu');
+ok(topTopics('ekstrasistole')[0]?.id==='ekstrasistole', 'Upit ekstrasistole mora voditi na ekstrasistole');
+ok(topTopics('wpw')[0]?.id==='wpw', 'Upit WPW mora voditi na WPW');
+ok(topTopics('venska insuficijencija')[0]?.id==='hronicna-venska-insuficijencija', 'Upit venska insuficijencija mora voditi na CVI');
+ok(topTopics('hipernatremija')[0]?.id==='hipernatremija', 'Upit hipernatremija mora voditi na hipernatremiju');
+ok(topTopics('enureza')[0]?.id==='enureza-dete', 'Upit enureza mora voditi na noćno mokrenje kod deteta');
+ok(topTopics('temenjaca')[0]?.id==='temenjaca', 'Upit temenjaca mora voditi na temenjaču');
+ok(topTopics('burnout')[0]?.id==='sagorevanje-burnout', 'Upit burnout mora voditi na sagorevanje');
+ok(topTopics('skripanje u kolenu')[0]?.id==='koleno', 'Upit skripanje u kolenu mora voditi na bol u kolenu');
+ok(topTopics('otekao skocni zglob')[0]?.id==='bol-clanak', 'Upit otekao skocni zglob mora voditi na članak');
+ok(topTopics('alergija lateks')[0]?.id==='alergija-lateks', 'Upit alergija lateks mora voditi na alergiju na lateks');
+ok(topTopics('hiperakuza')[0]?.id==='hiperakuza', 'Upit hiperakuza mora voditi na hiperakuzu');
+ok(topTopics('autofonija')[0]?.id==='eustahijeva-tuba', 'Upit autofonija mora voditi na Eustahijevu tubu');
+ok(topTopics('trizmus')[0]?.id==='trizmus', 'Upit trizmus mora voditi na trizmus');
+ok(topTopics('prekomerno mokrenje')[0]?.id==='poliurija', 'Upit prekomerno mokrenje mora voditi na poliuriju');
+ok(topTopics('trombocitoza')[0]?.id==='trombocitoza', 'Upit trombocitoza mora voditi na trombocitozu');
+ok(topTopics('somatizacija')[0]?.id==='somatski-simptomi', 'Upit somatizacija mora voditi na somatske simptome');
+ok(topTopics('tjemenjaca')[0]?.id==='temenjaca', 'Upit tjemenjaca mora voditi na temenjaču');
 ok(topTopics('krvarenje posle menopauze')[0]?.id==='postmenopauzalno-krvarenje', 'Simptom krvarenja posle menopauze mora voditi na neutralnu simptom-temu');
 ok(!topTopics('krvarenje posle menopauze',3).some(t=>t.id==='rak-endometrijuma' && t.category==='Onkologija'), 'Generičan postmenopauzalni simptom ne sme automatski gurati onkologiju u vrh rezultata');
 ok(topTopics('kandida u ustima')[0]?.id==='oralna-kandidijaza', 'Upit kandida u ustima mora voditi na oralnu kandidijazu');
@@ -227,6 +254,39 @@ ok(topTopics('promrzline')[0]?.id==='promrzline', 'Upit promrzline mora voditi n
 ok(topTopics('alergija na sunce')[0]?.id==='alergija-sunce', 'Upit alergija na sunce mora voditi na PMLE');
 ok(topTopics('viseci fibromi')[0]?.id==='viseci-fibromi', 'Upit viseci fibromi mora voditi na skin tags');
 ok(topTopics('petni trn')[0]?.id==='plantarni-fascitis', 'Upit petni trn mora voditi na plantarni fascitis');
+ok(topTopics('polip grlica')[0]?.id==='cervikalni-polip', 'Upit polip grlica mora voditi na cervikalni polip');
+ok(topTopics('eritema nodosum')[0]?.id==='eritema-nodosum', 'Upit eritema nodosum mora voditi na temu');
+ok(topTopics('rebound congestion')[0]?.id==='rinitis-medikamentoza', 'Rebound congestion mora voditi na rinitis medikamentozu');
+ok(topTopics('tesko gutam')[0]?.id==='disfagija', 'Upit tesko gutam mora voditi na disfagiju');
+ok(topTopics('tecnost oko srca')[0]?.id==='perikardni-izliv', 'Upit tecnost oko srca mora voditi na perikardni izliv');
+ok(topTopics('tromboflebitis')[0]?.id==='povrsinski-tromboflebitis', 'Upit tromboflebitis mora voditi na površinski tromboflebitis');
+ok(topTopics('limfedem')[0]?.id==='limfedem', 'Upit limfedem mora voditi na limfedem');
+ok(topTopics('lipedem')[0]?.id==='lipedem', 'Upit lipedem mora voditi na lipedem');
+ok(topTopics('nizak natrijum')[0]?.id==='hiponatremija', 'Upit nizak natrijum mora voditi na hiponatremiju');
+ok(topTopics('somnambulizam')[0]?.id==='mesecarenje', 'Somnambulizam mora voditi na mesečarenje');
+ok(topTopics('voda oko pluca')[0]?.id==='pleuralni-izliv', 'Upit voda oko pluca mora voditi na pleuralni izliv');
+ok(topTopics('apsces dojke')[0]?.id==='apsces-dojke', 'Upit apsces dojke mora voditi na apsces dojke');
+ok(topTopics('altitude sickness')[0]?.id==='visinska-bolest', 'Altitude sickness mora voditi na visinsku bolest');
+ok(topTopics('osip oko usta')[0]?.id==='perioralni-dermatitis', 'Upit osip oko usta mora voditi na perioralni dermatitis');
+ok(topTopics('upala pljuvacne zlezde')[0]?.id==='sialadenitis', 'Upit upala pljuvacne zlezde mora voditi na sialadenitis');
+ok(topTopics('analni apsces')[0]?.id==='analni-apsces', 'Upit analni apsces mora voditi na analni apsces');
+ok(topTopics('ascites')[0]?.id==='ascites', 'Upit ascites mora voditi na ascites');
+ok(topTopics('trnjenje spoljne strane butine')[0]?.id==='meralgia-parestetika', 'Upit za spoljnu stranu butine mora voditi na meralgiu');
+ok(topTopics('thoracic outlet syndrome')[0]?.id==='torakalni-outlet', 'TOS upit mora voditi na sindrom torakalnog izlaza');
+ok(topTopics('spinalna stenoza')[0]?.id==='spinalna-stenoza', 'Upit spinalna stenoza mora voditi na spinalnu stenozu');
+ok(topTopics('spondilolisteza')[0]?.id==='spondilolisteza', 'Upit spondilolisteza mora voditi na spondilolistezu');
+ok(topTopics('pitirijaza rosea')[0]?.id==='pitirijaza-rosea', 'Upit pitirijaza rosea mora voditi na pityriasis rosea');
+ok(topTopics('telogen effluvium')[0]?.id==='telogen-effluvium', 'Upit telogen effluvium mora voditi na telogeni efluvijum');
+ok(topTopics('osip posle leka')[0]?.id==='osip-od-leka', 'Upit osip posle leka mora voditi na reakciju na lek');
+ok(topTopics('glue ear')[0]?.id==='otitis-sa-izlivom', 'Upit glue ear mora voditi na otitis sa izlivom');
+ok(topTopics('vocal cord dysfunction')[0]?.id==='vokalna-disfunkcija', 'VCD upit mora voditi na disfunkciju glasnih žica');
+ok(topTopics('adenom hipofize')[0]?.id==='adenom-hipofize', 'Upit adenom hipofize mora voditi na adenom hipofize');
+ok(topTopics('molarna trudnoca')[0]?.id==='molarna-trudnoca', 'Upit molarna trudnoca mora voditi na molarnu trudnoću');
+ok(topTopics('inkontinencija stolice')[0]?.id==='inkontinencija-stolice', 'Upit inkontinencija stolice mora voditi na fekalnu inkontinenciju');
+ok(topTopics('visok kalijum')[0]?.id==='hiperkalemija', 'Upit visok kalijum mora voditi na hiperkalemiju');
+ok(topTopics('nizak kalijum')[0]?.id==='hipokalemija', 'Upit nizak kalijum mora voditi na hipokalemiju');
+ok(topTopics('visok kalcijum')[0]?.id==='hiperkalcemija', 'Upit visok kalcijum mora voditi na hiperkalcemiju');
+ok(topTopics('nizak kalcijum')[0]?.id==='hipokalcemija', 'Upit nizak kalcijum mora voditi na hipokalcemiju');
 ok(topTopics('esencijalni tremor')[0]?.id==='esencijalni-tremor', 'Upit esencijalni tremor mora voditi na esencijalni tremor');
 ok(topTopics('svt')[0]?.id==='svt', 'Upit SVT mora voditi na supraventrikularnu tahikardiju');
 ok(topTopics('addisonova bolest')[0]?.id==='addison', 'Upit Addisonova bolest mora voditi na adrenalnu insuficijenciju');
@@ -614,9 +674,43 @@ ok(topTopics('anti tpo visok')[0]?.id==='stitna-ft4-antitela', 'Anti-TPO visok m
 ok(topTopics('amh nizak')[0]?.id==='reproduktivni-hormoni', 'AMH nizak mora voditi na reproduktivne hormone');
 ok(topTopics('psa visok')[0]?.id==='psa-nalaz', 'PSA visok mora voditi na PSA nalaz');
 ok(topTopics('ketoni u mokraci')[0]?.id==='urin-test-traka', 'Ketoni u mokraći moraju voditi na urin test traku');
+ok(topTopics('stucanje')[0]?.id==='stucanje', 'Upit stucanje mora voditi na stucanje');
+ok(topTopics('pupcana kila')[0]?.id==='umbilikalna-kila', 'Upit pupcana kila mora voditi na umbilikalna-kila');
+ok(topTopics('kila u preponi')[0]?.id==='ingvinalna-kila', 'Upit kila u preponi mora voditi na ingvinalna-kila');
+ok(topTopics('pots')[0]?.id==='pots', 'Upit pots mora voditi na pots');
+ok(topTopics('cir na zelucu')[0]?.id==='zeludacni-ulkus', 'Upit cir na zelucu mora voditi na zeludacni-ulkus');
+ok(topTopics('trne mali prst')[0]?.id==='kubitalni-tunel', 'Upit trne mali prst mora voditi na kubitalni-tunel');
+ok(topTopics('pukla ahilova tetiva')[0]?.id==='ahilova-ruptura', 'Upit pukla ahilova tetiva mora voditi na ahilova-ruptura');
+ok(topTopics('bol oko casice kolena')[0]?.id==='patelofemoralni-bol', 'Upit bol oko casice kolena mora voditi na patelofemoralni-bol');
 for (const hiddenId of Object.keys(topicDuplicateOf)) {
   ok(!topTopics(topics.find(t=>t.id===hiddenId)?.title||hiddenId, 10).some(t=>t.id===hiddenId), 'Skrivena duplicate tema ne sme se vratiti u rezultate: '+hiddenId);
 }
+
+// Automatski coverage audit: svaka canonical tema mora biti pretraživa po svom tačnom naslovu.
+// Jedinstveni aliasi (koji ne pripadaju više tema) takođe moraju vratiti odgovarajuću temu.
+for (const t of catalogTopics) {
+  const titleResults = topTopics(t.title, 5);
+  ok(titleResults.some(x=>x.id===t.id), 'Tema nije pretraživa po naslovu: '+t.id+' / '+t.title);
+}
+const aliasOwners = new Map();
+for (const t of catalogTopics) {
+  for (const alias of topicSearchAliases(t)) {
+    const key = norm(alias);
+    if (!key || key.length < 4) continue;
+    if (!aliasOwners.has(key)) aliasOwners.set(key, []);
+    aliasOwners.get(key).push(t.id);
+  }
+}
+let uniqueAliasChecks = 0;
+for (const [alias, owners] of aliasOwners.entries()) {
+  const uniq = [...new Set(owners)];
+  if (uniq.length !== 1) continue;
+  const id = uniq[0];
+  const results = topTopics(alias, 5);
+  ok(results.some(x=>x.id===id), 'Jedinstveni alias ne pronalazi svoju temu: '+alias+' -> '+id);
+  uniqueAliasChecks++;
+}
+ok(uniqueAliasChecks >= 400, 'Premalo jedinstvenih alias coverage provera: '+uniqueAliasChecks);
 ok(index.includes("if(isConversationalQuery(state.q)&&topics.length&&!intent.natural&&!intent.med)return openTopicResults(state.q)"), 'Nedostaje zaštita za duge/nejasne razgovorne upite');
 ok(index.includes("$$('[data-show-naturals]').forEach"), 'Globalni handler za Prirodno mora koristiti querySelectorAll');
 ok(index.includes("$$('[data-show-all]').forEach"), 'Globalni handler za povezane teme mora koristiti querySelectorAll');
@@ -654,7 +748,9 @@ const urgentRules=[
   /\b(sepsa|sepsis|septicki sok|septicki šok)\b/,
   /\b(meningitis)\b/,
   /\b(encefalitis|encephalitis)\b/,
-  /\b(postporodjajno krvarenje|postporodajno krvarenje|postpartum haemorrhage|postpartum hemorrhage|pph)\b/
+  /\b(postporodjajno krvarenje|postporodajno krvarenje|postpartum haemorrhage|postpartum hemorrhage|pph)\b/,
+  /\b(epiglotitis|epiglottitis)\b|\b(stridor)\b.{0,24}\b(slinjenj\w*|ne mogu da gutam|tesko gutam|bolno gutanje)\b/,
+  /\b(hellp|hellp sindrom|hellp syndrome)\b|\btrudn\w*\b.{0,35}\b(jak bol ispod desnog rebra|smetnje vida)\b.{0,25}\b(visok pritisak|glavobolja|mucnina)\b/
 ];
 
 function validatorTopicById(id){return topics.find(t=>t.id===canonicalTopicId(id))}
@@ -692,7 +788,7 @@ const urgentPositiveQueries=[
   'bol u grudima','stezanje u grudima','slabost ruke i problem sa govorom',
   'utrnula mi je ruka i tesko govorim','slabost jedne strane tela','lice mi se iskrivilo','pao ugao usne',
   'ne vidim na jedno oko','izgubio sam vid na jedno oko','hemikalija u oku','probodeno oko','gusim se','ne moze da dise','prestao je da dise','otok jezika','iznenadan jak bol u testisu',
-  'trudna sam i krvarim','torzija jajnika','bez svesti','obilno krvarenje ne prestaje','predozirao se','popio previse lekova','napad traje 5 minuta','grcevi ne prestaju','toplotni udar','suncanica i konfuzija','hemijska opekotina','elektricna opekotina','suicidalne misli','misli o samoubistvu','samopovredjivanje','ujed zmije','zmijski ugriz','ne mogu da mokrim puna besika jak bol','iskasljavam mnogo krvi','krv u ispljuvku kasljem tesko disem'
+  'trudna sam i krvarim','torzija jajnika','bez svesti','obilno krvarenje ne prestaje','predozirao se','popio previse lekova','napad traje 5 minuta','grcevi ne prestaju','toplotni udar','suncanica i konfuzija','hemijska opekotina','elektricna opekotina','suicidalne misli','misli o samoubistvu','samopovredjivanje','ujed zmije','zmijski ugriz','ne mogu da mokrim puna besika jak bol','iskasljavam mnogo krvi','krv u ispljuvku kasljem tesko disem','epiglotitis','HELLP sindrom'
 ];
 const urgentNegativeQueries=[
   'bol u dojkama','gorusica','sinusi','tesko spavam','boli me grlo',
@@ -711,18 +807,9 @@ ok(!index.includes("...[sym.map(a=>[a,6])]"), 'Simptom scoring ne sme imati ugnj
 ok(index.includes("params.get('q')"), 'Render ne obnavlja pretragu iz URL-a');
 ok(index.includes("data-copy-search") && index.includes("navigator.clipboard.writeText(url)"), 'Nedostaje kopiranje linka pretrage');
 ok(index.includes("function appStatusCard") && index.includes("connection-pill"), 'Nedostaje status baze i mreže u Podešavanjima');
-const standaloneRuntime = index.includes('let DB={"topics":[') && index.includes('let MEDS=[') && index.includes('let NATURALS=[') && !index.includes('fetch(');
-const resilientRuntime = index.includes("async function __vidarJson") &&
-  index.includes("raw.githubusercontent.com") &&
-  index.includes("cdn.jsdelivr.net") &&
-  index.includes("__vidarJson('data/topics.json')") &&
-  index.includes("__vidarJson('data/meds.json')") &&
-  index.includes("__vidarJson('data/naturals.json')");
-ok(standaloneRuntime || resilientRuntime, 'Index mora imati standalone ugrađene baze ili resilient JSON loader');
-if(!standaloneRuntime){
-  ok(index.includes("raw.githubusercontent.com") && index.includes("cdn.jsdelivr.net"), 'Preview loader nema GitHub Raw/jsDelivr fallback');
-  ok(index.includes("__vidarJson('data/topics.json')") && index.includes("__vidarJson('data/meds.json')") && index.includes("__vidarJson('data/naturals.json')"), 'Sve tri baze moraju koristiti resilient loader');
-}
+ok(index.includes("async function __vidarJson"), 'Nedostaje resilient JSON loader');
+ok(index.includes("raw.githubusercontent.com") && index.includes("cdn.jsdelivr.net"), 'Preview loader nema GitHub Raw/jsDelivr fallback');
+ok(index.includes("__vidarJson('data/topics.json')") && index.includes("__vidarJson('data/meds.json')") && index.includes("__vidarJson('data/naturals.json')"), 'Sve tri baze moraju koristiti resilient loader');
 ok(index.includes("window.addEventListener('offline'") && index.includes("window.addEventListener('online'"), 'Nedostaje online/offline status');
 ok(index.includes("searchShareButton(state.q)") && index.includes("searchShareButton(state.natQ)") && index.includes("searchShareButton(state.medQ)"), 'Link pretrage nije dostupan u sva tri kataloga');
 ok(sw.includes('/data/topics.json') && sw.includes('/data/meds.json') && sw.includes('/data/naturals.json'), 'Service worker ne kešira sve tri baze podataka za offline rad');
@@ -762,5 +849,7 @@ console.log(JSON.stringify({
   naturals: naturals.length,
   medLinks: Object.keys(medLinks).length,
   searchRegression: 'OK',
+  canonicalTitleCoverage: catalogTopics.length,
+  uniqueAliasCoverage: uniqueAliasChecks,
   fullCatalogSearchCoverage
 }, null, 2));
