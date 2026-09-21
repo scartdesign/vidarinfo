@@ -119,7 +119,8 @@ function oncologyIntent(q){return /\b(rak|karcinom|tumor|cancer|melanom|leukem\w
 const TOPIC_SEARCH_CACHE=new Map();
 function topicSearchIndex(t){let x=TOPIC_SEARCH_CACHE.get(t.id);if(x)return x;x={title:norm(t.title),aliases:topicSearchAliases(t).map(norm),sym:(t.symptoms||[]).map(norm),intro:norm(t.intro),cat:norm(t.category)};TOPIC_SEARCH_CACHE.set(t.id,x);return x}
 function topicMatchScore(t,q){q=norm(q);if(!q)return 0;let terms=searchTerms(q),ix=topicSearchIndex(t),title=ix.title,aliases=ix.aliases,sym=ix.sym,intro=ix.intro,cat=ix.cat,score=0,hitSet=new Set(),core=terms.join(' '),oncologyGuard=t.category==='Onkologija'&&!oncologyIntent(q);if(title===q)return oncologyGuard?120:2200;if(aliases.some(a=>a===q))return oncologyGuard?90:2100;if(title===core)score+=520;if(aliases.some(a=>a===core))score+=480;let fields=[[title,14],...aliases.map(a=>[a,12]),...sym.map(a=>[a,6]),[cat,4],[intro,2]];for(let [field,w] of fields){let r=textTokenScore(terms,field,w);score+=r.score;if(r.hits)for(let term of terms){if(textTokenScore([term],field,1).hits)hitSet.add(term)}}if(!hitSet.size)return 0;let minHits=terms.length>1?Math.ceil(terms.length*.6):1;if(hitSet.size<minHits)return 0;if(hitSet.size===terms.length)score+=45+terms.length*8;else score-=20*(terms.length-hitSet.size);if(oncologyGuard)score=Math.min(score*.35,90);return Math.max(score,0)}
-function anchor(q){let nq=norm(q),terms=searchTerms(nq);if(!terms.length)return null;let core=terms.join(' '),exact=catalogTopics.find(t=>{let hit=norm(t.title)===nq||norm(t.title)===core||topicSearchAliases(t).some(a=>norm(a)===nq||norm(a)===core);return hit&&(t.category!=='Onkologija'||oncologyIntent(nq))});if(exact)return exact;let ranked=catalogTopics.map(t=>[t,topicMatchScore(t,nq)]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]),top=ranked[0],next=ranked[1];if(!top)return null;let gap=top[1]-(next?next[1]:0),dominant=!next||next[1]<=top[1]*.55;if((terms.length===1&&top[1]>=80&&gap>=30&&dominant)||(terms.length>1&&top[1]>=120&&gap>=45&&dominant))return top[0];return null}
+function exactTopicMatches(q){let nq=norm(q),terms=searchTerms(nq);if(!nq||!terms.length)return[];let core=terms.join(' ');return catalogTopics.filter(t=>{let hit=norm(t.title)===nq||norm(t.title)===core||topicSearchAliases(t).some(a=>norm(a)===nq||norm(a)===core);return hit&&(t.category!=='Onkologija'||oncologyIntent(nq))})}
+function anchor(q){let nq=norm(q),terms=searchTerms(nq);if(!terms.length)return null;let exacts=exactTopicMatches(nq);if(exacts.length===1)return exacts[0];if(exacts.length>1)return null;let ranked=catalogTopics.map(t=>[t,topicMatchScore(t,nq)]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]),top=ranked[0],next=ranked[1];if(!top)return null;let gap=top[1]-(next?next[1]:0),dominant=!next||next[1]<=top[1]*.55;if((terms.length===1&&top[1]>=80&&gap>=30&&dominant)||(terms.length>1&&top[1]>=120&&gap>=45&&dominant))return top[0];return null}
 
 function topTopics(q, limit=6) {
   return catalogTopics.map(t=>[t,topicMatchScore(t,q)]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]||a[0].title.localeCompare(b[0].title,'sr')).slice(0,limit).map(x=>x[0]);
@@ -158,6 +159,13 @@ for (const t of catalogTopics) {
   }
 }
 ok(fullCatalogSearchCoverage >= 900, 'Premalo automatskih search coverage provera: '+fullCatalogSearchCoverage);
+const ambiguousAngina=exactTopicMatches('angina');
+ok(ambiguousAngina.length>=2, 'Angina mora ostati prepoznata kao dvosmislen termin');
+ok(anchor('angina')===null, 'Dvosmisleni termin angina ne sme automatski otvoriti jednu temu');
+const ambiguousPe=exactTopicMatches('pe');
+ok(ambiguousPe.length>=2, 'PE mora ostati prepoznat kao dvosmislena skraćenica');
+ok(anchor('pe')===null, 'Dvosmislena skraćenica PE ne sme automatski otvoriti jednu temu');
+ok(index.includes('function exactTopicMatches(q)') && index.includes("if(exactTopics.length>1&&!intent.natural&&!intent.med)return openTopicResults(state.q)"), 'Smart search mora prikazati rezultate umesto nasumičnog otvaranja kod dvosmislenog exact upita');
 
 const sinusQueries=['sinus','sinusi','sinuse','prirodni lek za sinuse','koji prirodni lek pomaze za sinuse'];
 for (const q of sinusQueries) {
@@ -718,11 +726,7 @@ const resilientRuntime = index.includes("async function __vidarJson") &&
   index.includes("__vidarJson('data/topics.json')") &&
   index.includes("__vidarJson('data/meds.json')") &&
   index.includes("__vidarJson('data/naturals.json')");
-ok(standaloneRuntime || resilientRuntime, 'Index mora imati standalone ugrađene baze ili resilient JSON loader');
-if(!standaloneRuntime){
-  ok(index.includes("raw.githubusercontent.com") && index.includes("cdn.jsdelivr.net"), 'Preview loader nema GitHub Raw/jsDelivr fallback');
-  ok(index.includes("__vidarJson('data/topics.json')") && index.includes("__vidarJson('data/meds.json')") && index.includes("__vidarJson('data/naturals.json')"), 'Sve tri baze moraju koristiti resilient loader');
-}
+ok(standaloneRuntime, 'Stabilna VIDAR verzija mora ostati standalone sa ugrađenim bazama, bez zavisnosti od mrežnog JSON fetch-a');
 ok(index.includes("window.addEventListener('offline'") && index.includes("window.addEventListener('online'"), 'Nedostaje online/offline status');
 ok(index.includes("searchShareButton(state.q)") && index.includes("searchShareButton(state.natQ)") && index.includes("searchShareButton(state.medQ)"), 'Link pretrage nije dostupan u sva tri kataloga');
 ok(sw.includes('/data/topics.json') && sw.includes('/data/meds.json') && sw.includes('/data/naturals.json'), 'Service worker ne kešira sve tri baze podataka za offline rad');
