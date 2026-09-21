@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 734, 'Očekivano 734 tema, pronađeno ' + topics.length);
+ok(topics.length === 751, 'Očekivano 751 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -205,6 +205,23 @@ ok(topTopics('bol u trtici')[0]?.id==='bol-u-trtici', 'Upit bol u trtici mora vo
 ok(topTopics('shin splints')[0]?.id==='shin-splints', 'Upit shin splints mora voditi na bol duž cevanice');
 ok(topTopics('dupuytren')[0]?.id==='dupuytren', 'Upit dupuytren mora voditi na Dupuytrenovu kontrakturu');
 ok(topTopics('prelom rebra')[0]?.id==='prelom-rebra', 'Upit prelom rebra mora voditi na prelom/nagnječenje rebra');
+ok(topTopics('tinea versicolor')[0]?.id==='pitirijaza-versicolor', 'Upit tinea versicolor mora voditi na pitirijazu versicolor');
+ok(topTopics('alergija na hladnocu')[0]?.id==='hladna-urtikarija', 'Upit alergija na hladnocu mora voditi na hladnu urtikariju');
+ok(topTopics('dermografizam')[0]?.id==='dermografizam', 'Upit dermografizam mora voditi na dermografizam');
+ok(topTopics('alergija na lateks')[0]?.id==='alergija-lateks', 'Upit alergija na lateks mora voditi na alergiju na lateks');
+ok(topTopics('epiglotitis')[0]?.id==='epiglotitis', 'Upit epiglotitis mora voditi na epiglotitis');
+ok(topTopics('barotrauma sinusa')[0]?.id==='barotrauma-sinusa', 'Upit barotrauma sinusa mora voditi na barotraumu sinusa');
+ok(topTopics('ocna migrena')[0]?.id==='retinalna-migrena', 'Upit ocna migrena mora voditi na retinalnu migrenu');
+ok(topTopics('dry socket')[0]?.id==='suva-alveola', 'Upit dry socket mora voditi na suvu alveolu');
+ok(topTopics('hellp')[0]?.id==='hellp-sindrom', 'Upit HELLP mora voditi na HELLP sindrom');
+ok(topTopics('galaktokela')[0]?.id==='galaktokela', 'Upit galaktokela mora voditi na galaktokelu');
+ok(topTopics('ekstrasistole')[0]?.id==='ekstrasistole', 'Upit ekstrasistole mora voditi na ekstrasistole');
+ok(topTopics('wpw')[0]?.id==='wpw', 'Upit WPW mora voditi na WPW');
+ok(topTopics('venska insuficijencija')[0]?.id==='hronicna-venska-insuficijencija', 'Upit venska insuficijencija mora voditi na CVI');
+ok(topTopics('hipernatremija')[0]?.id==='hipernatremija', 'Upit hipernatremija mora voditi na hipernatremiju');
+ok(topTopics('enureza')[0]?.id==='enureza-dete', 'Upit enureza mora voditi na noćno mokrenje kod deteta');
+ok(topTopics('temenjaca')[0]?.id==='temenjaca', 'Upit temenjaca mora voditi na temenjaču');
+ok(topTopics('burnout')[0]?.id==='sagorevanje-burnout', 'Upit burnout mora voditi na sagorevanje');
 ok(topTopics('krvarenje posle menopauze')[0]?.id==='postmenopauzalno-krvarenje', 'Simptom krvarenja posle menopauze mora voditi na neutralnu simptom-temu');
 ok(!topTopics('krvarenje posle menopauze',3).some(t=>t.id==='rak-endometrijuma' && t.category==='Onkologija'), 'Generičan postmenopauzalni simptom ne sme automatski gurati onkologiju u vrh rezultata');
 ok(topTopics('kandida u ustima')[0]?.id==='oralna-kandidijaza', 'Upit kandida u ustima mora voditi na oralnu kandidijazu');
@@ -713,7 +730,9 @@ const urgentRules=[
   /\b(sepsa|sepsis|septicki sok|septicki šok)\b/,
   /\b(meningitis)\b/,
   /\b(encefalitis|encephalitis)\b/,
-  /\b(postporodjajno krvarenje|postporodajno krvarenje|postpartum haemorrhage|postpartum hemorrhage|pph)\b/
+  /\b(postporodjajno krvarenje|postporodajno krvarenje|postpartum haemorrhage|postpartum hemorrhage|pph)\b/,
+  /\b(epiglotitis|epiglottitis)\b|\b(stridor)\b.{0,24}\b(slinjenj\w*|ne mogu da gutam|tesko gutam|bolno gutanje)\b/,
+  /\b(hellp|hellp sindrom|hellp syndrome)\b|\btrudn\w*\b.{0,35}\b(jak bol ispod desnog rebra|smetnje vida)\b.{0,25}\b(visok pritisak|glavobolja|mucnina)\b/
 ];
 
 function validatorTopicById(id){return topics.find(t=>t.id===canonicalTopicId(id))}
@@ -751,7 +770,7 @@ const urgentPositiveQueries=[
   'bol u grudima','stezanje u grudima','slabost ruke i problem sa govorom',
   'utrnula mi je ruka i tesko govorim','slabost jedne strane tela','lice mi se iskrivilo','pao ugao usne',
   'ne vidim na jedno oko','izgubio sam vid na jedno oko','hemikalija u oku','probodeno oko','gusim se','ne moze da dise','prestao je da dise','otok jezika','iznenadan jak bol u testisu',
-  'trudna sam i krvarim','torzija jajnika','bez svesti','obilno krvarenje ne prestaje','predozirao se','popio previse lekova','napad traje 5 minuta','grcevi ne prestaju','toplotni udar','suncanica i konfuzija','hemijska opekotina','elektricna opekotina','suicidalne misli','misli o samoubistvu','samopovredjivanje','ujed zmije','zmijski ugriz','ne mogu da mokrim puna besika jak bol','iskasljavam mnogo krvi','krv u ispljuvku kasljem tesko disem'
+  'trudna sam i krvarim','torzija jajnika','bez svesti','obilno krvarenje ne prestaje','predozirao se','popio previse lekova','napad traje 5 minuta','grcevi ne prestaju','toplotni udar','suncanica i konfuzija','hemijska opekotina','elektricna opekotina','suicidalne misli','misli o samoubistvu','samopovredjivanje','ujed zmije','zmijski ugriz','ne mogu da mokrim puna besika jak bol','iskasljavam mnogo krvi','krv u ispljuvku kasljem tesko disem','epiglotitis','HELLP sindrom'
 ];
 const urgentNegativeQueries=[
   'bol u dojkama','gorusica','sinusi','tesko spavam','boli me grlo',
