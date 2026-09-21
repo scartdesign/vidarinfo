@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 721, 'Očekivano 721 tema, pronađeno ' + topics.length);
+ok(topics.length === 720, 'Očekivano 720 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -241,7 +241,7 @@ ok(topTopics('glue ear')[0]?.id==='otitis-sa-izlivom', 'Upit glue ear mora vodit
 ok(topTopics('vocal cord dysfunction')[0]?.id==='vokalna-disfunkcija', 'VCD upit mora voditi na disfunkciju glasnih žica');
 ok(topTopics('adenom hipofize')[0]?.id==='adenom-hipofize', 'Upit adenom hipofize mora voditi na adenom hipofize');
 ok(topTopics('molarna trudnoca')[0]?.id==='molarna-trudnoca', 'Upit molarna trudnoca mora voditi na molarnu trudnoću');
-ok(topTopics('inkontinencija stolice')[0]?.id==='inkontinencija-stolice', 'Upit inkontinencija stolice mora voditi na fekalnu inkontinenciju');
+ok(topTopics('inkontinencija stolice')[0]?.id==='fekalna-inkontinencija', 'Upit inkontinencija stolice mora voditi na canonical fekalnu inkontinenciju');
 ok(topTopics('visok kalijum')[0]?.id==='hiperkalemija', 'Upit visok kalijum mora voditi na hiperkalemiju');
 ok(topTopics('nizak kalijum')[0]?.id==='hipokalemija', 'Upit nizak kalijum mora voditi na hipokalemiju');
 ok(topTopics('visok kalcijum')[0]?.id==='hiperkalcemija', 'Upit visok kalcijum mora voditi na hiperkalcemiju');
