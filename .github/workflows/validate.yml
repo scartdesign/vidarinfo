@@ -21,6 +21,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: vidar-standalone-preview
-          path: standalone.html
+          path: preview-standalone.html
           if-no-files-found: error
           retention-days: 7
