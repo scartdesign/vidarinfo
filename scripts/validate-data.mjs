@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 707, 'Očekivano 707 tema, pronađeno ' + topics.length);
+ok(topics.length === 704, 'Očekivano 704 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -615,11 +615,11 @@ ok(topTopics('amh nizak')[0]?.id==='reproduktivni-hormoni', 'AMH nizak mora vodi
 ok(topTopics('psa visok')[0]?.id==='psa-nalaz', 'PSA visok mora voditi na PSA nalaz');
 ok(topTopics('ketoni u mokraci')[0]?.id==='urin-test-traka', 'Ketoni u mokraći moraju voditi na urin test traku');
 ok(topTopics('tinea versicolor')[0]?.id==='pityriasis-versicolor', 'Tinea versicolor mora voditi na pityriasis versicolor');
-ok(topTopics('okidacki prst')[0]?.id==='trigger-finger', 'Okidački prst mora voditi na trigger finger');
-ok(topTopics('bartolinova cista')[0]?.id==='bartolinijeva-cista', 'Bartolinova cista mora voditi na Bartolinijevu cistu');
+ok(topTopics('okidacki prst')[0]?.id==='okidac-prst', 'Okidački prst mora voditi na postojeću temu Okidač-prst');
+ok(topTopics('bartolinova cista')[0]?.id==='bartolinova-cista', 'Bartolinova cista mora voditi na postojeću Bartolinovu temu');
 ok(topTopics('gilbert sindrom')[0]?.id==='gilbertov-sindrom', 'Gilbert sindrom mora voditi na Gilbertov sindrom');
 ok(topTopics('puls skoci kad ustanem')[0]?.id==='pots', 'Puls skoči kad ustanem mora voditi na PoTS');
-ok(topTopics('overactive bladder')[0]?.id==='prekomerno-aktivna-besika', 'Overactive bladder mora voditi na prekomerno aktivnu bešiku');
+ok(topTopics('overactive bladder')[0]?.id==='preaktivna-besika', 'Overactive bladder mora voditi na postojeću preaktivnu bešiku');
 ok(topTopics('bell paraliza')[0]?.id==='bellova-paraliza', 'Bell paraliza mora voditi na Bellovu paralizu');
 ok(topTopics('roze pitirijaza')[0]?.id==='pityriasis-rosea', 'Roze pitirijaza mora voditi na pityriasis rosea');
 for (const hiddenId of Object.keys(topicDuplicateOf)) {
