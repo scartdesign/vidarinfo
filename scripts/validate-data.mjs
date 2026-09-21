@@ -248,7 +248,7 @@ ok(topTopics('trnjenje spoljne strane butine')[0]?.id==='meralgia-parestetika', 
 ok(topTopics('thoracic outlet syndrome')[0]?.id==='torakalni-outlet', 'TOS upit mora voditi na sindrom torakalnog izlaza');
 ok(topTopics('spinalna stenoza')[0]?.id==='spinalna-stenoza', 'Upit spinalna stenoza mora voditi na spinalnu stenozu');
 ok(topTopics('spondilolisteza')[0]?.id==='spondilolisteza', 'Upit spondilolisteza mora voditi na spondilolistezu');
-ok(topTopics('pitirijaza rosea')[0]?.id==='pitirijaza-rosea', 'Upit pitirijaza rosea mora voditi na pityriasis rosea');
+ok(topTopics('pitirijaza rosea')[0]?.id==='pityriasis-rosea', 'Upit pitirijaza rosea mora voditi na pityriasis rosea');
 ok(topTopics('telogen effluvium')[0]?.id==='telogen-effluvium', 'Upit telogen effluvium mora voditi na telogeni efluvijum');
 ok(topTopics('osip posle leka')[0]?.id==='osip-od-leka', 'Upit osip posle leka mora voditi na reakciju na lek');
 ok(topTopics('glue ear')[0]?.id==='otitis-sa-izlivom', 'Upit glue ear mora voditi na otitis sa izlivom');
