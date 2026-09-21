@@ -31,8 +31,8 @@ html = html.slice(0, dataStart) + html.slice(dataEnd + dataEndMarker.length);
 if (html.includes('__vidarJson(')) throw new Error('Standalone i dalje sadrži poziv na JSON loader');
 if (html.includes('fetch(')) throw new Error('Standalone i dalje sadrži fetch');
 if (!html.includes('let DB={"topics":[')) throw new Error('Topics baza nije ugrađena');
-if (!html.includes('let MEDS=[')) throw new Error('Meds baza nije ugrađena');
-if (!html.includes('let NATURALS=[')) throw new Error('Naturals baza nije ugrađena');
+if (!html.includes(',MEDS=[')) throw new Error('Meds baza nije ugrađena');
+if (!html.includes(',NATURALS=[')) throw new Error('Naturals baza nije ugrađena');
 
 fs.writeFileSync(new URL('../standalone.html', import.meta.url), html, 'utf8');
 console.log('Standalone VIDAR generated:', {
