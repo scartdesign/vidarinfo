@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 751, 'Očekivano 751 tema, pronađeno ' + topics.length);
+ok(topics.length === 756, 'Očekivano 756 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -222,6 +222,16 @@ ok(topTopics('hipernatremija')[0]?.id==='hipernatremija', 'Upit hipernatremija m
 ok(topTopics('enureza')[0]?.id==='enureza-dete', 'Upit enureza mora voditi na noćno mokrenje kod deteta');
 ok(topTopics('temenjaca')[0]?.id==='temenjaca', 'Upit temenjaca mora voditi na temenjaču');
 ok(topTopics('burnout')[0]?.id==='sagorevanje-burnout', 'Upit burnout mora voditi na sagorevanje');
+ok(topTopics('skripanje u kolenu')[0]?.id==='koleno', 'Upit skripanje u kolenu mora voditi na bol u kolenu');
+ok(topTopics('otekao skocni zglob')[0]?.id==='bol-clanak', 'Upit otekao skocni zglob mora voditi na članak');
+ok(topTopics('alergija lateks')[0]?.id==='alergija-lateks', 'Upit alergija lateks mora voditi na alergiju na lateks');
+ok(topTopics('hiperakuza')[0]?.id==='hiperakuza', 'Upit hiperakuza mora voditi na hiperakuzu');
+ok(topTopics('autofonija')[0]?.id==='eustahijeva-tuba', 'Upit autofonija mora voditi na Eustahijevu tubu');
+ok(topTopics('trizmus')[0]?.id==='trizmus', 'Upit trizmus mora voditi na trizmus');
+ok(topTopics('prekomerno mokrenje')[0]?.id==='poliurija', 'Upit prekomerno mokrenje mora voditi na poliuriju');
+ok(topTopics('trombocitoza')[0]?.id==='trombocitoza', 'Upit trombocitoza mora voditi na trombocitozu');
+ok(topTopics('somatizacija')[0]?.id==='somatski-simptomi', 'Upit somatizacija mora voditi na somatske simptome');
+ok(topTopics('tjemenjaca')[0]?.id==='temenjaca', 'Upit tjemenjaca mora voditi na temenjaču');
 ok(topTopics('krvarenje posle menopauze')[0]?.id==='postmenopauzalno-krvarenje', 'Simptom krvarenja posle menopauze mora voditi na neutralnu simptom-temu');
 ok(!topTopics('krvarenje posle menopauze',3).some(t=>t.id==='rak-endometrijuma' && t.category==='Onkologija'), 'Generičan postmenopauzalni simptom ne sme automatski gurati onkologiju u vrh rezultata');
 ok(topTopics('kandida u ustima')[0]?.id==='oralna-kandidijaza', 'Upit kandida u ustima mora voditi na oralnu kandidijazu');
