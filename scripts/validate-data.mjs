@@ -16,7 +16,7 @@ const naturals = JSON.parse(read('data/naturals.json'));
 ok(Array.isArray(topics), 'topics.json mora sadržati niz tema');
 ok(Array.isArray(meds), 'meds.json mora sadržati niz lekova/preparata');
 ok(Array.isArray(naturals), 'naturals.json mora sadržati niz prirodnih unosa');
-ok(topics.length === 756, 'Očekivano 756 tema, pronađeno ' + topics.length);
+ok(topics.length === 763, 'Očekivano 763 tema, pronađeno ' + topics.length);
 ok(meds.length === 215, 'Očekivano 215 lekova/preparata, pronađeno ' + meds.length);
 ok(naturals.length === 197, 'Očekivano 197 prirodnih unosa, pronađeno ' + naturals.length);
 
@@ -181,6 +181,14 @@ ok(topTopics('hobl')[0]?.id==='copd', 'Legacy upit HOBL mora voditi na canonical
 ok(topTopics('hbb')[0]?.id==='hronicna-bubrezna-bolest', 'Legacy upit HBB mora voditi na canonical hroničnu bubrežnu bolest');
 ok(topTopics('masld')[0]?.id==='masna-jetra', 'Legacy upit MASLD mora voditi na canonical temu Masna jetra');
 ok(topTopics('cmicak')[0]?.id==='jecmenac', 'Upit cmicak mora voditi na temu Čmičak (ječmenac)');
+ok(topTopics('gubitak ukusa')[0]?.id==='gubitak-ukusa', 'Upit gubitak ukusa mora voditi na temu gubitka ukusa');
+ok(topTopics('metalni ukus')[0]?.id==='metalni-ukus', 'Upit metalni ukus mora voditi na temu metalnog ukusa');
+ok(topTopics('izbijen zub')[0]?.id==='povreda-zuba', 'Upit izbijen zub mora voditi na dentalnu traumu');
+ok(topTopics('ubod meduze')[0]?.id==='ubod-morskih-stvorenja', 'Upit ubod meduze mora voditi na morski ubod');
+ok(topTopics('morski jez')[0]?.id==='ubod-morskih-stvorenja', 'Upit morski jez mora voditi na morski ubod');
+ok(topTopics('femoralna kila')[0]?.id==='femoralna-kila', 'Upit femoralna kila mora voditi na femoralnu kilu');
+ok(topTopics('hipertroficni oziljak')[0]?.id==='hipertroficni-oziljak', 'Upit hipertroficni oziljak mora voditi na odgovarajuću temu');
+ok(topTopics('interkostalna neuralgija')[0]?.id==='interkostalna-neuralgija', 'Upit interkostalna neuralgija mora voditi na nervni bol između rebara');
 ok(topTopics('čmičak')[0]?.id==='jecmenac', 'Upit čmičak mora voditi na temu Čmičak (ječmenac)');
 ok(topTopics('kurje oko')[0]?.id==='kurje-oko', 'Upit kurje oko mora voditi na temu Kurje oko');
 ok(topTopics('zulj')[0]?.id==='zulj', 'Upit zulj mora voditi na temu Žulj / plik od trenja');
