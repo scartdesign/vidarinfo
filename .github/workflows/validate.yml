@@ -15,12 +15,5 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - name: Validate data and search regression
+      - name: Validate stable data and runtime
         run: node scripts/validate-data.mjs
-      - name: Upload standalone preview
-        uses: actions/upload-artifact@v4
-        with:
-          name: vidar-standalone-preview
-          path: standalone.html
-          if-no-files-found: error
-          retention-days: 7
