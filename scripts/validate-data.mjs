@@ -26,6 +26,8 @@ ok(index.includes('data-nav="mreze"'),'Nedostaje objedinjena Mreže navigacija')
 ok(index.includes('function networksPage()'),'Nedostaje objedinjena stranica pretrage mreža');
 ok(index.includes('id="networkSearch"'),'Nedostaje glavno polje za pretragu mreža');
 ok(index.includes('function allNetworksUrl(q)'),'Nedostaje objedinjena javna pretraga svih mreža');
+ok(index.includes('<strong>Sve mreže</strong>'),'Objedinjena pretraga nema jasno dugme Sve mreže');
+ok(index.includes('site:facebook.com')&&index.includes('site:instagram.com')&&index.includes('site:tiktok.com')&&index.includes('site:youtube.com')&&index.includes('site:reddit.com')&&index.includes('site:x.com'),'Objedinjena pretraga ne pokriva sve tražene mreže');
 ok(index.includes('Facebook, Instagram, TikTok, YouTube, Reddit i X'),'Početna ne objašnjava mrežnu pretragu');
 ok(!index.includes('<span>Prirodno</span></button><button'),'Stara odvojena Prirodno navigacija je i dalje primarna');
 ok(!index.includes('<span>Radar</span></button>'),'Stara Radar navigacija je i dalje primarna');
