@@ -1918,9 +1918,7 @@ async function installVidarApp(){
   try{await vidarInstallPrompt.userChoice}catch(e){}
   vidarInstallPrompt=null;
 }
-if('serviceWorker' in navigator && location.protocol!=='file:'){
-  window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
-}
+// Standalone preview: service worker intentionally disabled.
 
 let saved=new Set();try{saved=new Set(JSON.parse(safeStore.get('vidarSaved','[]')))}catch(e){}
 let recent=[];try{recent=JSON.parse(safeStore.get('vidarRecent','[]'))||[]}catch(e){recent=[]}
