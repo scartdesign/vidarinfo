@@ -17,3 +17,5 @@ jobs:
           node-version: '24'
       - name: Validate stable data and runtime
         run: node scripts/validate-data.mjs
+      - name: Validate clinical content, evidence links and relationships
+        run: node scripts/validate-content.mjs
